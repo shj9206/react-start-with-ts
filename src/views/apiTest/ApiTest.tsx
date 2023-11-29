@@ -1,4 +1,4 @@
-import { searchBookList, testPost } from "@/utils/apiService/sampleService";
+import { getCompaniesList } from "@/utils/apiService/accountService";
 import { useState, ChangeEvent } from "react";
 export default function ApiTest() {
   // ex
@@ -9,14 +9,15 @@ export default function ApiTest() {
     setInputValue(e.target.value);
   };
   const apiCallTest = () => {
-    testPost().then((res) => {
+    getCompaniesList().then((res) => {
       console.log(res);
     });
   };
   const onClickEvent = (query: string) => {
-    searchBookList(query).then((res) => {
-      console.log(res);
-    });
+    // searchBookList(query).then((res) => {
+    //   console.log(res);
+    // });
+    console.log("query", query);
   };
   return (
     <>
