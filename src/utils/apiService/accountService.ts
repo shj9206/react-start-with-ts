@@ -71,6 +71,16 @@ type User = {
   brchCode: string; //지점 ID
 };
 
+type Terms = {
+  userType: string; //사용자구분
+  type: string; //약관 구분
+  version: string; //약관 버전
+  requiredYn: string; //필수 동의 여부
+  lang: string; //약관 언어
+  title: string; //약관 제목
+  contents: string; //약관 내용
+};
+
 const mock = new AxiosMockAdapter(axios);
 
 const createCompanie = (): Companie => {
@@ -294,6 +304,42 @@ export const reviseUser = async (userid: string, param: User) => {
 //IF-ACCT-017 약관 목록 조회
 export const getTermsList = async () => {
   const api = APIBuilder.get(`/api/v1.0/account/termslist`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<AccountResult>>();
+  return data;
+};
+
+//IF-ACCT-018 약관 상세 조회
+export const getTermsDeteil = async (termsid: string) => {
+  const api = APIBuilder.get(`/api/v1.0/account/terms/${termsid}`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<AccountResult>>();
+  return data;
+};
+
+//IF-ACCT-019 약관 추가
+export const addTerms = async (param: Terms) => {
+  const api = APIBuilder.post(`/api/v1.0/account/terms`, param)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<AccountResult>>();
+  return data;
+};
+
+//IF-ACCT-020 약관 수정
+export const reviseTerms = async (termsid: string, param: Terms) => {
+  const api = APIBuilder.put(`/api/v1.0/account/terms/${termsid}`, param)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<AccountResult>>();
+  return data;
+};
+
+//IF-ACCT-021 약관 삭제
+export const deleteTerms = async (termsid: string) => {
+  const api = APIBuilder.delete(`/api/v1.0/account/terms/${termsid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
