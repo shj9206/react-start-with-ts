@@ -1,4 +1,4 @@
-import { getCompaniesList } from "@/utils/apiService/accountService";
+import { getCompaniesDetail } from "@/utils/apiService/accountService";
 import { useState, ChangeEvent } from "react";
 export default function ApiTest() {
   // ex
@@ -9,7 +9,7 @@ export default function ApiTest() {
     setInputValue(e.target.value);
   };
   const apiCallTest = () => {
-    getCompaniesList().then((res) => {
+    getCompaniesDetail("1234").then((res) => {
       console.log(res);
     });
   };
