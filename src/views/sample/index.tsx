@@ -5,11 +5,22 @@ import products from "./kendoGrid/data/products.json";
 export default function Index() {
     const [column, setColumnHeader] = useState(
         [
-            {column: 'ProductID', field: 'ProductID'},
-            {column: 'ProductName', field: 'ProductName'},
-            {column: 'UnitPrice', field: 'UnitPrice'},
+            {field: 'ProductID', title: 'ProductID', width: 150, align: 'center'},
+            {field: 'ProductName', title: 'ProductName', width: 300},
+            {field: 'UnitPrice', title: 'UnitPrice', width: 150},
         ]
     )
+    const commonGridProps = {
+        columnHeader: column,
+        buttonCount: 5,
+        gridData: products,
+        sortableGrid: true,
+        unsorted: true,
+        multipleSorting: false,
+        filterable: true,
+        resizable: true,
+        displayCount: [10, 20, 30, 0]
+    };
 
     return (
         <div id="zero-state">
@@ -18,7 +29,8 @@ export default function Index() {
             Check out{" "}
             <a href="https://reactrouter.com">the docs at reactrouter.com</a>.
             {/* eslint-disable-next-line max-len */}
-            <CommonGrid columnHeader={column} buttonCount={5} gridData={products} sortableGrid unsorted multipleSorting={false} filterable resizable/>
+            <CommonGrid {...commonGridProps}/>
+            <br/>
         </div>
     );
 }
