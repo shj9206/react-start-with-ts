@@ -39,7 +39,7 @@ interface GridHeader {
   align?: string;
 }
 
-interface CommonGridProps {
+export interface CommonGridProps {
   columnHeader: GridHeader[];
   buttonCount: number;
   sortableGrid: boolean | false;

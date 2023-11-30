@@ -1,34 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import CommonGrid from "@/views/sample/kendoGrid/commonGrid";
+import CommonGrid, {
+  CommonGridProps,
+} from "@/views/sample/kendoGrid/commonGrid";
 import products from "@/views/sample/kendoGrid/data/products.json";
 import { getCompaniesList } from "@/utils/apiService/accountService";
 import type { AccountResult } from "@/utils/apiService/accountService";
 
-type CommonGridProps = {
-  columnHeader: {
-    field: string;
-    title: string;
-    width: number;
-    align: string;
-  }[];
-  buttonCount: number;
-  gridData: unknown;
-  sortableGrid: boolean;
-  unsorted: boolean;
-  multipleSorting: boolean;
-  filterable: boolean;
-  resizable: boolean;
-  displayCount: number[];
-  // ... 나머지 속성
-};
 export default function Index() {
   const column = [
-    { field: "name", title: "name", width: 150, align: "center" },
-    { field: "modDate", title: "modDate", width: 150, align: "center" },
-
-    // { field: "ProductName", title: "ProductName", width: 300 },
-    // { field: "UnitPrice", title: "UnitPrice", width: 150 },
+    { field: "name", title: "name", width: 200, align: "center" },
+    { field: "country", title: "country", width: 200 },
+    { field: "state", title: "state", width: 200 },
+    { field: "city", title: "city", width: 200 },
+    { field: "street", title: "street", width: 200 },
   ];
   const [commonGridProps, setCommonGridProps] = useState<CommonGridProps>({
     columnHeader: column,
@@ -49,7 +34,7 @@ export default function Index() {
     },
   });
   const { data: company } = useQuery<AccountResult, Error>(companyListQuery());
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (company && company.data) {
       console.log(company);
       setCommonGridProps((prevState) => ({
