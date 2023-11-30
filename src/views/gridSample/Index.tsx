@@ -26,6 +26,7 @@ export default function Index() {
     resizable: true,
     displayCount: [10, 20, 30, 0],
   });
+
   const companyListQuery = () => ({
     queryKey: ["company"],
     queryFn: async () => {
