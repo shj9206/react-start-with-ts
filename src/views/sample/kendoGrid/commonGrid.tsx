@@ -1,18 +1,24 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import {
-    Grid,
-    GridColumn as Column, GridColumnMenuFilter, GridColumnMenuSort, GridColumnReorderEvent,
+    Grid, GridCellProps,
+    GridColumn as Column,
+    GridColumnMenuFilter,
+    GridColumnMenuSort,
+    GridColumnResizeEvent,
     GridFilterChangeEvent,
     GridPageChangeEvent,
-    GridPagerSettings, GridSortChangeEvent,
-    GridToolbar
+    GridPagerSettings,
+    GridSortChangeEvent,
+    GridToolbar,
+    getSelectedState
 } from '@progress/kendo-react-grid';
 import '@progress/kendo-theme-default/dist/all.css';
 
 import {Button} from '@progress/kendo-react-buttons';
-import {orderBy, SortDescriptor, filterBy} from "@progress/kendo-data-query";
+import {filterBy, orderBy, SortDescriptor} from "@progress/kendo-data-query";
+import { getter } from "@progress/kendo-react-common";
 import {ColumnMenu} from './columnMenu';
-import {useEffect, useState} from "react";
 import './styles.css';
 
 interface AppState {
@@ -38,6 +44,16 @@ interface CommonGridProps {
     filterable: boolean | false;
     resizable: boolean | false;
     gridData: object[];
+    displayCount: number[]
+}
+
+interface IColumn {
+    field: string;
+    title: string;
+    width: number;
+    align: 'left' | 'center' | 'right';
+
+    [key: string]: any;
 }
 
 // eslint-disable-next-line react/function-component-definition
@@ -49,10 +65,18 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                                                    multipleSorting,
                                                    filterable,
                                                    resizable,
-                                                   gridData
+                                                   gridData,
+                                                   displayCount
                                                }) => {
 
     const [sort, setSort] = useState<Array<SortDescriptor>>([]);
+    const [selectOption] = useState<number[]>(() => {
+        return displayCount === undefined ? [5, 10, 0] : displayCount
+    });
+    const SELECTED_FIELD = "selected";
+    const DATA_ITEM_KEY = "ProductID";
+
+    const idGetter = getter(DATA_ITEM_KEY);
 
     const createState = (skip: number, take: number): AppState => {
         const pagerSettings: GridPagerSettings = {
@@ -108,15 +132,31 @@ const CommonGrid: React.FC<CommonGridProps> = ({
 
     const [filter, setFilter] = useState();
 
-    const columnProps = (field: string) => {
+    const columnProps = (header: IColumn, index: number) => {
         return {
-            key: field,
-            field,
-            title: field,
+            key: header.field,
+            field: header.field,
+            title: header.title,
+            width: header.width,
+            align: header.align,
             columnMenu: filterable ? ColumnMenu : null,
-            headerClassName: isColumnActive(field, state) ? 'active' : ''
+            headerClassName: isColumnActive(header.field, state) ? 'active' : '',
+            orderIndex: index
         };
     }
+
+    const ColumnCell = (props: GridCellProps) => {
+        const {field} = props;
+        const column = columns.find(
+            (col: IColumn) => col.field === field
+        );
+
+        return (
+            <td style={{textAlign: column?.align || "left"}}>
+                {props.dataItem[field]}
+            </td>
+        );
+    };
 
     const isColumnActive = (field: string) => {
         return GridColumnMenuFilter.active(field, filter) ||
@@ -127,47 +167,42 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         setFilter(undefined);
         setState(createState(state.skip, state.take));
         setSort([]);
-        // columnHeader
     };
 
-    // 컬럼 레이아웃의 초기 상태를 저장
-    const initialColumnOrder = [...columnHeader.map(header => header.field)];
-    // 컬럼 레이아웃의 현재 상태를 관리하는 state
-    const [columnOrder, setColumnOrder] = useState(initialColumnOrder);
+    const [columns, setColumns] = useState(columnHeader);
 
-
-    const handleReset = (): void => {
-        // 초기 레이아웃 상태로 되돌림
-        setColumnOrder(initialColumnOrder);
+    const onColumnReorderWithResize = (e) => {
+        let reorderedColumns = e.columns;
+        reorderedColumns = reorderedColumns.sort((a, b) => a.orderIndex - b.orderIndex);
+        setColumns(reorderedColumns);
     };
 
-    useEffect(()=>{
-        console.log(columnOrder)
-    },[columnOrder])
+    const resetColumns = () => {
+        setColumns(columnHeader);
 
-
-    const arrayEquals = (a: any[], b: any[]): boolean => {
-        return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
     };
 
-
-    /* TODO 컬럼 이동 초기화 작업중 */
-    const handleColumnReorder = (event: GridColumnReorderEvent): void => {
-        const newColumnOrder = [...event.columns].sort((a, b) => a.orderIndex - b.orderIndex).map(order => order.field);
-
-        setColumnOrder(prevState => {
-            if (arrayEquals(prevState, newColumnOrder)) {
-                return prevState;
-            } else {
-                return newColumnOrder;
-            }
-        });
-    };
+    const [selectedState, setSelectedState] = React.useState({});
+    const onSelectionChange = React.useCallback(
+        (event) => {
+            const newSelectedState = getSelectedState({
+                event,
+                selectedState: selectedState,
+                dataItemKey: DATA_ITEM_KEY,
+            });
+            setSelectedState(newSelectedState);
+        },
+        [selectedState],
+    );
 
     return (
         <div>
             <Grid
-                style={{height: '350px', justifyContent: 'justifyContent'}}
+                style={{height: '350px'}}
+                // data={state.items.map((item) => ({
+                //     ...item,
+                //     [SELECTED_FIELD]: selectedState[idGetter(item)],
+                // }))}
                 data={filterBy(state.items, filter)}
                 onPageChange={pageChange}
                 total={state.total}
@@ -180,14 +215,23 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                 }}
                 sort={sort}
                 onSortChange={sortChange}
-                onFilterChange={(e: GridFilterChangeEvent) => {
-                    setFilter(e.filter);
+                onFilterChange={(event: GridFilterChangeEvent) => {
+                    setFilter(event.filter);
                 }}
-                resizable={resizable}
                 reorderable={true}
-                onColumnReorder={(event) => {
-                    handleColumnReorder(event);
-                }}
+                onColumnReorder={onColumnReorderWithResize}
+                filter={filter}
+                resizable={resizable}
+                onColumnResize={onColumnReorderWithResize}
+                // selectable={{
+                //     enabled: false,
+                //     drag: false,
+                //     cell: false,
+                //     mode: "multiple",
+                // }}
+                // selectedField={SELECTED_FIELD}
+                // dataItemKey={DATA_ITEM_KEY}
+                // onSelectionChange={onSelectionChange}
             >
                 <GridToolbar>
                     <span>Total {gridData.length} </span>
@@ -198,17 +242,27 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                       setState(createState(0, parseInt(event.target.value, 10)));
                   }
               }>
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={0}>All</option>
+                  {selectOption.map((value) =>
+                      <option value={value}>{value === 0 ? 'ALL' : value}</option>
+                  )}
               </select>
              </span>
                     <Button onClick={clearFilters}>Reset Filter </Button>
-                    <Button onClick={handleReset}>Reset table layout </Button>
+                    <Button onClick={resetColumns}>Reset table layout </Button>
                     <Button>set Column </Button>
                 </GridToolbar>
-                {columnOrder.map(header => (
-                    <Column {...columnProps(header)} />
+                {/*<Column*/}
+                {/*    field={SELECTED_FIELD}*/}
+                {/*    width="50px"*/}
+                {/*    headerSelectionValue={*/}
+                {/*        state.items.findIndex((item) => !selectedState[idGetter(item)]) === -1*/}
+                {/*    }*/}
+                {/*/>*/}
+                {columns.map((header, index) => (
+                    <Column
+                        {...columnProps(header, index)}
+                        cell={ColumnCell}
+                    />
                 ))}
             </Grid>
         </div>
