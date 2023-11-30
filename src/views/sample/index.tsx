@@ -3,22 +3,25 @@ import CommonGrid from "@/views/sample/kendoGrid/commonGrid";
 import products from "./kendoGrid/data/products.json";
 
 export default function Index() {
-  const [column, setColumnHeader] = useState([
-    { field: "ProductID", title: "ProductID", width: 150, align: "center" },
-    { field: "ProductName", title: "ProductName", width: 300 },
-    { field: "UnitPrice", title: "UnitPrice", width: 150 },
-  ]);
-  const commonGridProps = {
-    columnHeader: column,
-    buttonCount: 5,
-    gridData: products,
-    sortableGrid: true,
-    unsorted: true,
-    multipleSorting: false,
-    filterable: true,
-    resizable: true,
-    displayCount: [10, 20, 30],
-  };
+    const [column, setColumnHeader] = useState(
+        [
+            // {field: 'adminEmail', title: 'adminEmail', width: 150, align: 'center', filter: false},
+            {field: 'ProductName', title: 'ProductName', width: 300},
+            {field: 'UnitPrice', title: 'UnitPrice', width: 150, filter: true, filterType: 'text'},
+            {field: 'Discontinued', title: 'Discontinued', width: 200, filter: true, filterType: 'boolean'},
+        ]
+    )
+    const commonGridProps = {
+        columnHeader: column,
+        buttonCount: 5,
+        gridData: products,
+        sortableGrid: true,
+        unsorted: true,
+        multipleSorting: false,
+        filterable: true,
+        resizable: true,
+        displayCount: [10, 20, 30, 0]
+    };
 
   return (
     <div id="zero-state">
