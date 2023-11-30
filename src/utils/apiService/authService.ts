@@ -97,34 +97,6 @@ type Terms = {
   agreeYn?: string; //약관 동의 여부
 };
 
-function signupBody(): SignupRequest {
-  return {
-    name: "회사명", //회사 명
-    logoFile: 100111100, //로고 이미지 파일
-    foundedYear: "설립연도", //설립연도
-    url: "회사 대표 URL", //회사 대표 URL
-    description: "회사 설명", //회사 설명
-    street: "회사 주소", //회사 주소
-    street2: "회사 상세 주소", //회사 상세 주소
-    city: "회사 도시명", //회사 도시명
-    state: "회사 주/도 명", //회사 주/도 명
-    country: "회사 국가", //회사 국가
-    zipCd: "회사 우편번호", //회사 우편번호
-    latitude: 65.4564, //위도
-    longitude: 45.484, //경도
-    suppTel: "CS용 전화번호", //CS용 전화번호
-    suppEmail: "CS 용 이메일", //CS 용 이메일
-    busiTel: "LGES 용 전화번호", //LGES 용 전화번호
-    busiEmail: "LGES 용 이메일", //LGES 용 이메일
-    adminFirstName: "관리자 이름", //관리자 이름
-    adminLastName: "관리자 성", //관리자 성
-    adminTel: "관리자 전화번호", //관리자 전화번호
-    adminEmail: "관리자 이메일", //관리자 이메일
-    purpose: "설치 타입 선택 리스트", //설치 타입 선택 리스트
-    terms: [{ type: "type", version: "version", agreeYn: "agreeYn" }], //약관동의정보
-  };
-}
-
 type SignupfordiyResponse = {
   data?: {
     ticket?: string; //인증티켓
@@ -148,17 +120,6 @@ type SignupfordiyRequest = {
   terms?: Terms[]; //약관동의정보
 };
 
-function signupfordiyBody(): SignupfordiyRequest {
-  return {
-    firstName: "Sungwook", //이름
-    lastName: "Choi", //성
-    tel: "010-9285-0910", //전화번호
-    email: "이메일", //이메일
-    country: "국가", //국가
-    terms: [{ type: "type", version: "version", agreeYn: "agreeYn" }], //약관동의정보
-  };
-}
-
 type DataObjectResponse = {
   data?: object;
 } & AuthResult;
@@ -176,24 +137,10 @@ type OtpValidateRequest = {
   pwd: string; //비밀번호
 };
 
-function otpValidateBody(): OtpValidateRequest {
-  return {
-    authCode: "일회용코드", //일회용코드
-    pwd: "비밀번호", //비밀번호
-  };
-}
-
 type InvateValidateRequest = {
   pwd: string; //비밀번호
   terms: Terms[]; //약관동의정보
 };
-
-function invateValidateBody(): InvateValidateRequest {
-  return {
-    pwd: "비밀번호", //비밀번호
-    terms: [{ type: "type", version: "version", agreeYn: "agreeYn" }], //약관동의정보
-  };
-}
 
 type SigninResponse = {
   data?: Token;
@@ -218,33 +165,13 @@ type SigninRequest = {
   pwd: string; //비밀번호
 };
 
-function signinBody(): SigninRequest {
-  return {
-    email: "이메일", //이메일
-    pushToken: "푸시용 토큰", //푸시용 토큰
-    pwd: "비밀번호", //비밀번호
-  };
-}
-
 type PasswordResetRequest = {
   email: string; //이메일
 };
 
-function passwordResetPasswordBody(): PasswordResetRequest {
-  return {
-    email: "이메일", //이메일
-  };
-}
-
 type PasswordValidateRequest = {
   pwd: string; //비밀번호
 };
-
-function passwordValidateBody(): PasswordValidateRequest {
-  return {
-    pwd: "비밀번호", //비밀번호
-  };
-}
 
 type EmailChangeResponse = {
   data: {
@@ -264,21 +191,9 @@ type EmailChangeRequest = {
   email: string; //이메일
 };
 
-function emailChangeBody(): EmailChangeRequest {
-  return {
-    email: "이메일", //이메일
-  };
-}
-
 type EmailValidateRequest = {
   pwd: string; //비밀번호
 };
-
-function emailValidateBody(): EmailValidateRequest {
-  return {
-    pwd: "비밀번호", //비밀번호
-  };
-}
 
 type RefreshResponse = {
   data?: {
@@ -297,12 +212,6 @@ function resultRefresh(): RefreshResponse {
 type OtpResendRequest = {
   ticket: string; //인증티켓
 };
-
-function otpResendBody(): OtpResendRequest {
-  return {
-    ticket: "인증티켓", //인증티켓
-  };
-}
 
 const mock = new AxiosMockAdapter(axios);
 
@@ -404,9 +313,6 @@ mock.onDelete(/^\/api\/v1\.0\/auth\/.*/).reply((config: any) => {
   }
 });
 mock.onAny().passThrough();
-
-// 임의 이메일 생성
-const email = faker.internet.email();
 
 // 베이스 url
 const baseUri = "/api/v1.0/auth";
