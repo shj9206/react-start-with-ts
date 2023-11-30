@@ -26,6 +26,7 @@ export default function Index() {
     resizable: true,
     displayCount: [10, 20, 30],
   });
+
   const companyListQuery = () => ({
     queryKey: ["company"],
     queryFn: async () => {
@@ -33,27 +34,18 @@ export default function Index() {
       return result as AccountResult;
     },
   });
-  const { data: company } = useQuery<AccountResult, Error>(companyListQuery());
+  const { data: company, isPending } = useQuery<AccountResult, Error>(
+    companyListQuery()
+  );
+
   useLayoutEffect(() => {
-    if (company && company.data) {
+    if (!isPending && company) {
       console.log(company);
       setCommonGridProps((prevState) => ({
         ...prevState,
         gridData: company.data,
       }));
     }
-  }, [company]);
-  return (
-    <CommonGrid
-      columnHeader={commonGridProps.columnHeader}
-      buttonCount={commonGridProps.buttonCount}
-      gridData={commonGridProps.gridData}
-      sortableGrid={commonGridProps.sortableGrid}
-      unsorted={commonGridProps.unsorted}
-      multipleSorting={commonGridProps.multipleSorting}
-      filterable={commonGridProps.filterable}
-      resizable={commonGridProps.resizable}
-      displayCount={commonGridProps.displayCount}
-    />
-  );
+  }, [company, isPending]);
+  return <CommonGrid {...commonGridProps} />;
 }
