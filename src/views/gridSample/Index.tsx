@@ -1,11 +1,14 @@
-import {useState, useLayoutEffect, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import CommonGrid, {
   CommonGridProps,
 } from "@/views/sample/kendoGrid/commonGrid";
 // import products from "@/views/sample/kendoGrid/data/products.json";
 import { getCompaniesList } from "@/utils/apiService/accountService";
-import type { AccountResult } from "@/utils/apiService/accountService";
+import type {
+  AccountResult,
+  Companie,
+} from "@/utils/apiService/accountService";
 
 export default function Index() {
   const column = [
@@ -35,18 +38,14 @@ export default function Index() {
     },
   });
   const { data: company } = useQuery<AccountResult, Error>(companyListQuery());
-
   useEffect(() => {
     if (company && company.data) {
       setCommonGridProps((prevState) => ({
         ...prevState,
-        gridData: company.data as object[] | null,
+        gridData: company.data as Companie[],
       }));
     }
   }, [company]);
 
-
-  return (
-    <CommonGrid {...commonGridProps}/>
-  );
+  return <CommonGrid {...commonGridProps} />;
 }
