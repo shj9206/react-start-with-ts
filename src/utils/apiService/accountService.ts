@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 import APIBuilder from "@/utils/apiService/APIBuilder";
 
 type Response<T> = { data: T };
-type AccountResult = {
+export type AccountResult = {
   code: string; // 결과코드
   message: string; // 결과 메시지
   data?: unknown; // 결과 데이터
@@ -14,7 +14,7 @@ type AccountResult = {
   totalElements?: number; // 전체 아이템 수
 };
 
-type Companie = {
+export type Companie = {
   name: string; // 회사명
   code?: string; // 회사 ID
   logoFile?: string; // 회사 로고 파일명

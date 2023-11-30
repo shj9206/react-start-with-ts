@@ -5,8 +5,8 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import { store } from "@/store";
 import { Provider } from "react-redux";
+import { store } from "@/store";
 import "@/utils/i18n";
 
 import "./index.css";
@@ -25,6 +25,8 @@ import ErrorPage from "@/views/sample/error-page";
 import LocaleSample from "@/views/localeSample/LocaleSample";
 import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
+import GridSample from "@/views/gridSample/Index";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -65,6 +67,7 @@ const router = createBrowserRouter([
       { path: "/views/sample/store", element: <StoreSampe /> },
       { path: "/views/sample/locale", element: <LocaleSample /> },
       { path: "/views/sample/api", element: <ApiTest /> },
+      { path: "/views/sample/gridSample", element: <GridSample /> },
     ],
   },
 ]);
