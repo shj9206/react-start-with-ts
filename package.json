@@ -46,7 +46,8 @@
     "react-router-dom": "^6.19.0",
     "redux": "^4.2.1",
     "rooks": "^7.14.1",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "styled-components": "^6.1.1"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.8.4",
