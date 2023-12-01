@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import {
     Grid, GridCellProps,
     GridColumn as Column,
@@ -21,23 +21,25 @@ import {getter} from "@progress/kendo-react-common";
 import {ColumnMenu} from './columnMenu';
 import './styles.css';
 import {DropdownFilterCell} from "@/views/sample/kendoGrid/dropdownfilterCell.tsx";
+import {skip} from "@progress/kendo-data-query/dist/npm/transducers";
+import {useRaf} from "rooks";
 
 
 interface AppState {
-  items: object[];
-  total: number;
-  skip: number;
-  take: number;
-  pageSize: number;
-  pageable: boolean | GridPagerSettings;
+    items: object[];
+    total: number;
+    skip: number;
+    take: number;
+    pageSize: number;
+    pageable: boolean | GridPagerSettings;
 }
 
 interface GridHeader {
-  title: string;
-  column?: string;
-  field: string;
-  width: number;
-  align?: string;
+    title: string;
+    column?: string;
+    field: string;
+    width: number;
+    align?: string;
 }
 
 export interface CommonGridProps {
@@ -49,186 +51,176 @@ export interface CommonGridProps {
     filterable: boolean | false;
     resizable: boolean | false;
     gridData: object[] | null;
-    displayCount: number[]
+    displayCount: number[];
 }
 
 interface IColumn {
-  field: string;
-  title: string;
-  width: number;
-  align: "left" | "center" | "right";
+    field: string;
+    title: string;
+    width: number;
+    align: "left" | "center" | "right";
+    filterable: boolean
 
-  [key: string]: any;
+    [key: string]: any;
 }
 
-// eslint-disable-next-line react/function-component-definition
 const CommonGrid: React.FC<CommonGridProps> = ({
-  columnHeader,
-  buttonCount,
-  sortableGrid,
-  unsorted,
-  multipleSorting,
-  filterable,
-  resizable,
-  gridData,
-  displayCount,
-}) => {
-  const [sort, setSort] = useState<Array<SortDescriptor>>([]);
-  const [selectOption] = useState<number[]>(() => {
-    return displayCount === undefined ? [5, 10, 0] : displayCount;
-  });
-  const SELECTED_FIELD = "selected";
-  const DATA_ITEM_KEY = "ProductID";
+                                                   columnHeader,
+                                                   buttonCount,
+                                                   sortableGrid,
+                                                   unsorted,
+                                                   multipleSorting,
+                                                   filterable,
+                                                   resizable,
+                                                   gridData,
+                                                   displayCount,
+                                               }) => {
 
-  const idGetter = getter(DATA_ITEM_KEY);
+    const [sort, setSort] = useState<Array<SortDescriptor>>([]);
+    const [selectOption] = useState<number[]>(() => {
+        return displayCount === undefined ? [5, 10, 0] : displayCount;
+    });
+    const SELECTED_FIELD = "selected";
+    const DATA_ITEM_KEY = "ProductID";
 
-  const createState = (skip: number, take: number): AppState => {
-    const pagerSettings: GridPagerSettings = {
-      buttonCount,
-      info: false,
-      type: "numeric",
-      pageSizes: false,
-      previousNext: true,
-    };
+    const idGetter = getter(DATA_ITEM_KEY);
 
-    return {
-      items: gridData?.slice(
-        skip,
-        take === 0 ? gridData?.length : skip + take
-      ) as object[],
-      total: gridData?.length,
-      skip,
-      take,
-      pageSize: take,
-      pageable: take === 0 ? false : pagerSettings,
-    };
-  };
+    const createState = (skip: number, take: number): AppState => {
+        const pagerSettings: GridPagerSettings = {
+            buttonCount,
+            info: false,
+            type: "numeric",
+            pageSizes: false,
+            previousNext: true,
+        };
 
-  const [state, setState] = useState<AppState>(createState(0, 5));
-
-  const sortState = (sortData: object[]) => {
-    const pagerSettings: GridPagerSettings = {
-      buttonCount,
-      info: false,
-      type: "numeric",
-      pageSizes: false,
-      previousNext: true,
-    };
-
-    return {
-      items: sortData as object[],
-      total: gridData?.length,
-      skip: state.skip,
-      take: state.take,
-      pageSize: state.take,
-      pageable: state.take === 0 ? false : pagerSettings,
-    };
-  };
-
-  const pageChange = (event: GridPageChangeEvent) => {
-    setState(createState(event.page.skip, event.page.take));
-  };
-
-  const sortChange = (event: GridSortChangeEvent) => {
-    const orderedItems =
-      event.sort.length === 0
-        ? createState(state.skip, state.take).items
-        : orderBy(state.items, event.sort);
-    setState(sortState(orderedItems));
-    setSort(event.sort);
-  };
-
-  const [filter, setFilter] = useState();
-
-    // const categories = Array.from(new Set(state.items.map(p => p.Category ? p.Category.UnitPrice : '')));
-    const categories = Array.from(new Set(state.items?.map(p => p.UnitPrice || '')));
-    const CategoryFilterCell = props => <DropdownFilterCell {...props} data={categories} defaultItem={'Select data'} />;
-    const columnProps = (header: IColumn, index: number) => {
         return {
-            key: header.field,
-            field: header.field,
-            title: header.title,
-            width: header.width,
-            align: header.align,
-            // columnMenu: filterable ? ColumnMenu : null,
-            headerClassName: isColumnActive(header.field, state) ? 'active' : '',
+            items: gridData?.slice(
+                skip,
+                take === 0 ? gridData?.length : skip + take
+            ) as object[],
+            total: gridData?.length as number,
+            skip,
+            take,
+            pageSize: take,
+            pageable: take === 0 ? false : pagerSettings,
+        };
+    };
+
+    const [state, setState] = useState<AppState>();
+
+    const sortState = (sortData: object[]) => {
+        const pagerSettings: GridPagerSettings = {
+            buttonCount,
+            info: false,
+            type: "numeric",
+            pageSizes: false,
+            previousNext: true,
+        };
+
+        return {
+            items: sortData as object[],
+            total: gridData?.length,
+            skip: state?.skip,
+            take: state?.take,
+            pageSize: state?.take,
+            pageable: state?.take === 0 ? false : pagerSettings,
+        };
+    };
+
+    const pageChange = (event: GridPageChangeEvent) => {
+        setState(createState(event.page.skip, event.page.take));
+    };
+
+    const sortChange = (event: GridSortChangeEvent) => {
+        setState(sortState(orderBy(createState(state?.skip, state?.take).items, event.sort)));
+        setSort(event.sort);
+    };
+
+    const [filter, setFilter] = useState();
+
+    const getUniqueFieldValues = (fieldValues, field) => {
+        return Array.from(new Set(fieldValues?.map(data => data[field])));
+    };
+
+    const CategoryFilterCell = (props) => {
+        const {field} = props;
+        const fieldValues = createState(state?.skip, state?.take).items;
+
+        return (
+            <DropdownFilterCell {...props} data={getUniqueFieldValues(fieldValues, field)} defaultItem={'ALL'}/>
+        )
+    };
+
+    const columnProps = (column: IColumn, index: number) => {
+        return {
+            key: column.field + '_' + index,
+            field: column.field,
+            title: column.title,
+            width: column.width,
+            align: column.align,
             orderIndex: index,
-            filterable: header.filter,
-            filter: header.filterType,
-            filterCell: header.filterType === 'text' ? CategoryFilterCell : null
+            filterable: column.filterable,
+            filter: column.filterType === 'select' ? 'text' : column.filterType,
+            filterCell: column.filterType === 'select' ? CategoryFilterCell : null,
+            // headerCell: CustomHeaderCell
         };
     }
 
-  const ColumnCell = (props: GridCellProps) => {
-    const { field } = props;
-    const column = columns.find((col: IColumn) => col.field === field);
+    const ColumnCell = (props: GridCellProps) => {
+        const {field} = props;
+        const column = columns.find((col: IColumn) => col.field === field);
 
         const dataValue = props.dataItem[field];
         const displayValue = typeof dataValue === 'boolean' ? (dataValue ? 'TRUE' : 'FALSE') : dataValue;
 
         return (
             <td style={{textAlign: column?.align || "left"}}>
-                {/*{props.dataItem[field]}*/}
                 {displayValue}
             </td>
         );
     };
 
-  const isColumnActive = (field: string) => {
-    return (
-      GridColumnMenuFilter.active(field, filter) ||
-      GridColumnMenuSort.active(field, sort)
-    );
-  };
+    const clearFilters = () => {
+        setFilter(undefined);
+        setState(createState(state?.skip, state?.take));
+        setSort([]);
+    };
 
-  const clearFilters = () => {
-    setFilter(undefined);
-    setState(createState(state.skip, state.take));
-    setSort([]);
-  };
+    const [columns, setColumns] = useState(columnHeader);
 
-  const [columns, setColumns] = useState(columnHeader);
+    const onColumnReorderWithResize = (e) => {
+        let reorderedColumns = e.columns;
+        reorderedColumns = reorderedColumns.sort(
+            (a, b) => a.orderIndex - b.orderIndex
+        );
+        setColumns(reorderedColumns);
+    };
 
-  const onColumnReorderWithResize = (e) => {
-    let reorderedColumns = e.columns;
-    reorderedColumns = reorderedColumns.sort(
-      (a, b) => a.orderIndex - b.orderIndex
-    );
-    setColumns(reorderedColumns);
-  };
+    const resetColumns = () => {
+        setColumns(columnHeader);
+    };
 
-  const resetColumns = () => {
-    setColumns(columnHeader);
-  };
+    useEffect(() => {
+        setState(createState(0, displayCount[0]));
 
-  const [selectedState, setSelectedState] = React.useState({});
-  const onSelectionChange = React.useCallback(
-    (event) => {
-      const newSelectedState = getSelectedState({
-        event,
-        selectedState: selectedState,
-        dataItemKey: DATA_ITEM_KEY,
-      });
-      setSelectedState(newSelectedState);
-    },
-    [selectedState]
-  );
+    }, []);
+
+    useEffect(() => {
+        setState(createState(0, displayCount[0]));
+    }, [gridData]);
 
 
     return (
         <div>
             <Grid
                 style={{height: '350px'}}
-                // data={state.items.map((item) => ({
-                //     ...item,
-                //     [SELECTED_FIELD]: selectedState[idGetter(item)],
-                // }))}
-                data={filterBy(gridData, filter)}
+                data={filterBy(state?.items, filter)}
                 onPageChange={pageChange}
-                total={state.total}
-                skip={state.skip}
-                pageable={state.pageable}
-                pageSize={state.pageSize}
+                total={state?.total}
+                skip={state?.skip}
+                pageable={state?.pageable}
+                pageSize={state?.pageSize}
                 sortable={!sortableGrid ? false : {
                     allowUnsort: unsorted,
                     mode: multipleSorting ? "multiple" : "single"
@@ -238,27 +230,19 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                 onFilterChange={(event: GridFilterChangeEvent) => {
                     setFilter(event.filter);
                 }}
-                reorderable={true}
+                reorderable
                 onColumnReorder={onColumnReorderWithResize}
                 filterable={filterable}
                 filter={filter}
                 resizable={resizable}
                 onColumnResize={onColumnReorderWithResize}
-                // selectable={{
-                //     enabled: false,
-                //     drag: false,
-                //     cell: false,
-                //     mode: "multiple",
-                // }}
-                // selectedField={SELECTED_FIELD}
-                // dataItemKey={DATA_ITEM_KEY}
-                // onSelectionChange={onSelectionChange}
             >
                 <GridToolbar>
                     <span>Total {gridData?.length} </span>
                     <span>Page Size</span>
                     <span>
-              <select onChange={
+              <select defaultValue={'10'}
+                  onChange={
                   (event) => {
                       setState(createState(0, parseInt(event.target.value, 10)));
                   }
@@ -272,13 +256,6 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                     <Button onClick={resetColumns}>Reset table layout </Button>
                     <Button>set Column </Button>
                 </GridToolbar>
-                {/*<Column*/}
-                {/*    field={SELECTED_FIELD}*/}
-                {/*    width="50px"*/}
-                {/*    headerSelectionValue={*/}
-                {/*        state.items.findIndex((item) => !selectedState[idGetter(item)]) === -1*/}
-                {/*    }*/}
-                {/*/>*/}
                 {columns.map((header, index) => (
                     <Column
                         {...columnProps(header, index)}
