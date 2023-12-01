@@ -26,6 +26,7 @@ import LocaleSample from "@/views/localeSample/LocaleSample";
 import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
+import KendoForm from "@/views/sample/kendoForm/Index.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +69,7 @@ const router = createBrowserRouter([
       { path: "/views/sample/locale", element: <LocaleSample /> },
       { path: "/views/sample/api", element: <ApiTest /> },
       { path: "/views/sample/gridSample", element: <GridSample /> },
+      { path: "/views/sample/kendoForm", element: <KendoForm /> },
     ],
   },
 ]);
@@ -77,5 +79,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );

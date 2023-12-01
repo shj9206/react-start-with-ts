@@ -1,6 +1,6 @@
 import { Form, useLoaderData, redirect, useNavigate } from "react-router-dom";
-import { updateContact } from "@/utils/contacts";
 import { QueryClient } from "@tanstack/react-query";
+import { updateContact } from "@/utils/contacts";
 
 interface Params {
   [key: string]: string | undefined;

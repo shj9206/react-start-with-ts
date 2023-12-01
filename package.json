@@ -21,9 +21,11 @@
     "@progress/kendo-react-data-tools": "^6.1.1",
     "@progress/kendo-react-dateinputs": "^6.1.1",
     "@progress/kendo-react-dropdowns": "^6.1.1",
+    "@progress/kendo-react-form": "^6.1.1",
     "@progress/kendo-react-grid": "^6.1.1",
     "@progress/kendo-react-inputs": "^6.1.1",
     "@progress/kendo-react-intl": "^6.1.1",
+    "@progress/kendo-react-labels": "^6.1.1",
     "@progress/kendo-react-popup": "^6.1.1",
     "@progress/kendo-react-treeview": "^6.1.1",
     "@progress/kendo-svg-icons": "^2.0.0",
@@ -66,6 +68,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "localforage": "^1.10.0",
+    "prettier": "^3.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }
