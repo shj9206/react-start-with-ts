@@ -2,7 +2,6 @@ import {DropDownList} from '@progress/kendo-react-dropdowns';
 import {Button} from '@progress/kendo-react-buttons';
 
 export const DropdownFilterCell = props => {
-    console.log(props)
     let hasValue = value => Boolean(value && value !== props.defaultItem);
     const onChange = event => {
         hasValue = hasValue(event.target.value);
@@ -23,6 +22,5 @@ export const DropdownFilterCell = props => {
     return <div className="k-filtercell">
         <DropDownList data={props.data} onChange={onChange} value={props.value || props.defaultItem}
                       defaultItem={props.defaultItem}/>
-        <Button title="Clear" disabled={!hasValue(props.value)} onClick={onClearButtonClick} icon="filter-clear"/>
     </div>;
 };
