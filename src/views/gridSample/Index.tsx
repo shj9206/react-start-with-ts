@@ -1,11 +1,14 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import CommonGrid, {
   CommonGridProps,
 } from "@/views/sample/kendoGrid/commonGrid";
-import products from "@/views/sample/kendoGrid/data/products.json";
+// import products from "@/views/sample/kendoGrid/data/products.json";
 import { getCompaniesList } from "@/utils/apiService/accountService";
-import type { AccountResult } from "@/utils/apiService/accountService";
+import type {
+  AccountResult,
+  Companie,
+} from "@/utils/apiService/accountService";
 
 export default function Index() {
   const column = [
@@ -18,14 +21,15 @@ export default function Index() {
   const [commonGridProps, setCommonGridProps] = useState<CommonGridProps>({
     columnHeader: column,
     buttonCount: 5,
-    gridData: products,
+    gridData: null,
     sortableGrid: true,
     unsorted: true,
     multipleSorting: false,
     filterable: true,
     resizable: true,
-    displayCount: [10, 20, 30],
+    displayCount: [10, 20, 30, 0],
   });
+
   const companyListQuery = () => ({
     queryKey: ["company"],
     queryFn: async () => {
@@ -34,26 +38,14 @@ export default function Index() {
     },
   });
   const { data: company } = useQuery<AccountResult, Error>(companyListQuery());
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (company && company.data) {
-      console.log(company);
       setCommonGridProps((prevState) => ({
         ...prevState,
-        gridData: company.data,
+        gridData: company.data as Companie[],
       }));
     }
   }, [company]);
-  return (
-    <CommonGrid
-      columnHeader={commonGridProps.columnHeader}
-      buttonCount={commonGridProps.buttonCount}
-      gridData={commonGridProps.gridData}
-      sortableGrid={commonGridProps.sortableGrid}
-      unsorted={commonGridProps.unsorted}
-      multipleSorting={commonGridProps.multipleSorting}
-      filterable={commonGridProps.filterable}
-      resizable={commonGridProps.resizable}
-      displayCount={commonGridProps.displayCount}
-    />
-  );
+
+  return <CommonGrid {...commonGridProps} />;
 }
