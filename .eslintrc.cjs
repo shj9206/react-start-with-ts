@@ -29,6 +29,7 @@ module.exports = {
   },
   rules: {
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": "off",
     "max-len": ["error", { code: 130 }],
     "import/no-extraneous-dependencies": [

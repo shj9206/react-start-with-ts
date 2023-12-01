@@ -4,7 +4,7 @@ import { getCompaniesList } from "@/utils/apiService/accountService";
 import type { AccountResult } from "@/utils/apiService/accountService";
 import KendoForm from "@/components/kendo/form/KendoForm.tsx";
 
-export default function Index() {
+export default function KendoFormTest() {
   const companyListQuery = () => ({
     queryKey: ["company"],
     queryFn: async () => {

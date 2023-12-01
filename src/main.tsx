@@ -26,7 +26,7 @@ import LocaleSample from "@/views/localeSample/LocaleSample";
 import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
-import KendoForm from "@/views/sample/kendoForm/Index.tsx";
+import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 
 const queryClient = new QueryClient({
   defaultOptions: {

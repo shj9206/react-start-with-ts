@@ -9,7 +9,7 @@ import {
 import { Error } from "@progress/kendo-react-labels";
 import { Input } from "@progress/kendo-react-inputs";
 
-const emailRegex: RegExp = new RegExp(/\S+@\S+\.\S+/);
+const emailRegex: RegExp = /\S+@\S+\.\S+/;
 const emailValidator = (value: string) =>
   emailRegex.test(value) ? "" : "Please enter a valid email.";
 function EmailInput(fieldRenderProps: FieldRenderProps) {
@@ -21,7 +21,7 @@ function EmailInput(fieldRenderProps: FieldRenderProps) {
     </div>
   );
 }
-function KendoForm() {
+export default function KendoForm() {
   const handleSubmit = (dataItem: { [name: string]: unknown }) =>
     alert(JSON.stringify(dataItem, null, 2));
   return (
@@ -79,5 +79,3 @@ function KendoForm() {
     />
   );
 }
-
-export default KendoForm;
