@@ -1,8 +1,8 @@
 import axios from "axios";
 import APIBuilder from "@/utils/apiService/APIBuilder";
 import AxiosMockAdapter from "axios-mock-adapter";
-import { faker } from "@faker-js/faker";
-import type { SexType } from "@faker-js/faker";
+import type {SexType} from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 
 type Response<T> = { data: T };
 type BookListResponse = unknown;

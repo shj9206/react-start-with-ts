@@ -1,5 +1,4 @@
-// src/redux/authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface AuthState {
     token: string | null;
@@ -15,7 +14,7 @@ const authSlice = createSlice({
     reducers: {
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
-        }
+        },
     }
 });
 

@@ -1,25 +1,15 @@
 import * as ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "@/store";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {createBrowserRouter, Navigate, RouterProvider,} from "react-router-dom";
+import {Provider} from "react-redux";
+import {store} from "@/store";
 import "@/utils/i18n";
 
 import "./index.css";
-import Root, {
-  loader as rootLoader,
-  action as rootAction,
-} from "@/views/sample/root";
-import Contact, {
-  loader as contactLoader,
-  action as contactAction,
-} from "@/views/sample/contact";
-import EditContact, { action as editAction } from "@/views/sample/edit";
-import { action as destroyAction } from "@/views/sample/destroy";
+import Root, {action as rootAction, loader as rootLoader,} from "@/views/sample/root";
+import Contact, {action as contactAction, loader as contactLoader,} from "@/views/sample/contact";
+import EditContact, {action as editAction} from "@/views/sample/edit";
+import {action as destroyAction} from "@/views/sample/destroy";
 import Index from "@/views/sample/index";
 import ErrorPage from "@/views/sample/error-page";
 import LocaleSample from "@/views/localeSample/LocaleSample";
@@ -31,6 +21,8 @@ import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 import Profile, {
   loader as profileLoader,
 } from "@/views/sample/kendoForm/Profile";
+import {Login} from "@/views/login/login";
+import {MainLayout} from "@/views/main/mainLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,7 +35,15 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/views/sample" replace />,
+    element: <Navigate to="/login" replace />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/main",
+    element: <MainLayout />,
   },
   {
     path: "/views/sample",
@@ -73,7 +73,8 @@ const router = createBrowserRouter([
       { path: "/views/sample/store", element: <StoreSampe /> },
       { path: "/views/sample/locale", element: <LocaleSample /> },
       { path: "/views/sample/api", element: <ApiTest /> },
-      { path: "/views/sample/gridSample", element: <GridSample /> },
+      // { path: "/views/sample/gridSample", element:(<PrivateRoute> <GridSample /> </PrivateRoute>)},
+      { path: "/views/sample/gridSample", element:( <GridSample />)},
       {
         path: "/views/sample/map",
         element: <MapSample latitude={37.56} longitude={127.0016} />,
@@ -88,10 +89,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
-      <RouterProvider router={router} />
+        <RouterProvider router={router}>
+          {/*<MainLayout/>*/}
+        </RouterProvider>
     </Provider>
   </QueryClientProvider>,
 );

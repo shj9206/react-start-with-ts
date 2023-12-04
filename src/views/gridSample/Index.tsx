@@ -1,15 +1,8 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
-import CommonGrid, {
-    CommonGridProps,
-} from "@/views/sample/kendoGrid/commonGrid.tsx";
-// import products from "@/views/sample/kendoGrid/data/products.json";
+import CommonGrid, {CommonGridProps,} from "@/views/sample/kendoGrid/commonGrid.tsx";
+import type {AccountResult, Companie,} from "@/utils/apiService/accountService";
 import {getCompaniesList} from "@/utils/apiService/accountService";
-import type {
-    AccountResult,
-    Companie,
-} from "@/utils/apiService/accountService";
-import commonGrid from "@/views/sample/kendoGrid/commonGrid.tsx";
 
 export default function Index() {
     const column = [

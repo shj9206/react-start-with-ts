@@ -1,5 +1,5 @@
 // the hook
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 function LocaleSample() {
   const { t, i18n } = useTranslation("translation");

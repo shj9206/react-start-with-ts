@@ -1,6 +1,6 @@
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import { faker } from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 import APIBuilder from "@/utils/apiService/APIBuilder";
 
 type Response<T> = { data: T };
@@ -116,6 +116,11 @@ const createBranch = (): Branch => ({
   branchCnt: faker.number.int(100),
 });
 
+function randomRegion(): string {
+  const regions: Array<'kr' | 'eu' | 'us'> = ['kr', 'eu', 'us'];
+  return regions[Math.floor(Math.random() * regions.length)];
+}
+
 const createUser = (): User => ({
   id: "",
   name: faker.person.fullName(),
@@ -129,7 +134,7 @@ const createUser = (): User => ({
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),
   description: "",
-  region: "",
+  region: randomRegion(),
   country: faker.location.country(),
   brchName: faker.company.name(),
   brchCode: "",

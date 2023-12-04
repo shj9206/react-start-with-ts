@@ -1,4 +1,4 @@
-import API, { HTTPHeaders, HTTPMethod, HTTPParams } from "./axios";
+import API, {HTTPHeaders, HTTPMethod, HTTPParams} from "./axios";
 
 const apiHost = "";
 

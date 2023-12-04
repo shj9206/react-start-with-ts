@@ -1,14 +1,7 @@
-import {
-  Outlet,
-  useLoaderData,
-  Form,
-  NavLink,
-  useNavigation,
-  useSubmit,
-} from "react-router-dom";
-import { useDebounce } from "rooks";
-import { createContact, getContacts } from "@/utils/contacts";
-import { useQuery, useIsFetching, QueryClient } from "@tanstack/react-query";
+import {Form, NavLink, Outlet, useLoaderData, useNavigation, useSubmit,} from "react-router-dom";
+import {useDebounce} from "rooks";
+import {createContact, getContacts} from "@/utils/contacts";
+import {QueryClient, useIsFetching, useQuery} from "@tanstack/react-query";
 
 interface LoaderData {
   q: string | null;
