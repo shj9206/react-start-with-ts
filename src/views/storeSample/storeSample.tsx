@@ -1,5 +1,5 @@
 import Counter from "@/components/storeSample/Counter";
-//import "@/App.css";
+
 export default function StoreSample() {
   return (
     <div className="App">
