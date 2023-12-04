@@ -35,7 +35,7 @@ class API {
             /* 에러 처리 진행 */
           }
           return Promise.reject(error);
-        }
+        },
       );
     }
     return http.request({ ...this });

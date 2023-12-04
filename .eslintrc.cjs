@@ -32,6 +32,7 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     "import/extensions": "off",
     "import/no-absolute-path" :"off",
+    "@typescript-eslint/lines-between-class-members":"off",
     "max-len": ["error", { code: 200 }],
     "import/no-extraneous-dependencies": [
       "error",
