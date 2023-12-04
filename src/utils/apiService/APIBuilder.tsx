@@ -21,9 +21,12 @@ class APIBuilder {
   }
 
   static get = (url: string) => new APIBuilder("GET", url);
+
   static put = (url: string, data: unknown) => new APIBuilder("PUT", url, data);
+
   static post = (url: string, data: unknown) =>
     new APIBuilder("POST", url, data);
+
   static delete = (url: string) => new APIBuilder("DELETE", url);
 
   baseURL(value: string): APIBuilder {
