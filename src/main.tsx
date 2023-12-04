@@ -26,6 +26,7 @@ import LocaleSample from "@/views/localeSample/LocaleSample";
 import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
+import MapSample from "@/views/mapSample/MapSample";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 import Profile from "@/views/sample/kendoForm/Profile";
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       { path: "/views/sample/locale", element: <LocaleSample /> },
       { path: "/views/sample/api", element: <ApiTest /> },
       { path: "/views/sample/gridSample", element: <GridSample /> },
+      {
+        path: "/views/sample/map",
+        element: <MapSample latitude={37.56} longitude={127.0016} />,
+      },
       { path: "/views/sample/kendoForm", element: <KendoForm /> },
       { path: "/views/sample/profile", element: <Profile /> },
     ],
