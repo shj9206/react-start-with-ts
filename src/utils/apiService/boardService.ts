@@ -5,7 +5,7 @@ import APIBuilder from "@/utils/apiService/APIBuilder";
 
 type Response<T> = { data: T };
 
-type AuthResult = {
+type BoardResult = {
   code: string;
   message: string;
 };
@@ -21,7 +21,7 @@ type NoticesResponse = {
     contents?: string; // 내용
     pageable?: Page[]; // 페이지 정보
   };
-} & AuthResult;
+} & BoardResult;
 
 type Page = {
   page?: number; // 페이지 위치
@@ -79,7 +79,7 @@ type NoticeDetailResponse = {
     modDate: string; // 날짜
     fileList: string[]; // 첨부파일 리스트
   } & Page;
-} & AuthResult;
+} & BoardResult;
 
 function resultNoticeDetail(): NoticeDetailResponse {
   return {
@@ -105,7 +105,7 @@ function resultNoticeDetail(): NoticeDetailResponse {
 }
 type NoticeResponse = {
   data?: object;
-} & AuthResult;
+} & BoardResult;
 
 function resultNotice(): NoticeResponse {
   return {
@@ -115,7 +115,7 @@ function resultNotice(): NoticeResponse {
   };
 }
 
-type NoticeAddFixResquest = {
+type NoticeAddFixRequest = {
   region?: string;
   topYn?: string;
   topStartDate?: string;
@@ -239,7 +239,7 @@ export const noticeDetail = async (noticeid: number) => {
 };
 
 // IF-BORD-004 공지사항 추가
-export const noticeAdd = async (param: NoticeAddFixResquest) => {
+export const noticeAdd = async (param: NoticeAddFixRequest) => {
   const api = APIBuilder.post(`${baseUri}/notice`, param)
     .withCredentials(true)
     .build();
@@ -251,7 +251,7 @@ export const noticeAdd = async (param: NoticeAddFixResquest) => {
 // IF-BORD-004 공지사항 수정
 export const noticeFix = async (
   noticeid: string,
-  param: NoticeAddFixResquest
+  param: NoticeAddFixRequest
 ) => {
   const api = APIBuilder.put(`${baseUri}/notice/${noticeid}`, param)
     .withCredentials(true)
