@@ -1,68 +1,24 @@
 import * as React from "react";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {
-    Grid, GridCellProps,
+    Grid,
+    GridCellProps,
     GridColumn as Column,
-    GridColumnMenuFilter,
-    GridColumnMenuSort,
-    GridColumnResizeEvent,
     GridFilterChangeEvent,
     GridPageChangeEvent,
     GridPagerSettings,
     GridSortChangeEvent,
-    GridToolbar,
-    getSelectedState, GridFilterCell
+    GridToolbar
 } from '@progress/kendo-react-grid';
 import '@progress/kendo-theme-default/dist/all.css';
 
 import {Button} from '@progress/kendo-react-buttons';
 import {filterBy, orderBy, SortDescriptor} from "@progress/kendo-data-query";
 import {getter} from "@progress/kendo-react-common";
-import {ColumnMenu} from './columnMenu';
 import './styles.css';
 import {DropdownFilterCell} from "@/views/sample/kendoGrid/dropdownfilterCell.tsx";
-import {skip} from "@progress/kendo-data-query/dist/npm/transducers";
-import {useRaf} from "rooks";
-
-
-interface AppState {
-    items: object[];
-    total: number;
-    skip: number;
-    take: number;
-    pageSize: number;
-    pageable: boolean | GridPagerSettings;
-}
-
-interface GridHeader {
-    title: string;
-    column?: string;
-    field: string;
-    width: number;
-    align?: string;
-}
-
-export interface CommonGridProps {
-    columnHeader: GridHeader[];
-    buttonCount: number;
-    sortableGrid: boolean | false;
-    unsorted: boolean | true;
-    multipleSorting: boolean | false;
-    filterable: boolean | false;
-    resizable: boolean | false;
-    gridData: object[] | null;
-    displayCount: number[];
-}
-
-interface IColumn {
-    field: string;
-    title: string;
-    width: number;
-    align: "left" | "center" | "right";
-    filterable: boolean
-
-    [key: string]: any;
-}
+import {AppState, CommonGridProps, IColumn} from './gridInterfaces.ts';
+import {GirdInfoArea, CustomArea, DefaultButton} from './GridToolbarArea.tsx'
 
 const CommonGrid: React.FC<CommonGridProps> = ({
                                                    columnHeader,
@@ -214,7 +170,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
     return (
         <div>
             <Grid
-                style={{height: '350px'}}
+                style={{height: 350, width: 'fit-content'}}
                 data={filterBy(state?.items, filter)}
                 onPageChange={pageChange}
                 total={state?.total}
@@ -238,23 +194,27 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                 onColumnResize={onColumnReorderWithResize}
             >
                 <GridToolbar>
-                    <span>Total {gridData?.length} </span>
-                    <span>Page Size</span>
-                    <span>
-              <select defaultValue={'10'}
-                  onChange={
-                  (event) => {
-                      setState(createState(0, parseInt(event.target.value, 10)));
-                  }
-              }>
-                  {selectOption.map((value) =>
-                      <option value={value}>{value === 0 ? 'ALL' : value}</option>
-                  )}
-              </select>
-             </span>
-                    <Button onClick={clearFilters}>Reset Filter </Button>
-                    <Button onClick={resetColumns}>Reset table layout </Button>
-                    <Button>set Column </Button>
+                    <GirdInfoArea>
+                        <span>Total {gridData?.length} </span>
+                        <span>Page Size</span>
+                        <select onChange={
+                            (event) => {
+                                setState(createState(0, parseInt(event.target.value, 10)));
+                            }
+                        }>
+                            {selectOption.map((value) =>
+                                <option value={value}>{value === 0 ? 'ALL' : value}</option>
+                            )}
+                        </select>
+                    </GirdInfoArea>
+                    <CustomArea>
+                        <Button>test Column </Button>
+                    </CustomArea>
+                    <DefaultButton>
+                        <Button onClick={clearFilters} style={{marginRight: 10}}>Reset Filter </Button>
+                        <Button onClick={resetColumns} style={{marginRight: 10}}>Reset table layout </Button>
+                        <Button>set Column </Button>
+                    </DefaultButton>
                 </GridToolbar>
                 {columns.map((header, index) => (
                     <Column
