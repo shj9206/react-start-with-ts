@@ -27,6 +27,7 @@ import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
+import Profile from "@/views/sample/kendoForm/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -70,6 +72,7 @@ const router = createBrowserRouter([
       { path: "/views/sample/api", element: <ApiTest /> },
       { path: "/views/sample/gridSample", element: <GridSample /> },
       { path: "/views/sample/kendoForm", element: <KendoForm /> },
+      { path: "/views/sample/profile", element: <Profile /> },
     ],
   },
 ]);
