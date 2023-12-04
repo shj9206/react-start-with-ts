@@ -1,8 +1,8 @@
 import * as React from "react";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Field, FormElement } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import Input from "@/components/kendo/form/Input.tsx";
 import MaskedTextBox from "@/components/kendo/form/MaskedTextBox";
 import DropDownList from "@/components/kendo/form/DropDownList";
@@ -10,7 +10,7 @@ import Editor from "@/components/kendo/form/Editor";
 import Upload from "@/components/kendo/form/Upload";
 import RadioGroup from "@/components/kendo/form/RadioGroup";
 import Switch from "@/components/kendo/form/Switch";
-import AppContext from "@/utils/AppContext";
+
 import {
   requiredValidator,
   emailValidator,
@@ -19,17 +19,42 @@ import {
 } from "@/utils/Validators";
 import countries from "@/utils/resources/countries";
 import teams from "@/utils/resources/teams";
+import type { AccountResult, User } from "@/utils/apiService/accountService";
+import { getUserDetail } from "@/utils/apiService/accountService";
 
 const countriesData = countries.map((country) => country.name);
 const teamsData = teams.map((team) => ({
   value: team.teamID,
   label: team.teamName,
 }));
+interface Params {
+  [key: string]: string | undefined;
+  userId: string;
+}
+const userDetailQuery = (id: string) => ({
+  queryKey: ["user", "detail", id],
+  queryFn: async () => {
+    const result = await getUserDetail(id);
+    return result as AccountResult;
+  },
+});
+export const loader =
+  (queryClient: QueryClient) =>
+  async ({ params }: { params: Params }) => {
+    const query = userDetailQuery(params.userId);
+    return (
+      queryClient.getQueryData(query.queryKey) ??
+      (await queryClient.fetchQuery(query))
+    );
+  };
 export default function Profile() {
   const history = useNavigate();
-  const { languageId, onLanguageChange, onProfileChange, ...formValues } =
-    React.useContext(AppContext);
+  const params = useParams<Params>();
 
+  const { data, isPending } = useQuery<AccountResult, Error>(
+    userDetailQuery(params.userId ?? ""),
+  );
+  const userData = data ? (data.data as User) : null;
   const onSubmit = React.useCallback(() => {
     history("/");
   }, [history]);
@@ -37,6 +62,9 @@ export default function Profile() {
     history("/");
   }, [history]);
 
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
   return (
     <div id="Profile" className="profile-page main-content">
       <div className="card-container">
@@ -44,7 +72,9 @@ export default function Profile() {
           <Form
             onSubmit={onSubmit}
             initialValues={{
-              ...formValues,
+              firstName: userData?.firstName ?? "",
+              lastName: userData?.lastName ?? "",
+              country: userData?.country ?? "",
             }}
             render={(formRenderProps) => (
               <FormElement horizontal style={{ maxWidth: 700 }}>

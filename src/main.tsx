@@ -28,7 +28,9 @@ import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
 import MapSample from "@/views/mapSample/MapSample";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
-import Profile from "@/views/sample/kendoForm/Profile";
+import Profile, {
+  loader as profileLoader,
+} from "@/views/sample/kendoForm/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,7 +79,11 @@ const router = createBrowserRouter([
         element: <MapSample latitude={37.56} longitude={127.0016} />,
       },
       { path: "/views/sample/kendoForm", element: <KendoForm /> },
-      { path: "/views/sample/profile", element: <Profile /> },
+      {
+        path: "/views/sample/profile/:userId",
+        element: <Profile />,
+        loader: () => profileLoader(queryClient),
+      },
     ],
   },
 ]);

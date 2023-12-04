@@ -52,7 +52,7 @@ type TransferCode = {
   toCode: string; // 목표 회사 ID
 } & Branch;
 
-type User = {
+export type User = {
   id: string; // 사용자 ID
   name: string; // 사용자 이름
   email: string; // 사용자 이메일
