@@ -3,21 +3,21 @@ import API, { HTTPHeaders, HTTPMethod, HTTPParams } from "./axios";
 const apiHost = "";
 
 class APIBuilder {
-  private _instance: API;
+  private instance: API;
 
   constructor(method: HTTPMethod, url: string, data?: unknown) {
-    this._instance = new API(method, url);
-    this._instance.baseURL = apiHost;
-    this._instance.data = data;
-    this._instance.headers = {
+    this.instance = new API(method, url);
+    this.instance.baseURL = apiHost;
+    this.instance.data = data;
+    this.instance.headers = {
       "Content-Type": "application/json; charset=utf-8",
       //   "x-lges-country": "KR",
       //   "x-lges-caller": "WEB",
       "X-Naver-Client-Id": "pfeeknw07ZEvDq9qncI5",
       "X-Naver-Client-Secret": "gezhKgHsQX",
     };
-    this._instance.timeout = 5000;
-    this._instance.withCredentials = false;
+    this.instance.timeout = 5000;
+    this.instance.withCredentials = false;
   }
 
   static get = (url: string) => new APIBuilder("GET", url);
@@ -27,37 +27,37 @@ class APIBuilder {
   static delete = (url: string) => new APIBuilder("DELETE", url);
 
   baseURL(value: string): APIBuilder {
-    this._instance.baseURL = value;
+    this.instance.baseURL = value;
     return this;
   }
 
   headers(value: HTTPHeaders): APIBuilder {
-    this._instance.headers = value;
+    this.instance.headers = value;
     return this;
   }
 
   timeout(value: number): APIBuilder {
-    this._instance.timeout = value;
+    this.instance.timeout = value;
     return this;
   }
 
   params(value: HTTPParams): APIBuilder {
-    this._instance.params = value;
+    this.instance.params = value;
     return this;
   }
 
   data(value: unknown): APIBuilder {
-    this._instance.data = value;
+    this.instance.data = value;
     return this;
   }
 
   withCredentials(value: boolean): APIBuilder {
-    this._instance.withCredentials = value;
+    this.instance.withCredentials = value;
     return this;
   }
 
   build(): API {
-    return this._instance;
+    return this.instance;
   }
 }
 
