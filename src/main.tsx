@@ -23,6 +23,8 @@ import Profile, {
 } from "@/views/sample/kendoForm/Profile";
 import {Login} from "@/views/login/login";
 import {MainLayout} from "@/views/main/mainLayout";
+import Modal from "@/components/modal/Modal.tsx";
+import React from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,7 +96,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
         <RouterProvider router={router}>
-          {/*<MainLayout/>*/}
         </RouterProvider>
     </Provider>
   </QueryClientProvider>,

@@ -1,6 +1,8 @@
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import APIBuilder from "@/utils/apiService/APIBuilder";
+import { API_PREFIX } from './config/apiConfig.ts'
+import crypto from "crypto";
 // import { faker } from "@faker-js/faker";
 
 type Response<T> = { data: T };
@@ -145,6 +147,13 @@ type InvateValidateRequest = {
   terms: Terms[]; // 약관동의정보
 };
 
+function generateRandomToken(length) {
+  const array = new Uint8Array(length);
+  window.crypto.getRandomValues(array);
+
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
 type SigninResponse = {
   data?: Token;
 } & AuthResult;
@@ -155,10 +164,12 @@ type Token = {
 };
 
 function resultSignin(): SigninResponse {
+  const accessTokenData = generateRandomToken(16);
+  const refrashTokenData = generateRandomToken(16);
   return {
     code: "200",
     message: "success",
-    data: {},
+    data: {accessToken: accessTokenData, refrashToken: refrashTokenData},
   };
 }
 
@@ -217,7 +228,8 @@ type OtpResendRequest = {
 };
 
 const mock = new AxiosMockAdapter(axios);
-
+//  베이스 url
+const baseUri = `${API_PREFIX}/auth`;
 mock.onGet(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
   try {
     // console.log("get");
@@ -227,11 +239,11 @@ mock.onGet(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
       if (config.url.includes("duplicate")) {
         // console.log("duplicate");
         results = resultEmailDuplicate();
-      } else if (config.url.includes("/api/v1.0/auth/terms/latest")) {
-        // console.log("/api/v1.0/auth/terms/latest");
+      } else if (config.url.includes(`${baseUri}/terms/latest`)) {
+        // console.log("${baseUri}/terms/latest");
         results = resultLatestTerms();
-      } else if (config.url.includes("/api/v1.0/auth/refresh")) {
-        // console.log("/api/v1.0/auth/refresh");
+      } else if (config.url.includes(`${baseUri}/refresh`)) {
+        // console.log("${baseUri}/refresh");
         results = resultRefresh();
       }
     }
@@ -245,26 +257,25 @@ mock.onGet(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
 mock.onPost(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
   try {
     let results;
-    // console.log("post");
-    // console.log(config.url);
     if (config.url !== undefined) {
-      if (config.url.includes("/api/v1.0/auth/signup")) {
+      if (config.url.includes(`${baseUri}/signup`)) {
         results = resultSignup();
-        // console.log("/api/v1.0/auth/signup");
-      } else if (config.url.includes("/api/v1.0/auth/signupfordiy")) {
-        // console.log("/api/v1.0/auth/signupfordiy");
+        // console.log("${baseUri}/signup");
+      } else if (config.url.includes(`${baseUri}/signupfordiy`)) {
+        // console.log("${baseUri}/signupfordiy");
         results = resultSignupfordiy();
-      } else if (config.url.includes("/api/v1.0/auth/signin")) {
-        // console.log("/api/v1.0/auth/signin");
+      } else if (config.url.includes(`${baseUri}/signin`)) {
+        console.log('mock data 생성');
+        // console.log("${baseUri}/signin");
         results = resultSignin();
-      } else if (config.url.includes("/api/v1.0/auth/password/reset")) {
-        // console.log("/api/v1.0/auth/password/reset");
+      } else if (config.url.includes(`${baseUri}/password/reset`)) {
+        // console.log("${baseUri}/password/reset");
         results = resultDataObject();
-      } else if (config.url.includes("/api/v1.0/auth/email/change")) {
-        // console.log("/api/v1.0/auth/email/change");
+      } else if (config.url.includes(`${baseUri}/email/change`)) {
+        // console.log("${baseUri}/email/change");
         results = resultEmailChange();
-      } else if (config.url.includes("/api/v1.0/auth/otp/resend")) {
-        // console.log("/api/v1.0/auth/otp/resend");
+      } else if (config.url.includes(`${baseUri}/otp/resend`)) {
+        // console.log("${baseUri}/otp/resend");
         results = resultDataObject();
       }
     }
@@ -281,20 +292,20 @@ mock.onPut(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
     // console.log(config.url);
     let results;
     if (config.url !== undefined) {
-      if (config.url.includes("/api/v1.0/auth/otp/validate")) {
-        // console.log("/api/v1.0/auth/otp/validate");
+      if (config.url.includes(`${baseUri}/otp/validate`)) {
+        // console.log("${baseUri}/otp/validate");
         results = resultDataObject();
-      } else if (config.url.includes("/api/v1.0/auth/invate/validate")) {
-        // console.log("/api/v1.0/auth/invate/validate");
+      } else if (config.url.includes(`${baseUri}/invate/validate`)) {
+        // console.log("${baseUri}/invate/validate");
         results = resultDataObject();
-      } else if (config.url.includes("/api/v1.0/auth/password/validate")) {
-        // console.log("/api/v1.0/auth/password/validate");
+      } else if (config.url.includes(`${baseUri}/password/validate`)) {
+        // console.log("${baseUri}/password/validate");
         results = resultDataObject();
-      } else if (config.url.includes("/api/v1.0/auth/terms/latest")) {
-        // console.log("/api/v1.0/auth/terms/latest");
+      } else if (config.url.includes(`${baseUri}/terms/latest`)) {
+        // console.log("${baseUri}/terms/latest");
         results = resultDataObject();
-      } else if (config.url.includes("/api/v1.0/auth/email/validate")) {
-        // console.log("/api/v1.0/auth/email/validate");
+      } else if (config.url.includes(`${baseUri}/email/validate`)) {
+        // console.log("${baseUri}/email/validate");
         results = resultDataObject();
       }
     }
@@ -311,8 +322,8 @@ mock.onDelete(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
     // console.log(config.url);
     let results;
     if (config.url !== undefined) {
-      if (config.url.includes("/api/v1.0/auth/signout")) {
-        // console.log("/api/v1.0/auth/signout");
+      if (config.url.includes(`${baseUri}/signout`)) {
+        // console.log("${baseUri}/signout");
         results = resultDataObject();
       }
     }
@@ -323,9 +334,6 @@ mock.onDelete(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
   }
 });
 mock.onAny().passThrough();
-
-//  베이스 url
-const baseUri = "/api/v1.0/auth";
 
 //  IF-AUTH-001 이메일 중복체크
 export const emailDuplicateCheck = async (email: string) => {
