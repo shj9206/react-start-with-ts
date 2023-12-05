@@ -43,7 +43,7 @@ export const Login: React.FC = () => {
 
     const {data: userDetail} = useQuery<SigninResponse, Error>(loginQuery());
 
-    const userInfomation = useSelector((state) => state.auth);
+    const userInfomation = useSelector((state) => state);
 
     const dispatch = useDispatch();
 
@@ -56,9 +56,11 @@ export const Login: React.FC = () => {
             // 응답에서 토큰을 추출하여 Redux에 저장
             if (response && response.data) {
                 let accessToken = response.data.accessToken;
-                document.cookie = `accessToken=${accessToken};path=/`;
+                console.log(accessToken)
+                // document.cookie = `accessToken=${accessToken};path=/`;
                 dispatch(setUserInfomation(email));
-                console.log(userInfomation.email)
+                dispatch(setToken(accessToken));
+
                 showModal('error', 'Login Failed', 'Invalid username or password', hideModal, hideModal);
 
             }
@@ -66,6 +68,9 @@ export const Login: React.FC = () => {
             console.error(err);
         }
     }
+    useEffect(() => {
+        console.log(userInfomation)
+    }, [userInfomation]);
 
 
     return (
