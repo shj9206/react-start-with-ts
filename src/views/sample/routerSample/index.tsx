@@ -1,9 +1,8 @@
-import { useState } from "react";
 import CommonGrid from "@/components/kendo/grid/commonGrid.tsx";
 import products from "../kendoGrid/data/products.json";
 
 export default function Index() {
-  const [column, setColumnHeader] = useState([
+  const column = [
     // {field: 'adminEmail', title: 'adminEmail', width: 150, align: 'center', filter: false},
     {
       field: "ProductName",
@@ -25,7 +24,7 @@ export default function Index() {
       filterable: true,
       filterType: "boolean",
     },
-  ]);
+  ];
   const commonGridProps = {
     columnHeader: column,
     buttonCount: 5,
@@ -44,7 +43,6 @@ export default function Index() {
       <br />
       Check out{" "}
       <a href="https://reactrouter.com">the docs at reactrouter.com</a>.
-      {/* eslint-disable-next-line max-len */}
       <CommonGrid {...commonGridProps} />
       <br />
     </div>
