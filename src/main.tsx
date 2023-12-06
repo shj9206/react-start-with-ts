@@ -33,6 +33,10 @@ import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 import Profile, {
   loader as profileLoader,
 } from "@/views/sample/kendoForm/Profile";
+import {Login} from "@/views/login/login";
+import {MainLayout} from "@/views/main/mainLayout";
+import Modal from "@/components/modal/Modal.tsx";
+import React from "react";
 import { Login } from "@/views/sample/login/login";
 import { MainLayout } from "@/views/sample/main/mainLayout";
 
@@ -102,9 +106,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-      <RouterProvider router={router}>{/*<MainLayout/>*/}</RouterProvider>
-    </Provider>
-  </QueryClientProvider>,
+    <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+            <RouterProvider router={router}>
+            </RouterProvider>
+        </Provider>
+    </QueryClientProvider>
 );
