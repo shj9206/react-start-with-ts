@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CommonGrid from "@/views/sample/kendoGrid/commonGrid.tsx";
+import CommonGrid from  "@/components/kendo/grid/commonGrid.tsx";
 import products from "../kendoGrid/data/products.json";
 
 export default function Index() {

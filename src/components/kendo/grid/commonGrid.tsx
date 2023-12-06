@@ -14,6 +14,7 @@ import '@progress/kendo-theme-default/dist/all.css';
 
 import {Button} from '@progress/kendo-react-buttons';
 import {filterBy, orderBy, SortDescriptor} from "@progress/kendo-data-query";
+import {getter} from "@progress/kendo-react-common";
 import '@/components/kendo/grid/css/styles.css';
 import {DropdownFilterCell} from "@/components/kendo/grid/dropdownfilterCell.tsx";
 import {AppState, CommonGridProps, IColumn} from './gridInterfaces.ts';
@@ -32,7 +33,13 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                                                }) => {
 
     const [sort, setSort] = useState<Array<SortDescriptor>>([]);
-    const [selectOption] = useState<number[]>(() => displayCount === undefined ? [5, 10, 0] : displayCount);
+    const [selectOption] = useState<number[]>(() => {
+        return displayCount === undefined ? [5, 10, 0] : displayCount;
+    });
+    const SELECTED_FIELD = "selected";
+    const DATA_ITEM_KEY = "ProductID";
+
+    const idGetter = getter(DATA_ITEM_KEY);
 
     const createState = (skip: number, take: number): AppState => {
         const pagerSettings: GridPagerSettings = {

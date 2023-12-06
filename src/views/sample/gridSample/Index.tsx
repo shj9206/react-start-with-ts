@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import CommonGrid, {
   CommonGridProps,
-} from "@/views/sample/kendoGrid/commonGrid.tsx";
+} from "@/components/kendo/grid/commonGrid.tsx";
 import type {
   AccountResult,
   Companie,
