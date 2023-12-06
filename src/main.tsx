@@ -35,6 +35,8 @@ import Profile, {
 } from "@/views/sample/kendoForm/Profile";
 import { Login } from "@/views/sample/login/login";
 import { MainLayout } from "@/views/sample/main/mainLayout";
+import Sample1 from "@/pub/views/sample/Sample1";
+import Sample2 from "@/pub/views/sample/Sample2";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +58,16 @@ const router = createBrowserRouter([
   {
     path: "/main",
     element: <MainLayout />,
+  },
+  {
+    path: "/pub/sample/Sample1",
+    element: <Sample1 />,
+    errorElement: <div>Oops! There was an error.</div>,
+  },
+  {
+    path: "/pub/sample/Sample2",
+    element: <Sample2 />,
+    errorElement: <div>Oops! There was an error.</div>,
   },
   {
     path: "/views/sample",
@@ -102,9 +114,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-            <RouterProvider router={router}/>
-        </Provider>
-    </QueryClientProvider>
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </QueryClientProvider>,
 );
