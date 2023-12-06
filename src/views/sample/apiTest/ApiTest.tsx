@@ -1,5 +1,5 @@
-import {ChangeEvent, useState} from "react";
-import {getCompaniesDetail} from "@/utils/apiService/accountService";
+import { ChangeEvent, useState } from "react";
+import { getCompaniesDetail } from "@/utils/apiService/accountService.ts";
 
 export default function ApiTest() {
   // ex

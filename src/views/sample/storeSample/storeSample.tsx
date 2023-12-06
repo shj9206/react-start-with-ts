@@ -1,4 +1,4 @@
-import Counter from "@/components/storeSample/Counter";
+import Counter from "@/components/storeSample/Counter.tsx";
 
 export default function StoreSample() {
   return (

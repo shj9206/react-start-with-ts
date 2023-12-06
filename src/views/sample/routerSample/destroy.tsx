@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { deleteContact } from "@/utils/contacts";
+import { deleteContact } from "@/utils/contacts.ts";
 import { QueryClient } from "@tanstack/react-query";
 interface Params {
   [key: string]: string | undefined;

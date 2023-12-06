@@ -1,28 +1,40 @@
 import * as ReactDOM from "react-dom/client";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {createBrowserRouter, Navigate, RouterProvider,} from "react-router-dom";
-import {Provider} from "react-redux";
-import {store} from "@/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 import "@/utils/i18n";
 
 import "./index.css";
-import Root, {action as rootAction, loader as rootLoader,} from "@/views/sample/root";
-import Contact, {action as contactAction, loader as contactLoader,} from "@/views/sample/contact";
-import EditContact, {action as editAction} from "@/views/sample/edit";
-import {action as destroyAction} from "@/views/sample/destroy";
-import Index from "@/views/sample/index";
-import ErrorPage from "@/views/sample/error-page";
-import LocaleSample from "@/views/localeSample/LocaleSample";
-import StoreSampe from "@/views/storeSample/storeSample";
-import ApiTest from "./views/apiTest/ApiTest";
-import GridSample from "@/views/gridSample/Index";
-import MapSample from "@/views/mapSample/MapSample";
+import Root, {
+  action as rootAction,
+  loader as rootLoader,
+} from "@/views/sample/routerSample/root.tsx";
+import Contact, {
+  action as contactAction,
+  loader as contactLoader,
+} from "@/views/sample/routerSample/contact.tsx";
+import EditContact, {
+  action as editAction,
+} from "@/views/sample/routerSample/edit.tsx";
+import { action as destroyAction } from "@/views/sample/routerSample/destroy.tsx";
+import Index from "@/views/sample/routerSample";
+import ErrorPage from "@/views/sample/routerSample/error-page.tsx";
+import LocaleSample from "@/views/sample/localeSample/LocaleSample";
+import StoreSampe from "@/views/sample/storeSample/storeSample";
+import ApiTest from "@/views/sample/apiTest/ApiTest";
+import GridSample from "@/views/sample/gridSample/Index";
+import MapSample from "@/views/sample/mapSample/MapSample";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 import Profile, {
   loader as profileLoader,
 } from "@/views/sample/kendoForm/Profile";
-import {Login} from "@/views/login/login";
-import {MainLayout} from "@/views/main/mainLayout";
+import { Login } from "@/views/sample/login/login";
+import { MainLayout } from "@/views/sample/main/mainLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,7 +86,7 @@ const router = createBrowserRouter([
       { path: "/views/sample/locale", element: <LocaleSample /> },
       { path: "/views/sample/api", element: <ApiTest /> },
       // { path: "/views/sample/gridSample", element:(<PrivateRoute> <GridSample /> </PrivateRoute>)},
-      { path: "/views/sample/gridSample", element:( <GridSample />)},
+      { path: "/views/sample/gridSample", element: <GridSample /> },
       {
         path: "/views/sample/map",
         element: <MapSample latitude={37.56} longitude={127.0016} />,
@@ -89,13 +101,10 @@ const router = createBrowserRouter([
   },
 ]);
 
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
-        <RouterProvider router={router}>
-          {/*<MainLayout/>*/}
-        </RouterProvider>
+      <RouterProvider router={router}>{/*<MainLayout/>*/}</RouterProvider>
     </Provider>
   </QueryClientProvider>,
 );

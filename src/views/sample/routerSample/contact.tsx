@@ -1,7 +1,7 @@
 import { Form, useParams } from "react-router-dom";
 import { useQuery, QueryClient } from "@tanstack/react-query";
-import { getContact, updateContact } from "@/utils/contacts";
-import Favorite from "@/components/sample/Favorite";
+import { getContact, updateContact } from "@/utils/contacts.ts";
+import Favorite from "@/components/sample/Favorite.tsx";
 
 interface Contact {
   avatar?: string;
@@ -54,7 +54,7 @@ export const action =
 export default function Contact() {
   const params = useParams<Params>();
   const { data: contact } = useQuery<Contact, Error>(
-    contactDetailQuery(params.contactId ?? "")
+    contactDetailQuery(params.contactId ?? ""),
   );
 
   return (
