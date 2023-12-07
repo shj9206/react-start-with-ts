@@ -26,7 +26,7 @@ import LocaleSample from "@/views/localeSample/LocaleSample";
 import StoreSampe from "@/views/storeSample/storeSample";
 import ApiTest from "./views/apiTest/ApiTest";
 import GridSample from "@/views/gridSample/Index";
-import MapSample from "@/views/mapSample/MapSample";
+import MapComponent from "@/views/mapSample/MapComponent";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,7 +71,8 @@ const router = createBrowserRouter([
       { path: "/views/sample/gridSample", element: <GridSample /> },
       {
         path: "/views/sample/map",
-        element: <MapSample latitude={37.56} longitude={127.0016} />,
+        // element: <MapSample latitude={37.56} longitude={127.0016} />,
+        element: <MapComponent />,
       },
     ],
   },
