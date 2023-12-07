@@ -104,7 +104,8 @@ const router = createBrowserRouter([
       { path: "/views/sample/gridSample", element: <GridSample /> },
       {
         path: "/views/sample/map",
-        element: <MapSample latitude={37.56} longitude={127.0016} />,
+        // element: <MapSample latitude={37.56} longitude={127.0016} />,
+        element: <MapComponent />,
       },
       { path: "/views/sample/kendoForm", element: <KendoForm /> },
       {
