@@ -1,7 +1,8 @@
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import { faker } from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 import APIBuilder from "@/utils/apiService/APIBuilder";
+import { API_PREFIX } from './config/apiConfig.ts'
 
 type Response<T> = { data: T };
 export type AccountResult = {
@@ -52,7 +53,7 @@ type TransferCode = {
   toCode: string; // 목표 회사 ID
 } & Branch;
 
-type User = {
+export type User = {
   id: string; // 사용자 ID
   name: string; // 사용자 이름
   email: string; // 사용자 이메일
@@ -116,6 +117,11 @@ const createBranch = (): Branch => ({
   branchCnt: faker.number.int(100),
 });
 
+function randomRegion(): string {
+  const regions: Array<'kr' | 'eu' | 'us'> = ['kr', 'eu', 'us'];
+  return regions[Math.floor(Math.random() * regions.length)];
+}
+
 const createUser = (): User => ({
   id: "",
   name: faker.person.fullName(),
@@ -129,7 +135,7 @@ const createUser = (): User => ({
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),
   description: "",
-  region: "",
+  region: randomRegion(),
   country: faker.location.country(),
   brchName: faker.company.name(),
   brchCode: "",
@@ -156,13 +162,13 @@ const createRandomTerms = (): Terms[] =>
 
 // IF-AUTH-001 회사 목록 조회
 export const getCompaniesList = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/companies`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/companies`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/companies`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/companies`).reply(() => {
   try {
     const data = createRandomCompanies();
     const results = {
@@ -182,13 +188,13 @@ mock.onGet(`/api/v1.0/account/companies`).reply(() => {
 
 // IF-ACCT-002 회사 코드 정보 조회
 export const getCompaniesCode = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/companycodes`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/companycodes`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/companycodes`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/companycodes`).reply(() => {
   try {
     const data = createRandomCompanies();
     const results = {
@@ -207,7 +213,7 @@ mock.onGet(`/api/v1.0/account/companycodes`).reply(() => {
 });
 // IF-ACCT-003 회사 상세 조회
 export const getCompaniesDetail = async (companyid: string) => {
-  const api = APIBuilder.get(`/api/v1.0/account/company/${companyid}`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/company/${companyid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -229,13 +235,13 @@ mock.onGet(/^\/api\/v1.0\/account\/company\/?.*/).reply(() => {
 
 // IF-ACCT-004 회사 추가
 export const addCompanie = async (param: Companie) => {
-  const api = APIBuilder.post(`/api/v1.0/account/company`, param)
+  const api = APIBuilder.post(`${API_PREFIX}/account/company`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`/api/v1.0/account/company`, createComp()).reply(() => {
+mock.onPost(`${API_PREFIX}/account/company`, createComp()).reply(() => {
   try {
     const results = {
       code: 200, // 결과코드
@@ -248,7 +254,7 @@ mock.onPost(`/api/v1.0/account/company`, createComp()).reply(() => {
 });
 // IF-ACCT-005 회사 수정
 export const reviseCompanie = async (companyid: string, param: Companie) => {
-  const api = APIBuilder.put(`/api/v1.0/account/company/${companyid}`, param)
+  const api = APIBuilder.put(`${API_PREFIX}/account/company/${companyid}`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -265,13 +271,13 @@ mock.onPut(/^\/api\/v1.0\/account\/company\/?.*/, createComp()).reply(() => {
 
 // IF-ACCT-006 회사 이관
 export const transferCompanie = async (param: TransferCode) => {
-  const api = APIBuilder.post(`/api/v1.0/account/company/transfer`, param)
+  const api = APIBuilder.post(`${API_PREFIX}/account/company/transfer`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`/api/v1.0/account/company/transfer`, createComp()).reply(() => {
+mock.onPost(`${API_PREFIX}/account/company/transfer`, createComp()).reply(() => {
   try {
     return [200, { code: 200, message: "success" }];
   } catch (error) {
@@ -281,13 +287,13 @@ mock.onPost(`/api/v1.0/account/company/transfer`, createComp()).reply(() => {
 
 // IF-ACCT-007 지점 목록 조회
 export const getBranchesList = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/branches`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/branches`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/branches`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/branches`).reply(() => {
   try {
     const data = createRandomBranches();
     const results = {
@@ -307,13 +313,13 @@ mock.onGet(`/api/v1.0/account/branches`).reply(() => {
 
 // IF-ACCT-008 지점 코드 목록 조회
 export const getBranchesCodeList = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/branchcodes`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/branchcodes`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/branchcodes`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/branchcodes`).reply(() => {
   try {
     const data = createRandomBranches();
     const results = {
@@ -333,7 +339,7 @@ mock.onGet(`/api/v1.0/account/branchcodes`).reply(() => {
 
 // IF-ACCT-009 지점 상세 조회
 export const getBrancheDetail = async (branchid: string) => {
-  const api = APIBuilder.get(`/api/v1.0/account/branch/${branchid}`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/branch/${branchid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -359,13 +365,13 @@ mock.onGet(/^\/api\/v1.0\/account\/branch\/?.*/).reply(() => {
 
 // IF-ACCT-010 지점 추가
 export const addBranche = async (param: Branch) => {
-  const api = APIBuilder.post(`/api/v1.0/account/branch`, param)
+  const api = APIBuilder.post(`${API_PREFIX}/account/branch`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`/api/v1.0/account/branch`, createBranch()).reply(() => {
+mock.onPost(`${API_PREFIX}/account/branch`, createBranch()).reply(() => {
   try {
     return [200, { code: 200, message: "success" }];
   } catch (error) {
@@ -375,7 +381,7 @@ mock.onPost(`/api/v1.0/account/branch`, createBranch()).reply(() => {
 
 // IF-ACCT-011 지점 수정
 export const reviseBranche = async (branchid: string, param: Branch) => {
-  const api = APIBuilder.put(`/api/v1.0/account/branch/${branchid}`, param)
+  const api = APIBuilder.put(`${API_PREFIX}/account/branch/${branchid}`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -391,13 +397,13 @@ mock.onPut(/^\/api\/v1.0\/account\/branch\/?.*/, createBranch()).reply(() => {
 
 // IF-ACCT-012 지점 이관
 export const transferBranche = async (param: Branch) => {
-  const api = APIBuilder.put(`/api/v1.0/account/branch/transfer`, param)
+  const api = APIBuilder.put(`${API_PREFIX}/account/branch/transfer`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPut(`/api/v1.0/account/branch/transfer`, createBranch()).reply(() => {
+mock.onPut(`${API_PREFIX}/account/branch/transfer`, createBranch()).reply(() => {
   try {
     return [200, { code: 200, message: "success" }];
   } catch (error) {
@@ -407,13 +413,13 @@ mock.onPut(`/api/v1.0/account/branch/transfer`, createBranch()).reply(() => {
 
 // IF-ACCT-013 사용자 목록 조회
 export const getUserList = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/users`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/users`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/users`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/users`).reply(() => {
   try {
     const data = createRandomUsers();
     const results = {
@@ -433,7 +439,7 @@ mock.onGet(`/api/v1.0/account/users`).reply(() => {
 
 // IF-ACCT-014 사용자 상세 조회
 export const getUserDetail = async (userid: string) => {
-  const api = APIBuilder.get(`/api/v1.0/account/user/${userid}`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/user/${userid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -459,13 +465,13 @@ mock.onGet(/^\/api\/v1.0\/account\/user\/?.*/).reply(() => {
 
 // IF-ACCT-015 사용자 추가
 export const addUser = async (param: User) => {
-  const api = APIBuilder.post(`/api/v1.0/account/user`, param)
+  const api = APIBuilder.post(`${API_PREFIX}/account/user`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`/api/v1.0/account/user`, createUser()).reply(() => {
+mock.onPost(`${API_PREFIX}/account/user`, createUser()).reply(() => {
   try {
     return [200, { code: 200, message: "success" }];
   } catch (error) {
@@ -475,7 +481,7 @@ mock.onPost(`/api/v1.0/account/user`, createUser()).reply(() => {
 
 // IF-ACCT-016 사용자 수정
 export const reviseUser = async (userid: string, param: User) => {
-  const api = APIBuilder.put(`/api/v1.0/account/user/${userid}`, param)
+  const api = APIBuilder.put(`${API_PREFIX}/account/user/${userid}`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -491,13 +497,13 @@ mock.onPut(/^\/api\/v1.0\/account\/user\/?.*/, createUser()).reply(() => {
 
 // IF-ACCT-017 약관 목록 조회
 export const getTermsList = async () => {
-  const api = APIBuilder.get(`/api/v1.0/account/termslist`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/termslist`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onGet(`/api/v1.0/account/termslist`).reply(() => {
+mock.onGet(`${API_PREFIX}/account/termslist`).reply(() => {
   try {
     const data = createRandomTerms();
     const results = {
@@ -517,7 +523,7 @@ mock.onGet(`/api/v1.0/account/termslist`).reply(() => {
 
 // IF-ACCT-018 약관 상세 조회
 export const getTermsDeteil = async (termsid: string) => {
-  const api = APIBuilder.get(`/api/v1.0/account/terms/${termsid}`)
+  const api = APIBuilder.get(`${API_PREFIX}/account/terms/${termsid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -543,13 +549,13 @@ mock.onGet(/^\/api\/v1.0\/account\/terms\/?.*/).reply(() => {
 
 // IF-ACCT-019 약관 추가
 export const addTerms = async (param: Terms) => {
-  const api = APIBuilder.post(`/api/v1.0/account/terms`, param)
+  const api = APIBuilder.post(`${API_PREFIX}/account/terms`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`/api/v1.0/account/terms`, createTerms()).reply(() => {
+mock.onPost(`${API_PREFIX}/account/terms`, createTerms()).reply(() => {
   try {
     return [200, { code: 200, message: "success" }];
   } catch (error) {
@@ -559,7 +565,7 @@ mock.onPost(`/api/v1.0/account/terms`, createTerms()).reply(() => {
 
 // IF-ACCT-020 약관 수정
 export const reviseTerms = async (termsid: string, param: Terms) => {
-  const api = APIBuilder.put(`/api/v1.0/account/terms/${termsid}`, param)
+  const api = APIBuilder.put(`${API_PREFIX}/account/terms/${termsid}`, param)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -575,7 +581,7 @@ mock.onPut(/^\/api\/v1.0\/account\/terms\/?.*/, createTerms()).reply(() => {
 
 // IF-ACCT-021 약관 삭제
 export const deleteTerms = async (termsid: string) => {
-  const api = APIBuilder.delete(`/api/v1.0/account/terms/${termsid}`)
+  const api = APIBuilder.delete(`${API_PREFIX}/account/terms/${termsid}`)
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();

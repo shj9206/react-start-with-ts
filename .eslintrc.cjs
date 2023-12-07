@@ -29,8 +29,11 @@ module.exports = {
   },
   rules: {
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": "off",
-    "max-len": ["error", { code: 130 }],
+    "import/no-absolute-path" :"off",
+    "@typescript-eslint/lines-between-class-members":"off",
+    "max-len": ["error", { code: 200 }],
     "import/no-extraneous-dependencies": [
       "error",
       { devDependencies: ["vite.config.ts"] },
