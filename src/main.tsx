@@ -28,7 +28,7 @@ import LocaleSample from "@/views/sample/localeSample/LocaleSample";
 import StoreSampe from "@/views/sample/storeSample/storeSample";
 import ApiTest from "@/views/sample/apiTest/ApiTest";
 import GridSample from "@/views/sample/gridSample/Index";
-import MapSample from "@/views/sample/mapSample/MapSample";
+import MapComponent from "@/views/sample/mapSample/MapComponent";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest";
 import Profile, {
   loader as profileLoader,
@@ -124,5 +124,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-  </QueryClientProvider>,
+  </QueryClientProvider>
 );

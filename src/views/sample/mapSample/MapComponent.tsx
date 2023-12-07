@@ -1,7 +1,7 @@
 import { useState } from "react";
-import GoogleMapsWrapper from "@/views/mapSample/GoogleMapsWrapper";
-// import { GoogleMaps, geocode } from "@/views/mapSample/GoogleMaps";
-import { GoogleMaps } from "@/views/mapSample/Gocoder";
+import GoogleMapsWrapper from "@/views/sample/mapSample/GoogleMapsWrapper";
+// import { GoogleMaps, geocode } from "@/views/sample/mapSample/GoogleMaps";
+import { GoogleMaps } from "@/views/sample/mapSample/Gocoder";
 
 export const LOCATIONS = [
   { lat: 48.8566, lng: 2.3522 },
