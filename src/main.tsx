@@ -37,7 +37,9 @@ import { Login } from "@/views/sample/login/login";
 import { MainLayout } from "@/views/sample/main/mainLayout";
 import Sample1 from "@/pub/views/sample/Sample1";
 import Sample2 from "@/pub/views/sample/Sample2";
-import KendoChart from "@/views/sample/kendoChart/KendoChart.tsx";
+import KendoChart, {
+  loader as kendoChartLoader,
+} from "@/views/sample/kendoChart/KendoChart.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -114,6 +116,7 @@ const router = createBrowserRouter([
       {
         path: "/views/sample/kendoChart",
         element: <KendoChart />,
+        loader: () => kendoChartLoader(queryClient),
       },
     ],
   },

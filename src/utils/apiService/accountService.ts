@@ -1,8 +1,8 @@
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import {faker} from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import APIBuilder from "@/utils/apiService/APIBuilder";
-import { API_PREFIX } from './config/apiConfig.ts'
+import { API_PREFIX } from "./config/apiConfig.ts";
 
 type Response<T> = { data: T };
 export type AccountResult = {
@@ -15,7 +15,7 @@ export type AccountResult = {
   totalElements?: number; // 전체 아이템 수
 };
 
-export type Companie = {
+export type Company = {
   name: string; // 회사명
   code?: string; // 회사 ID
   logoFile?: string; // 회사 로고 파일명
@@ -41,12 +41,13 @@ export type Companie = {
   adminEmail: string; // 어드민 이메일
   purpose?: string; // 설치 타입 선택 리스트
   modDate?: string; // 생성/수정 시간
+  region?: string;
 };
-type Branch = {
+export type Branch = {
   compName: string;
   compCode: string;
   activeYn: number;
-} & Companie;
+} & Company;
 
 type TransferCode = {
   fromCode: string; // 이관 회사 ID
@@ -84,20 +85,10 @@ type Terms = {
 
 const mock = new AxiosMockAdapter(axios);
 
-const createComp = (): Companie => ({
-  name: faker.company.name(),
-  foundedYear: "",
-  city: faker.location.city(),
-  state: faker.location.state(),
-  country: faker.location.country(),
-  zipCd: faker.location.zipCode(),
-  street: faker.location.street(),
-  adminFirstName: faker.person.firstName(),
-  adminLastName: faker.person.lastName(),
-  adminEmail: "emailsample",
-  modDate: faker.date.anytime().toString(),
-  branchCnt: faker.number.int(100),
-});
+function randomRegion(): string {
+  const regions: Array<"kr" | "eu" | "us" | "au"> = ["kr", "eu", "us", "au"];
+  return regions[Math.floor(Math.random() * regions.length)];
+}
 const createBranch = (): Branch => ({
   name: faker.company.name(),
   code: "",
@@ -115,12 +106,23 @@ const createBranch = (): Branch => ({
   adminEmail: "emailsample",
   modDate: faker.date.anytime().toString(),
   branchCnt: faker.number.int(100),
+  region: randomRegion(),
 });
-
-function randomRegion(): string {
-  const regions: Array<'kr' | 'eu' | 'us'> = ['kr', 'eu', 'us'];
-  return regions[Math.floor(Math.random() * regions.length)];
-}
+const createComp = (): Company => ({
+  name: faker.company.name(),
+  foundedYear: "",
+  city: faker.location.city(),
+  state: faker.location.state(),
+  country: faker.location.country(),
+  zipCd: faker.location.zipCode(),
+  street: faker.location.street(),
+  adminFirstName: faker.person.firstName(),
+  adminLastName: faker.person.lastName(),
+  adminEmail: "emailsample",
+  modDate: faker.date.anytime().toString(),
+  branchCnt: faker.number.int(100),
+  region: randomRegion(),
+});
 
 const createUser = (): User => ({
   id: "",
@@ -151,7 +153,7 @@ const createTerms = (): Terms => ({
   contents: "",
 });
 
-const createRandomCompanies = (): Companie[] =>
+const createRandomCompanies = (): Company[] =>
   Array.from({ length: 23 }, () => createComp());
 const createRandomBranches = (): Branch[] =>
   Array.from({ length: 10 }, () => createBranch());
@@ -234,7 +236,7 @@ mock.onGet(/^\/api\/v1.0\/account\/company\/?.*/).reply(() => {
 });
 
 // IF-ACCT-004 회사 추가
-export const addCompanie = async (param: Companie) => {
+export const addCompanie = async (param: Company) => {
   const api = APIBuilder.post(`${API_PREFIX}/account/company`, param)
     .withCredentials(true)
     .build();
@@ -253,8 +255,11 @@ mock.onPost(`${API_PREFIX}/account/company`, createComp()).reply(() => {
   }
 });
 // IF-ACCT-005 회사 수정
-export const reviseCompanie = async (companyid: string, param: Companie) => {
-  const api = APIBuilder.put(`${API_PREFIX}/account/company/${companyid}`, param)
+export const reviseCompanie = async (companyid: string, param: Company) => {
+  const api = APIBuilder.put(
+    `${API_PREFIX}/account/company/${companyid}`,
+    param,
+  )
     .withCredentials(true)
     .build();
   const { data } = await api.call<Response<AccountResult>>();
@@ -277,13 +282,15 @@ export const transferCompanie = async (param: TransferCode) => {
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPost(`${API_PREFIX}/account/company/transfer`, createComp()).reply(() => {
-  try {
-    return [200, { code: 200, message: "success" }];
-  } catch (error) {
-    return [500, { code: 500, message: "Internal server error" }];
-  }
-});
+mock
+  .onPost(`${API_PREFIX}/account/company/transfer`, createComp())
+  .reply(() => {
+    try {
+      return [200, { code: 200, message: "success" }];
+    } catch (error) {
+      return [500, { code: 500, message: "Internal server error" }];
+    }
+  });
 
 // IF-ACCT-007 지점 목록 조회
 export const getBranchesList = async () => {
@@ -403,13 +410,15 @@ export const transferBranche = async (param: Branch) => {
   const { data } = await api.call<Response<AccountResult>>();
   return data;
 };
-mock.onPut(`${API_PREFIX}/account/branch/transfer`, createBranch()).reply(() => {
-  try {
-    return [200, { code: 200, message: "success" }];
-  } catch (error) {
-    return [500, { code: 500, message: "Internal server error" }];
-  }
-});
+mock
+  .onPut(`${API_PREFIX}/account/branch/transfer`, createBranch())
+  .reply(() => {
+    try {
+      return [200, { code: 200, message: "success" }];
+    } catch (error) {
+      return [500, { code: 500, message: "Internal server error" }];
+    }
+  });
 
 // IF-ACCT-013 사용자 목록 조회
 export const getUserList = async () => {
