@@ -4,7 +4,7 @@ const DEFAULT_CENTER = { lat: 48.8566, lng: 2.3522 };
 const DEFAULT_ZOOM = 15;
 
 interface MapProp {
-  locations: ReadonlyArray<google.maps.LatLngLiteral>;
+  locations?: ReadonlyArray<google.maps.LatLngLiteral>;
   mode: string;
 }
 
@@ -16,13 +16,15 @@ export const addSingleMarkers = ({
   map: google.maps.Map | null | undefined;
 }) => {
   map?.setZoom(6);
-  locations.map(
-    (position) =>
-      new google.maps.Marker({
-        position,
-        map,
-      })
-  );
+  const bounds = new google.maps.LatLngBounds();
+  locations.forEach((position) => {
+    const marker = new google.maps.Marker({
+      position,
+      map,
+    });
+    bounds.extend(position);
+  });
+  map?.fitBounds(bounds);
 };
 
 function codeAddress({
@@ -106,8 +108,7 @@ export function GoogleMaps({ locations, mode }: MapProp) {
         disableDefaultUI: true,
       });
 
-      console.log("fwefwffe", mode);
-      if (mode === "locations") {
+      if (mode === "locations" && locations && locations?.length > 0) {
         addSingleMarkers({ locations, map }); // 일반 마커 표시
       } else if (mode === "current") {
         currentPosition({ map }); // 내 현재 위치 표시
@@ -119,3 +120,7 @@ export function GoogleMaps({ locations, mode }: MapProp) {
 
   return <div ref={ref} style={{ width: "700px", height: "500px" }} />;
 }
+
+GoogleMaps.defaultProps = {
+  locations: [],
+};

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import GoogleMapsWrapper from "@/views/sample/mapSample/GoogleMapsWrapper";
 // import { GoogleMaps, geocode } from "@/views/sample/mapSample/GoogleMaps";
-import { GoogleMaps } from "@/views/sample/mapSample/Gocoder";
+import { GoogleMaps } from "@/views/sample/mapSample/GoogleMaps";
 
 export const LOCATIONS = [
   { lat: 48.8566, lng: 2.3522 },
   { lat: 47.1533, lng: 2.9123 },
+  { lat: 37.5665, lng: 126.978 },
 ];
 
 export default function MapComponent() {
