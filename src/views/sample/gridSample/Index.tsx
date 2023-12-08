@@ -4,7 +4,7 @@ import CommonGrid from "@/components/kendo/grid/commonGrid.tsx";
 import type { CommonGridProps } from "@/components/kendo/grid/gridInterfaces";
 import type {
   AccountResult,
-  Companie,
+  Company,
 } from "@/utils/apiService/accountService.ts";
 import { getCompaniesList } from "@/utils/apiService/accountService.ts";
 
@@ -42,7 +42,7 @@ export default function Index() {
     if (company && company.data) {
       setCommonGridProps((prevState) => ({
         ...prevState,
-        gridData: company.data as Companie[],
+        gridData: company.data as Company[],
       }));
     }
   }, [company]);

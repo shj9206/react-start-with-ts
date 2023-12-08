@@ -8,8 +8,7 @@ import {
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import "@/utils/i18n";
-
-import "./index.css";
+// import "./index.css";
 import Root, {
   action as rootAction,
   loader as rootLoader,
@@ -34,12 +33,13 @@ import Profile, {
   loader as profileLoader,
 } from "@/views/sample/kendoForm/Profile";
 import { Login } from "@/views/sample/login/login";
-import { MainLayout } from "@/views/sample/main/mainLayout";
+// import { MainLayout } from "@/views/sample/main/mainLayout";
 import Sample1 from "@/pub/views/sample/Sample1";
 import Sample2 from "@/pub/views/sample/Sample2";
 import KendoChart, {
   loader as kendoChartLoader,
 } from "@/views/sample/kendoChart/KendoChart.tsx";
+import MainLayout from "@/components/layout/MainLayout.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +61,18 @@ const router = createBrowserRouter([
   {
     path: "/main",
     element: <MainLayout />,
+    children: [
+      {
+        path: "/main/Chart",
+        element: <KendoChart />,
+        loader: () => kendoChartLoader(queryClient),
+      },
+      {
+        path: "/main/Form",
+        element: <KendoForm />,
+      },
+      { path: "/main/Grid", element: <GridSample /> },
+    ],
   },
   {
     path: "/pub/sample/Sample1",
@@ -127,5 +139,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );
