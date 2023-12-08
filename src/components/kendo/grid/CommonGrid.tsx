@@ -15,7 +15,7 @@ import '@progress/kendo-theme-default/dist/all.css';
 import {Button} from '@progress/kendo-react-buttons';
 import {filterBy, orderBy, SortDescriptor} from "@progress/kendo-data-query";
 import '@/components/kendo/grid/css/styles.css';
-import {CustomDropDownFilter} from "@/components/kendo/grid/CustomDropDownFilter.tsx";
+import {DropdownFilterCell} from "@/components/kendo/grid/dropdownfilterCell.tsx";
 import {AppState, CommonGridProps, IColumn} from './gridInterfaces.ts';
 import {GirdInfoArea, CustomArea, DefaultButton} from './GridToolbarArea.tsx';
 
@@ -75,15 +75,15 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         setState(createState(0, displayCount[0]));
     }, [gridData, displayCount]);
 
-    function CategoryFilterCell(props) {
+    const CategoryFilterCell = (props) => {
         const fieldValues = state.items;
         const uniqueValues = Array.from(new Set(fieldValues?.map((item) => item[props.field])));
         return (
-            <CustomDropDownFilter {...props} data={uniqueValues} defaultItem="ALL"/>
+            <DropdownFilterCell {...props} data={uniqueValues} defaultItem={'ALL'}/>
         );
-    }
+    };
 
-    function ColumnCell(props: GridCellProps) {
+    const ColumnCell = (props: GridCellProps) => {
         const column = columns.find((col: IColumn) => col.field === props.field);
         const dataValue = props.dataItem[props.field];
         const displayValue = typeof dataValue === 'boolean' ? (dataValue ? 'TRUE' : 'FALSE') : dataValue;
@@ -93,7 +93,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                 {displayValue}
             </td>
         );
-    }
+    };
 
     const clearFilters = () => {
         setFilter(undefined);
@@ -155,7 +155,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                         {...header}
                         cell={ColumnCell}
                         filterCell={header.filterType === 'select' ? CategoryFilterCell : undefined}
-                        key={`${header.field  }_${  index}`}
+                        key={header.field + '_' + index}
                     />
                 ))}
             </Grid>
