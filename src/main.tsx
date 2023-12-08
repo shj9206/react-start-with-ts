@@ -8,7 +8,7 @@ import {
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import "@/utils/i18n";
-import "./index.css";
+// import "./index.css";
 import Root, {
   action as rootAction,
   loader as rootLoader,
