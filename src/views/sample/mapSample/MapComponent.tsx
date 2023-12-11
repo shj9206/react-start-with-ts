@@ -1,7 +1,8 @@
 import { useState } from "react";
-import GoogleMapsWrapper from "@/views/sample/mapSample/GoogleMapsWrapper";
-// import { GoogleMaps, geocode } from "@/views/sample/mapSample/GoogleMaps";
-import { GoogleMaps } from "@/views/sample/mapSample/GoogleMaps";
+import GoogleMapsWrapper from "@/components/map/GoogleMapsWrapper";
+import { MapMarkers } from "@/components/map/MapMarkers";
+import { MapAddress } from "@/components/map/MapAddress";
+import { MapCurrent } from "@/components/map/MapCurrent";
 
 export const LOCATIONS = [
   { lat: 48.8566, lng: 2.3522 },
@@ -20,15 +21,15 @@ export default function MapComponent() {
         type="button"
         onClick={() => setCount(count.concat([{ lat: 48.1533, lng: 2.7023 }]))}
       > */}
-        add marker
+        show map
       </button>
       <br />
       <br />
       {text && (
         <GoogleMapsWrapper>
-          <GoogleMaps locations={count} mode="locations" />
-          <GoogleMaps locations={[]} mode="address" />
-          <GoogleMaps locations={[]} mode="current" />
+          <MapMarkers locations={count} />
+          <MapAddress address="서울시" />
+          <MapCurrent />
         </GoogleMapsWrapper>
       )}
       {/* <br />
