@@ -40,6 +40,7 @@ export default function MainLayout() {
     { text: "Chart", icon: "k-i-inbox", selected: true },
     { text: "Grid", icon: "k-i-bell" },
     { text: "Form", icon: "k-i-calendar" },
+    { text: "Tile", icon: "k-i-calendar" },
   ];
   const [state, setState] = useState({
     value: categories[0],

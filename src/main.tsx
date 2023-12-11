@@ -39,6 +39,7 @@ import Sample2 from "@/pub/views/sample/Sample2";
 import KendoChart, {
   loader as kendoChartLoader,
 } from "@/views/sample/kendoChart/KendoChart.tsx";
+import Tile from "@/views/sample/kendoTile/Tile.tsx";
 import MainLayout from "@/components/layout/MainLayout.tsx";
 
 const queryClient = new QueryClient({
@@ -72,6 +73,7 @@ const router = createBrowserRouter([
         element: <KendoForm />,
       },
       { path: "/main/Grid", element: <GridSample /> },
+      { path: "/main/Tile", element: <Tile /> },
     ],
   },
   {
