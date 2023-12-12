@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import * as ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -41,6 +42,7 @@ import KendoChart, {
 } from "@/views/sample/kendoChart/KendoChart.tsx";
 import Tile from "@/views/sample/kendoTile/Tile.tsx";
 import MainLayout from "@/layout/MainLayout.tsx";
+const DashBoard = lazy(() => import("@/views/dashboard/DashBoard.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +76,14 @@ const router = createBrowserRouter([
       },
       { path: "/main/Grid", element: <GridSample /> },
       { path: "/main/Tile", element: <Tile /> },
+      {
+        path: "/main/dashboard",
+        element: (
+          <Suspense>
+            <DashBoard />
+          </Suspense>
+        ),
+      },
     ],
   },
   {

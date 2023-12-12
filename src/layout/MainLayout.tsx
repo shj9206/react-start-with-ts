@@ -1,18 +1,11 @@
-import { useState } from "react";
-
 import StatusBar from "@/components/menu/StatusBar.tsx";
 import Gnb from "@/components/menu/Gnb.tsx";
-import Lnb from "@/components/menu/Lnb.tsx";
 
 export default function MainLayout() {
-  const [expanded, setExpanded] = useState<boolean>(true);
-
   return (
     <>
       <StatusBar />
-      <Gnb setExpanded={setExpanded} />
-
-      <Lnb expanded={expanded} />
+      <Gnb />
       <style>{`
                 body {
                     background: #dfdfdf;

@@ -1,27 +1,41 @@
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import {
   AppBar,
   AppBarSection,
   AppBarSpacer,
+  Drawer,
+  DrawerContent,
+  DrawerSelectEvent,
 } from "@progress/kendo-react-layout";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { menuIcon } from "@progress/kendo-svg-icons";
+import { Outlet, useNavigate } from "react-router-dom";
+import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
 
-type GnbProps = {
-  setExpanded: Dispatch<SetStateAction<boolean>>;
-};
+export default function Gnb() {
+  const navigate = useNavigate();
 
-export default function Gnb({ setExpanded }: GnbProps) {
-  const subMenu = [
-    { name: "Dash Board" },
-    { name: "User Managerment" },
-    { name: "FOTA" },
-    { name: "Device" },
-    { name: "Settings" },
-  ];
-
+  const [expanded, setExpanded] = useState<boolean>(true);
+  const [subMenuList, setSubMenuList] = useState<SubMenuType[]>([]);
   const handleClick = () => {
     setExpanded((prevState) => !prevState);
+  };
+  const moveToMenu = (path: string) => {
+    mainMenu.forEach((el) => {
+      if (el.value === path) {
+        setSubMenuList(el.subMenu);
+      }
+    });
+    navigate(`/main/${path}`);
+  };
+  const [selectedId, setSelectedId] = useState<number>(
+    subMenuList.findIndex((x) => x.selected),
+  );
+
+  const handleSelect = (ev: DrawerSelectEvent) => {
+    setSelectedId(ev.itemIndex);
+    const target = subMenuList[ev.itemIndex].value;
+    navigate(`/main/${target}`);
   };
   return (
     <>
@@ -39,14 +53,28 @@ export default function Gnb({ setExpanded }: GnbProps) {
         <AppBarSpacer style={{ width: 4 }} />
         <AppBarSection>
           <ul>
-            {subMenu.map((el) => (
+            {mainMenu.map((el) => (
               <li>
-                <span>{el.name}</span>
+                <div onClick={() => moveToMenu(el.value)}>{el.name}</div>
               </li>
             ))}
           </ul>
         </AppBarSection>
       </AppBar>
+      <Drawer
+        expanded={expanded}
+        position="start"
+        mode="push"
+        items={subMenuList.map((item, index) => ({
+          ...item,
+          selected: index === selectedId,
+        }))}
+        onSelect={handleSelect}
+      >
+        <DrawerContent>
+          <Outlet />
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
