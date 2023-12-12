@@ -9,9 +9,24 @@ import {
 } from "@progress/kendo-react-layout";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { menuIcon } from "@progress/kendo-svg-icons";
+import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
 
+const StyledUl = styled.ul`
+    font-size: 14px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+`;
+
+const StyledLi = styled.li`
+    margin: 0 10px;
+`;
+type GnbProps = {
+  setExpanded: Dispatch<SetStateAction<boolean>>;
+};
 export default function Gnb() {
   const navigate = useNavigate();
 
@@ -57,8 +72,13 @@ export default function Gnb() {
               <li>
                 <div onClick={() => moveToMenu(el.value)}>{el.name}</div>
               </li>
+          <StyledUl>
+            {subMenu.map((el) => (
+                <StyledLi>
+                  <span>{el.name}</span>
+                </StyledLi>
             ))}
-          </ul>
+          </StyledUl>
         </AppBarSection>
       </AppBar>
       <Drawer

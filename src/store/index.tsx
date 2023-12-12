@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import counterReducer from "./counterSlice";
 import authReducer from './authSlice'
+import ContentWidthReducer from "@/store/contentWidthSlice.ts";
 
 export const store = configureStore({
   reducer: {
+    content: ContentWidthReducer,
     counter: counterReducer,
     auth: authReducer
   },

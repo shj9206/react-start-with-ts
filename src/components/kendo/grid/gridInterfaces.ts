@@ -27,6 +27,8 @@ interface CommonGridProps {
     resizable: boolean | false;
     gridData: object[] | null;
     displayCount: number[];
+    gridWidth: number;
+    gridHeight: number;
 }
 
 interface IColumn {

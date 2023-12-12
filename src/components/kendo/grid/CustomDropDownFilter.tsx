@@ -50,16 +50,14 @@ export function CustomDropDownFilter(props) {
 
 
     return (
-        <div>
-            <DropDownList
-                filterable
-                data={state.data} // 필터링된 데이터를 전달
-                onChange={onChange}
-                value={props.value || props.defaultItem}
-                defaultItem={props.defaultItem}
-                onFilterChange={filterChange}
-            />
-        </div>
+        <DropDownList
+            filterable
+            data={state.data} // 필터링된 데이터를 전달
+            onChange={onChange}
+            value={props.value || props.defaultItem}
+            defaultItem={props.defaultItem}
+            onFilterChange={filterChange}
+        />
     );
 }
 
