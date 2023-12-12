@@ -10,6 +10,25 @@ interface Contact {
   favorite?: boolean;
 }
 
+let fakeCache: Record<string, boolean> = {};
+async function fakeNetwork(key?: string): Promise<void> {
+  if (!key) {
+    fakeCache = {};
+    return;
+  }
+
+  if (fakeCache[key]) {
+    return;
+  }
+
+  fakeCache[key] = true;
+  return new Promise((res) => {
+    setTimeout(res, Math.random() * 800);
+  });
+}
+function set(contacts: Contact[]): Promise<Contact[]> {
+  return localforage.setItem("contacts", contacts);
+}
 export async function getContacts(query?: string): Promise<Contact[]> {
   await fakeNetwork(`getContacts:${query}`);
   let contacts: Contact[] = (await localforage.getItem("contacts")) || [];
@@ -38,7 +57,7 @@ export async function getContact(id: string): Promise<Contact | null> {
 
 export async function updateContact(
   id: string,
-  updates: Partial<Contact>
+  updates: Partial<Contact>,
 ): Promise<Contact> {
   await fakeNetwork();
   const contacts: Contact[] = (await localforage.getItem("contacts")) || [];
@@ -58,26 +77,4 @@ export async function deleteContact(id: string): Promise<boolean> {
     return true;
   }
   return false;
-}
-
-function set(contacts: Contact[]): Promise<Contact[]> {
-  return localforage.setItem("contacts", contacts);
-}
-
-let fakeCache: Record<string, boolean> = {};
-
-async function fakeNetwork(key?: string): Promise<void> {
-  if (!key) {
-    fakeCache = {};
-    return;
-  }
-
-  if (fakeCache[key]) {
-    return;
-  }
-
-  fakeCache[key] = true;
-  return new Promise((res) => {
-    setTimeout(res, Math.random() * 800);
-  });
 }

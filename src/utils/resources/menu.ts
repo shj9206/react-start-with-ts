@@ -17,7 +17,7 @@ export const mainMenu: MainMenuType[] = [
     name: "Dash Board",
     value: "dashboard",
     subMenu: [
-      { id: 11, text: "Dash Board", selected: false, value: "dashboard" },
+      { id: 11, text: "Dash Board", selected: true, value: "dashboard" },
     ],
   },
   {
@@ -25,7 +25,9 @@ export const mainMenu: MainMenuType[] = [
     name: "User Management",
     value: "userManage",
     subMenu: [
-      { id: 21, text: "User Management", selected: false, value: "userManage" },
+      { id: 21, text: "company", selected: true, value: "company" },
+      { id: 22, text: "branch", selected: false, value: "branch" },
+      { id: 23, text: "user", selected: false, value: "user" },
     ],
   },
   {
@@ -36,7 +38,7 @@ export const mainMenu: MainMenuType[] = [
       {
         id: 31,
         text: "Firmware Registration",
-        selected: false,
+        selected: true,
         value: "firmRegist",
       },
       { id: 32, text: "Firmware List", selected: false, value: "firmList" },

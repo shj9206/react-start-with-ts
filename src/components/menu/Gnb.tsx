@@ -28,26 +28,29 @@ export default function Gnb() {
   const navigate = useNavigate();
 
   const [expanded, setExpanded] = useState<boolean>(true);
+  const [menuValue, setMenuValue] = useState<string>("");
   const [subMenuList, setSubMenuList] = useState<SubMenuType[]>([]);
   const handleClick = () => {
     setExpanded((prevState) => !prevState);
   };
-  const moveToMenu = (path: string) => {
-    mainMenu.forEach((el) => {
-      if (el.value === path) {
-        setSubMenuList(el.subMenu);
-      }
-    });
-    navigate(`/main/${path}`);
-  };
   const [selectedId, setSelectedId] = useState<number>(
     subMenuList.findIndex((x) => x.selected),
   );
+  const moveToMenu = (path: string) => {
+    mainMenu.forEach((el) => {
+      if (el.value === path) {
+        setMenuValue(path);
+        setSubMenuList(el.subMenu);
+      }
+    });
+    setSelectedId(0);
+    navigate(`/main/${path}`);
+  };
 
   const handleSelect = (ev: DrawerSelectEvent) => {
     setSelectedId(ev.itemIndex);
     const target = subMenuList[ev.itemIndex].value;
-    navigate(`/main/${target}`);
+    navigate(`/main/${menuValue}/${target}`);
   };
   return (
     <>
