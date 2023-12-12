@@ -14,19 +14,16 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
 
 const StyledUl = styled.ul`
-    font-size: 14px;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
+  font-size: 14px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
 `;
 
 const StyledLi = styled.li`
-    margin: 0 10px;
+  margin: 0 10px;
 `;
-type GnbProps = {
-  setExpanded: Dispatch<SetStateAction<boolean>>;
-};
 export default function Gnb() {
   const navigate = useNavigate();
 
@@ -67,16 +64,11 @@ export default function Gnb() {
         </AppBarSection>
         <AppBarSpacer style={{ width: 4 }} />
         <AppBarSection>
-          <ul>
-            {mainMenu.map((el) => (
-              <li>
-                <div onClick={() => moveToMenu(el.value)}>{el.name}</div>
-              </li>
           <StyledUl>
-            {subMenu.map((el) => (
-                <StyledLi>
-                  <span>{el.name}</span>
-                </StyledLi>
+            {mainMenu.map((el) => (
+              <StyledLi>
+                <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
+              </StyledLi>
             ))}
           </StyledUl>
         </AppBarSection>
