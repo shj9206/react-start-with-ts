@@ -40,7 +40,7 @@ import KendoChart, {
   loader as kendoChartLoader,
 } from "@/views/sample/kendoChart/KendoChart.tsx";
 import Tile from "@/views/sample/kendoTile/Tile.tsx";
-import MainLayout from "@/components/layout/MainLayout.tsx";
+import MainLayout from "@/layout/MainLayout.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
