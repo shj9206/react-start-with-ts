@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
     },
   },
 });
-export default function sampleRouter() {
+export default function SampleRoute() {
   return [
     { index: true, element: <Index /> },
     {

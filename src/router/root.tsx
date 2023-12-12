@@ -16,7 +16,7 @@ import Root, {
 import ErrorPage from "@/views/sample/routerSample/error-page.tsx";
 import GridSample from "@/views/sample/gridSample/Index.tsx";
 import Login from "@/views/sample/login/login.tsx";
-import sampleRouter from "@/router/sampleRouter.tsx";
+import sampleRoute from "@/router/SampleRoute.tsx";
 
 const DashBoard = lazy(() => import("@/views/dashboard/DashBoard.tsx"));
 const FirmManage = lazy(() => import("@/views/fota/FirmManage.tsx"));
@@ -219,7 +219,7 @@ const root = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: rootLoader(queryClient),
     action: rootAction(queryClient),
-    children: sampleRouter(),
+    children: sampleRoute(),
   },
 ]);
 
