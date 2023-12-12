@@ -21,16 +21,16 @@ export default function MainLayout() {
                     font-size: 18px;
                     margin: 0;
                 }
-                ul {
-                    font-size: 14px;
-                    list-style-type: none;
-                    padding: 0;
-                    margin: 0;
-                    display: flex;
-                }
-                li {
-                    margin: 0 10px;
-                }
+                // ul {
+                //     font-size: 14px;
+                //     list-style-type: none;
+                //     padding: 0;
+                //     margin: 0;
+                //     display: flex;
+                // }
+                // li {
+                //     margin: 0 10px;
+                // }
                 li:hover {
                     cursor: pointer;
                     color: #84cef1;

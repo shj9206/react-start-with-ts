@@ -6,7 +6,19 @@ import {
 } from "@progress/kendo-react-layout";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { menuIcon } from "@progress/kendo-svg-icons";
+import styled from "styled-components";
 
+const StyledUl = styled.ul`
+    font-size: 14px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+`;
+
+const StyledLi = styled.li`
+    margin: 0 10px;
+`;
 type GnbProps = {
   setExpanded: Dispatch<SetStateAction<boolean>>;
 };
@@ -38,13 +50,13 @@ export default function Gnb({ setExpanded }: GnbProps) {
         </AppBarSection>
         <AppBarSpacer style={{ width: 4 }} />
         <AppBarSection>
-          <ul>
+          <StyledUl>
             {subMenu.map((el) => (
-              <li>
-                <span>{el.name}</span>
-              </li>
+                <StyledLi>
+                  <span>{el.name}</span>
+                </StyledLi>
             ))}
-          </ul>
+          </StyledUl>
         </AppBarSection>
       </AppBar>
     </>
