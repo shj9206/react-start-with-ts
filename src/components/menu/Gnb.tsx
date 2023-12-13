@@ -1,21 +1,15 @@
-import { useState } from "react";
-import {
-  AppBar,
-  AppBarSection,
-  AppBarSpacer,
-  Drawer,
-  DrawerContent,
-  DrawerSelectEvent,
-} from "@progress/kendo-react-layout";
-import { SvgIcon } from "@progress/kendo-react-common";
-import { menuIcon } from "@progress/kendo-svg-icons";
+import {useEffect, useState} from "react";
+import {AppBar, AppBarSection, AppBarSpacer, Drawer, DrawerContent, DrawerSelectEvent,} from "@progress/kendo-react-layout";
+import {SvgIcon} from "@progress/kendo-react-common";
+import {menuIcon} from "@progress/kendo-svg-icons";
 import styled from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
-import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
+import {Outlet, useNavigate} from "react-router-dom";
+import {mainMenu, SubMenuType} from "@/utils/resources/menu.ts";
 import Modal from "@/components/modal/Modal";
-import { useModal } from "@/components/modal/useModal";
-import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { setVisible } from "@/store/accountSlice";
+import {useModal} from "@/components/modal/useModal";
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {setVisible} from "@/store/accountSlice";
+import {setContent} from "@/store/contentWidthSlice.ts";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -54,9 +48,15 @@ export default function Gnb() {
   const [expanded, setExpanded] = useState<boolean>(true);
   const [menuValue, setMenuValue] = useState<string>("");
   const [subMenuList, setSubMenuList] = useState<SubMenuType[]>([]);
+
   const handleClick = () => {
     setExpanded((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    dispatch(setContent(expanded))
+  }, [expanded]);
+
   const [selectedId, setSelectedId] = useState<number>(
     subMenuList.findIndex((x) => x.selected)
   );
@@ -114,17 +114,19 @@ export default function Gnb() {
         onSelect={handleSelect}
       >
         <DrawerContent>
-          <Outlet />
-          {modalProps.isVisible && (
-            <Modal
-              type={modalProps.type}
-              title={modalProps.title}
-              message={modalProps.message}
-              onCancel={modalProps.onCancel}
-              onConfirm={modalProps.onConfirm}
-            />
-          )}
-          {/* <Modal /> */}
+          <div style={{overflow: 'auto', height: '87vh'}}>
+            <Outlet/>
+            {modalProps.isVisible && (
+                <Modal
+                    type={modalProps.type}
+                    title={modalProps.title}
+                    message={modalProps.message}
+                    onCancel={modalProps.onCancel}
+                    onConfirm={modalProps.onConfirm}
+                />
+            )}
+            {/* <Modal /> */}
+          </div>
         </DrawerContent>
       </Drawer>
     </>
