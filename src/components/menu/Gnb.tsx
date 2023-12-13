@@ -12,6 +12,10 @@ import { menuIcon } from "@progress/kendo-svg-icons";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
+import Modal from "@/components/modal/Modal";
+import { useModal } from "@/components/modal/useModal";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setVisible } from "@/store/accountSlice";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -26,6 +30,26 @@ const StyledLi = styled.li`
 `;
 export default function Gnb() {
   const navigate = useNavigate();
+  const visible = useAppSelector((state) => state.account.visible);
+  const dispatch = useAppDispatch();
+  const { modalProps, showModal, hideModal } = useModal();
+  if (visible) {
+    showModal(
+      "inform",
+      "modalProps.title",
+      "modalProps.message",
+      modalProps.onCancel,
+      modalProps.onConfirm
+    );
+    // showModal(
+    //   modalProps.type,
+    //   modalProps.title,
+    //   modalProps.message,
+    //   modalProps.onCancel,
+    //   modalProps.onConfirm
+    // );
+    dispatch(setVisible());
+  }
 
   const [expanded, setExpanded] = useState<boolean>(true);
   const [menuValue, setMenuValue] = useState<string>("");
@@ -34,10 +58,13 @@ export default function Gnb() {
     setExpanded((prevState) => !prevState);
   };
   const [selectedId, setSelectedId] = useState<number>(
-    subMenuList.findIndex((x) => x.selected),
+    subMenuList.findIndex((x) => x.selected)
   );
   const moveToMenu = (path: string) => {
     mainMenu.forEach((el) => {
+      console.log("el.value", el.value);
+      console.log("el.path", path);
+
       if (el.value === path) {
         setMenuValue(path);
         setSubMenuList(el.subMenu);
@@ -88,6 +115,16 @@ export default function Gnb() {
       >
         <DrawerContent>
           <Outlet />
+          {modalProps.isVisible && (
+            <Modal
+              type={modalProps.type}
+              title={modalProps.title}
+              message={modalProps.message}
+              onCancel={modalProps.onCancel}
+              onConfirm={modalProps.onConfirm}
+            />
+          )}
+          {/* <Modal /> */}
         </DrawerContent>
       </Drawer>
     </>

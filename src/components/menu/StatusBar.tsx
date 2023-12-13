@@ -18,6 +18,8 @@ import {
 } from "@progress/kendo-react-buttons";
 import { Popup } from "@progress/kendo-react-popup";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setVisible } from "@/store/accountSlice";
 
 export default function StatusBar() {
   const navigate = useNavigate();
@@ -33,6 +35,8 @@ export default function StatusBar() {
   ];
   const locales = ["en", "kr"];
   const user = ["My Account", "Change Password", "Sigh in History", "Sign Out"];
+  const dispatch = useAppDispatch();
+  const visible = useAppSelector((state) => state.account.visible);
 
   const [state, setState] = useState({
     region: regions[0],
@@ -66,7 +70,15 @@ export default function StatusBar() {
     // const newLogs = logs.slice();
     // newLogs.unshift(eventType);
     // setLogs(newLogs);
-    navigate(`/main/MyAccount`);
+
+    console.log("visible", visible);
+
+    if (e.item === user[0]) {
+      navigate(`/main/MyAccount`);
+    } else if (e.item === user[1]) {
+      dispatch(setVisible(true));
+      console.log("visible", visible);
+    }
   };
 
   return (
