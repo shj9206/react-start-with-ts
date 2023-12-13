@@ -4,3 +4,11 @@
     font-size: inherit;
     justify-content: center;
 }
+.k-pager-numbers-wrap > select {
+    display: none !important;
+}
+
+.k-pager-numbers {
+    display: flex !important;
+    flex-direction: row;
+}

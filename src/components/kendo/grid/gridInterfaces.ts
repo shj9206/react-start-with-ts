@@ -23,12 +23,13 @@ interface CommonGridProps {
     sortableGrid: boolean | false;
     unsorted: boolean | true;
     multipleSorting: boolean | false;
-    filterable: boolean | false;
+    defualtFilter: boolean | false;
     resizable: boolean | false;
     gridData: object[] | null;
     displayCount: number[];
     gridWidth: number;
     gridHeight: number;
+    check: boolean | false;
 }
 
 interface IColumn {
@@ -36,7 +37,7 @@ interface IColumn {
     title: string;
     width: number;
     align: "left" | "center" | "right";
-    filterable: boolean
+    defualtFilter: boolean
 
     [key: string]: any;
 }
