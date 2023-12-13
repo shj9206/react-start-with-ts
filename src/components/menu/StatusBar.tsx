@@ -4,6 +4,7 @@ import {
   AppBarSpacer,
 } from "@progress/kendo-react-layout";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
   DropDownList,
   DropDownListChangeEvent,
@@ -14,9 +15,11 @@ import { bellIcon, userIcon } from "@progress/kendo-svg-icons";
 import { useRef, useState } from "react";
 import { DropDownButton } from "@progress/kendo-react-buttons";
 import { Popup } from "@progress/kendo-react-popup";
+import { setRegion } from "@/store/authSlice.ts";
 
 export default function StatusBar() {
   const { i18n } = useTranslation("translation");
+  const dispatch = useDispatch();
   const anchor = useRef<HTMLButtonElement | null>(null);
   const regions = [
     "HQ",
@@ -37,8 +40,9 @@ export default function StatusBar() {
   const handleChangeRegion = (event: DropDownListChangeEvent) => {
     setState((prevState) => ({
       ...prevState,
-      regions: event.target.value,
+      region: event.target.value,
     }));
+    dispatch(setRegion(event.target.value));
   };
   const handleChangeLocale = (e: DropDownListChangeEvent) => {
     const lng = e.target.value;
