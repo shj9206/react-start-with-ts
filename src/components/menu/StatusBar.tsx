@@ -4,7 +4,7 @@ import {
   AppBarSpacer,
 } from "@progress/kendo-react-layout";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   DropDownList,
   DropDownListChangeEvent,
@@ -13,13 +13,19 @@ import { Badge, BadgeContainer } from "@progress/kendo-react-indicators";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { bellIcon, userIcon } from "@progress/kendo-svg-icons";
 import { useRef, useState } from "react";
-import { DropDownButton } from "@progress/kendo-react-buttons";
+import {
+  DropDownButton,
+  DropDownButtonItemClickEvent,
+} from "@progress/kendo-react-buttons";
 import { Popup } from "@progress/kendo-react-popup";
 import { setRegion } from "@/store/authSlice.ts";
 
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setVisible } from "@/store/accountSlice";
+
 export default function StatusBar() {
+  const navigate = useNavigate();
   const { i18n } = useTranslation("translation");
-  const dispatch = useDispatch();
   const anchor = useRef<HTMLButtonElement | null>(null);
   const regions = [
     "HQ",
@@ -31,6 +37,8 @@ export default function StatusBar() {
   ];
   const locales = ["en", "kr"];
   const user = ["My Account", "Change Password", "Sigh in History", "Sign Out"];
+  const dispatch = useAppDispatch();
+  const visible = useAppSelector((state) => state.account.visible);
 
   const [state, setState] = useState({
     region: regions[0],
@@ -57,6 +65,23 @@ export default function StatusBar() {
       ...prevState,
       alamShow: !state.alamShow,
     }));
+  };
+
+  const handleChangeAccount = (e: DropDownButtonItemClickEvent) => {
+    console.log("checth");
+    console.log(e.item);
+    // const newLogs = logs.slice();
+    // newLogs.unshift(eventType);
+    // setLogs(newLogs);
+
+    console.log("visible", visible);
+
+    if (e.item === user[0]) {
+      navigate(`/main/MyAccount`);
+    } else if (e.item === user[1]) {
+      dispatch(setVisible(true));
+      console.log("visible", visible);
+    }
   };
 
   return (
@@ -99,7 +124,13 @@ export default function StatusBar() {
         </AppBarSection>
 
         <AppBarSection>
-          <DropDownButton items={user} svgIcon={userIcon} />
+          <DropDownButton
+            items={user}
+            svgIcon={userIcon}
+            onItemClick={(e: DropDownButtonItemClickEvent) =>
+              handleChangeAccount(e)
+            }
+          />
         </AppBarSection>
 
         <AppBarSpacer style={{ width: 4 }} />

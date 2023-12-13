@@ -1,15 +1,25 @@
-import * as React from "react";
-import {useEffect, useRef, useState} from "react";
-import {Grid, GridCellProps, GridColumn as Column, GridFilterChangeEvent, GridPageChangeEvent, GridPagerSettings, GridSortChangeEvent, GridToolbar,} from "@progress/kendo-react-grid";
+import {useCallback, useEffect, useState} from "react";
+import {
+    getSelectedState,
+    Grid,
+    GridCellProps,
+    GridColumn as Column,
+    GridFilterChangeEvent,
+    GridPageChangeEvent,
+    GridPagerSettings,
+    GridSortChangeEvent,
+    GridToolbar,
+} from "@progress/kendo-react-grid";
 import "@progress/kendo-theme-default/dist/all.css";
 
 import {Button} from "@progress/kendo-react-buttons";
-import {filterBy, orderBy, SortDescriptor} from "@progress/kendo-data-query";
+import {filterBy, getter, orderBy, SortDescriptor} from "@progress/kendo-data-query";
 import "@/components/kendo/grid/css/styles.css";
 import {CustomDropDownFilter} from "@/components/kendo/grid/CustomDropDownFilter.tsx";
 import {AppState, CommonGridProps, IColumn} from "./gridInterfaces.ts";
 import {CustomArea, DefaultButton, GirdInfoArea} from "./GridToolbarArea.tsx";
 import {useSelector} from "react-redux";
+import {CustomCheckBoxFilter} from "@/components/kendo/grid/CustomCheckBoxFilter.tsx";
 
 const CommonGrid: React.FC<CommonGridProps> = ({
                                                    columnHeader,
@@ -17,12 +27,13 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                                                    sortableGrid,
                                                    unsorted,
                                                    multipleSorting,
-                                                   filterable,
+                                                   defualtFilter,
                                                    resizable,
                                                    gridData,
                                                    displayCount,
                                                    gridWidth = 0,
                                                    gridHeight = 0,
+                                                   check
                                                }) => {
     const [sort, setSort] = useState<Array<SortDescriptor>>([]);
     const [filter, setFilter] = useState();
@@ -69,6 +80,12 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         setState(createState(0, displayCount[0]));
     }, [gridData, displayCount]);
 
+    function nonFilter() {
+        return (
+            <div></div>
+        );
+    }
+
     function CategoryFilterCell(props) {
         const fieldValues = state.items;
         const uniqueValues = Array.from(
@@ -76,6 +93,13 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         );
         return (
             <CustomDropDownFilter {...props} data={uniqueValues} defaultItem="ALL"/>
+        );
+    }
+
+    function CheckBoxFilterCell(props) {
+        const fieldValues = state?.items;
+        return (
+            <CustomCheckBoxFilter {...props} data={fieldValues}/>
         );
     }
 
@@ -90,7 +114,11 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                 : dataValue;
 
         return (
-            <td style={{textAlign: column?.align || "left"}}>{displayValue}</td>
+            <td style={{textAlign: column?.align || "left"}}
+                onClick={(e) => {
+                    console.log(e.target.innerHTML)
+                }}
+           defaultValue={displayValue} >{displayValue}</td>
         );
     }
 
@@ -107,6 +135,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         const reorderedColumns = e.columns.sort(
             (a, b) => a.orderIndex - b.orderIndex
         );
+        reorderedColumns.shift()
         setColumns(reorderedColumns);
     };
 
@@ -119,7 +148,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
 
         if (gridWidth !== 0) {
             currentWidth = expanded ? gridWidth - 275 : gridWidth - 50
-        }else {
+        } else {
             currentWidth = expanded ? window.innerWidth - 290 : window.innerWidth - 50
         }
 
@@ -131,10 +160,37 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         transition: 'all 200ms ease 0s',
     };
 
+    const [selectedState, setSelectedState] = useState({});
+    const SELECTED_FIELD = 'selected';
+    const DATA_ITEM_KEY = 'name';
+    const idGetter = getter(DATA_ITEM_KEY);
+
+    const onSelectionChange = useCallback(event => {
+        const newSelectedState = getSelectedState({
+            event,
+            selectedState: selectedState,
+            dataItemKey: DATA_ITEM_KEY
+        });
+        setSelectedState(newSelectedState);
+    }, [selectedState]);
+
+    const onHeaderSelectionChange = useCallback(event => {
+        const checkboxElement = event.syntheticEvent.target;
+        const checked = checkboxElement.checked;
+        const newSelectedState = {};
+        event.dataItems.forEach(item => {
+            newSelectedState[idGetter(item)] = checked;
+        });
+        setSelectedState(newSelectedState);
+    }, []);
+
     return (
         <Grid
             style={{width: width, height: height, ...gridStyles}}
-            data={filterBy(state.items, filter)}
+            data={filterBy(state.items?.map((item) => ({
+                ...item,
+                [SELECTED_FIELD]: selectedState[idGetter(item)],
+            })), filter)}
             onPageChange={pageChange}
             total={state.total}
             skip={state.skip}
@@ -153,12 +209,23 @@ const CommonGrid: React.FC<CommonGridProps> = ({
             onFilterChange={(event: GridFilterChangeEvent) =>
                 setFilter(event.filter)
             }
-            reorderable
             onColumnReorder={onColumnReorderWithResize}
-            filterable={filterable}
+            filterable={defualtFilter}
             filter={filter}
             resizable={resizable}
             onColumnResize={onColumnReorderWithResize}
+            dataItemKey={DATA_ITEM_KEY}
+            selectedField={SELECTED_FIELD}
+            onSelectionChange={onSelectionChange}
+            onHeaderSelectionChange={onHeaderSelectionChange}
+            selectable={{
+                enabled: true,
+                drag: false,
+                cell: false,
+                mode: 'multiple'
+            }}
+            reorderable
+            onRowClick={(e)=>{console.log(e)}}
         >
             <GridToolbar>
                 <GirdInfoArea>
@@ -187,13 +254,18 @@ const CommonGrid: React.FC<CommonGridProps> = ({
                     <Button>set Column </Button>
                 </DefaultButton>
             </GridToolbar>
+            {
+                check &&
+                <Column locked={true} reorderable={false} resizable={false} field={SELECTED_FIELD} width="50px"
+                        headerSelectionValue={state.items?.findIndex(item => !selectedState[idGetter(item)]) === -1} filterCell={nonFilter}/>
+            }
             {columns.map((header, index) => (
                 <Column
                     {...header}
                     cell={ColumnCell}
-                    filterCell={
-                        header.filterType === "select" ? CategoryFilterCell : undefined
-                    }
+                    filterCell={header.filterType === "select" ? CategoryFilterCell :
+                        header.defualtFilter ? undefined : nonFilter}
+                    columnMenu={header.filterType === "checkBox" ? CheckBoxFilterCell : undefined}
                     key={`${header.field}_${index}`}
                 />
             ))}
