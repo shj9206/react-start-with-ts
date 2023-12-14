@@ -19,7 +19,11 @@ import {
 import { Popup } from "@progress/kendo-react-popup";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { setVisible } from "@/store/accountSlice";
+import {
+  setAccountVisible,
+  setPasswordVisible,
+  setHistoryVisible,
+} from "@/store/accountSlice";
 
 export default function StatusBar() {
   const navigate = useNavigate();
@@ -36,7 +40,6 @@ export default function StatusBar() {
   const locales = ["en", "kr"];
   const user = ["My Account", "Change Password", "Sigh in History", "Sign Out"];
   const dispatch = useAppDispatch();
-  const visible = useAppSelector((state) => state.account.visible);
 
   const [state, setState] = useState({
     region: regions[0],
@@ -65,19 +68,13 @@ export default function StatusBar() {
   };
 
   const handleChangeAccount = (e: DropDownButtonItemClickEvent) => {
-    console.log("checth");
-    console.log(e.item);
-    // const newLogs = logs.slice();
-    // newLogs.unshift(eventType);
-    // setLogs(newLogs);
-
-    console.log("visible", visible);
-
     if (e.item === user[0]) {
       navigate(`/main/MyAccount`);
+      dispatch(setAccountVisible(true));
     } else if (e.item === user[1]) {
-      dispatch(setVisible(true));
-      console.log("visible", visible);
+      dispatch(setPasswordVisible(true));
+    } else if (e.item === user[2]) {
+      dispatch(setHistoryVisible(true));
     }
   };
 
