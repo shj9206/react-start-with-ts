@@ -1,5 +1,7 @@
-import { GridPagerSettings } from "@progress/kendo-react-grid";
-import React from "react";
+import {
+  GridPagerSettings,
+  GridRowClickEvent,
+} from "@progress/kendo-react-grid";
 
 interface AppState {
   items: object[];
@@ -15,27 +17,29 @@ type GridHeader = {
   title: string;
   width: number;
   filterType?: string;
-  defaultFilter: boolean;
+  filter?: "boolean" | "numeric" | "text" | "date" | undefined;
   align?: string;
   cellType?: string;
 };
 
-interface CommonGridProps {
+interface CommonGridProps<T> {
   columnHeader: GridHeader[];
-  buttonCount: number;
-  sortableGrid: boolean | false;
-  unsorted: boolean | true;
-  multipleSorting: boolean | false;
-  defaultFilter: boolean | false;
-  resizable: boolean | false;
-  gridData: object[] | null;
-  displayCount: number[];
-  gridWidth: number;
-  gridHeight: number;
-  check?: boolean | false;
-  cellClick?: (event: React.MouseEvent<HTMLTableCellElement>) => void;
-  addButton?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  deleteButton?: (selectedRow: any[]) => void;
+  buttonCount?: number;
+  sortableGrid?: boolean | false;
+  unsorted?: boolean | true;
+  multipleSorting?: boolean | false;
+  defaultFilter?: boolean | false;
+  resizable?: boolean | false;
+  reorder?: boolean | false;
+  gridData?: never[];
+  displayCount?: number[];
+  gridWidth?: number;
+  gridHeight?: number;
+  check?: boolean;
+  cellClick?: (props: GridRowClickEvent) => GridRowClickEvent;
+  addButton?: ((props: T[]) => void) | null;
+  deleteButton?: ((props: T[]) => void) | null;
+  girdToolBar?: boolean;
 }
 
 interface IColumn {
@@ -43,13 +47,13 @@ interface IColumn {
   title: string;
   width: number;
   align?: string;
-  defaultFilter: any;
+  defaultFilter: boolean;
 
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
-interface ItemType {
-  [key: string]: any;
+interface ItemType<T> {
+  [key: string]: T;
 }
 
 export type { AppState, GridHeader, CommonGridProps, IColumn, ItemType };

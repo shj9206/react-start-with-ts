@@ -8,6 +8,7 @@ import {
   GridFilterChangeEvent,
   GridPageChangeEvent,
   GridPagerSettings,
+  GridRowClickEvent,
   GridSortChangeEvent,
   GridToolbar,
 } from "@progress/kendo-react-grid";
@@ -27,7 +28,7 @@ import { CustomDropDownFilter } from "@/components/kendo/grid/CustomDropDownFilt
 import {
   AppState,
   CommonGridProps,
-  IColumn,
+  GridHeader,
   ItemType,
 } from "./interface/gridInterfaces.ts";
 import { CustomArea, DefaultButton, GirdInfoArea } from "./GridToolbarArea.tsx";
@@ -35,28 +36,42 @@ import { useSelector } from "react-redux";
 import { CustomCheckBoxFilter } from "@/components/kendo/grid/CustomCheckBoxFilter.tsx";
 import { RootState } from "@/store/interface/storeInterfaces.ts";
 
-const CommonGrid: React.FC<CommonGridProps> = ({
-  columnHeader,
-  buttonCount,
-  sortableGrid,
-  unsorted,
-  multipleSorting,
-  defaultFilter,
-  resizable,
-  gridData,
-  displayCount,
+const CommonGrid = <T extends unknown>({
+  columnHeader = [
+    {
+      field: "fieldName",
+      title: "titleName",
+      width: 50,
+      filterType: "filterTypeName",
+      filter: "boolean",
+      align: "alignName",
+      cellType: "cellTypeName",
+    },
+  ],
+  buttonCount = 5,
+  sortableGrid = false,
+  unsorted = false,
+  multipleSorting = false,
+  defaultFilter = false,
+  resizable = false,
+  reorder = false,
+  gridData = [],
+  displayCount = [0],
   gridWidth = 0,
   gridHeight = 0,
-  check,
-  cellClick,
-  addButton,
-  deleteButton,
-}) => {
+  check = false,
+  cellClick = (props: GridRowClickEvent) => {
+    return props;
+  },
+  addButton = null,
+  deleteButton = null,
+  girdToolBar = false,
+}: CommonGridProps<T>) => {
   const [sort, setSort] = useState<Array<SortDescriptor>>([]);
   const [filter, setFilter] = useState<CompositeFilterDescriptor | undefined>(
     undefined,
   );
-  const [columns, setColumns] = useState<IColumn[]>(columnHeader);
+  const [columns, setColumns] = useState<GridHeader[]>(columnHeader);
 
   const createState = (skip: number, take: number): AppState => {
     const pagerSettings: GridPagerSettings = {
@@ -88,9 +103,9 @@ const CommonGrid: React.FC<CommonGridProps> = ({
     [id: string]: boolean | number[];
   }>({});
   const SELECTED_FIELD = "selected";
-  const DATA_ITEM_KEY = "name";
+  const DATA_ITEM_KEY: string = "name";
   const idGetter = getter(DATA_ITEM_KEY);
-  const [selectedRow, setSelectedRow] = useState<any>([]);
+  const [selectedRow, setSelectedRow] = useState<T[]>([]);
 
   /* 페이지 이동 */
   const pageChange = (event: GridPageChangeEvent) => {
@@ -112,26 +127,20 @@ const CommonGrid: React.FC<CommonGridProps> = ({
   /* 한화면에 보여지는 데이터 갯수 초기값 */
   useEffect(() => {
     setState(createState(0, displayCount[0]));
-  }, [gridData, displayCount]);
+  }, [gridData]);
 
   /* 필터 사용을 안할때 쓰는 빈 태그 */
   function nonFilter() {
     return <div></div>;
   }
 
-  /* 드랍다운 필터 */
-  // function CategoryFilterCell(props: { field: string, data: any[]; onChange: (arg0: { value: string; operator: string; syntheticEvent: any; }) => void; value: any; defaultItem: any; }) {
-  //     const fieldValues: ItemType[] = state.items;
-  //     const uniqueValues = Array.from(
-  //         new Set<string>(fieldValues?.map((item: ItemType) => String(item[props.field])) ?? [])
-  //     );
-  //     return (
-  //         <CustomDropDownFilter {...props} data={uniqueValues} defaultItem="ALL"/>
-  //     );
-  // }
-
   const CategoryFilterCell: React.FC<GridFilterCellProps> = (props) => {
-    const fieldValues: ItemType[] = state.items;
+    type ActualType = number | string;
+    let state = {
+      items: [] as ItemType<ActualType>[],
+    };
+
+    const fieldValues: ItemType<ActualType>[] = state.items;
 
     if (!props.field) {
       return <></>; // Return empty when field is undefined
@@ -140,7 +149,8 @@ const CommonGrid: React.FC<CommonGridProps> = ({
     const field = props.field; // Now we know field is a string
     const uniqueValues = Array.from(
       new Set<string>(
-        fieldValues?.map((item: ItemType) => String(item[field])) ?? [],
+        fieldValues?.map((item: ItemType<ActualType>) => String(item[field])) ??
+          [],
       ),
     );
 
@@ -159,7 +169,7 @@ const CommonGrid: React.FC<CommonGridProps> = ({
   const ColumnCell: React.FC<GridCellProps> = ({ field, dataItem }) => {
     if (!field) return;
 
-    const column = columns.find((col: IColumn) => col.field === field);
+    const column = columns.find((col: GridHeader) => col.field === field);
     const dataValue = dataItem[field];
     const displayValue =
       typeof dataValue === "boolean"
@@ -237,9 +247,10 @@ const CommonGrid: React.FC<CommonGridProps> = ({
 
       if (!checked) {
         filterData = selectedRow.filter(
-          (key: { [x: string]: any }) =>
-            key[DATA_ITEM_KEY] !== event.dataItem[DATA_ITEM_KEY],
+          // @ts-ignore
+          (key: T) => key[DATA_ITEM_KEY] !== event.dataItem[DATA_ITEM_KEY],
         );
+
         setSelectedRow(filterData);
       } else {
         setSelectedRow([
@@ -331,54 +342,68 @@ const CommonGrid: React.FC<CommonGridProps> = ({
         cell: false,
         mode: "multiple",
       }}
-      reorderable
+      reorderable={reorder}
       onRowClick={(event) => {
         cellClick?.(event.dataItem);
       }}
     >
-      <GridToolbar>
-        <GirdInfoArea>
-          <span>Total {gridData?.length} </span>
-          <span>Page Size</span>
-          <select
-            onChange={(event) =>
-              setState(createState(0, parseInt(event.target.value, 10)))
-            }
-          >
-            {displayCount.map((value) => (
-              <option value={value}>{value === 0 ? "ALL" : value}</option>
-            ))}
-          </select>
-        </GirdInfoArea>
-        <CustomArea>
-          {addButton && <Button onClick={addButton}>ADD</Button>}
-          {deleteButton && (
-            <Button
-              onClick={() => {
-                deleteButton?.(selectedRow);
-              }}
-            >
-              DELETE
+      {girdToolBar && (
+        <GridToolbar>
+          <GirdInfoArea>
+            <span>Total {gridData?.length} </span>
+            {displayCount.length !== 0 && (
+              <div>
+                <span>Page Size</span>
+                <select
+                  onChange={(event) =>
+                    setState(createState(0, parseInt(event.target.value, 10)))
+                  }
+                >
+                  {displayCount.map((value) => (
+                    <option value={value}>{value === 0 ? "ALL" : value}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </GirdInfoArea>
+          <CustomArea>
+            {addButton && (
+              <Button
+                onClick={() => {
+                  addButton?.(selectedRow);
+                }}
+              >
+                ADD
+              </Button>
+            )}
+            {deleteButton && (
+              <Button
+                onClick={() => {
+                  deleteButton?.(selectedRow);
+                }}
+              >
+                DELETE
+              </Button>
+            )}
+          </CustomArea>
+          <DefaultButton>
+            <Button onClick={clearFilters} style={{ marginRight: 10 }}>
+              Reset Filter{" "}
             </Button>
-          )}
-        </CustomArea>
-        <DefaultButton>
-          <Button onClick={clearFilters} style={{ marginRight: 10 }}>
-            Reset Filter{" "}
-          </Button>
-          <Button onClick={resetColumns} style={{ marginRight: 10 }}>
-            Reset table layout{" "}
-          </Button>
-          <Button>set Column </Button>
-        </DefaultButton>
-      </GridToolbar>
+            <Button onClick={resetColumns} style={{ marginRight: 10 }}>
+              Reset table layout{" "}
+            </Button>
+            <Button>set Column </Button>
+          </DefaultButton>
+        </GridToolbar>
+      )}
       {check && (
         <Column
           locked={true}
           reorderable={false}
           resizable={false}
           field={SELECTED_FIELD}
-          width="50px"
+          width={50}
           headerSelectionValue={
             state.items?.findIndex((item) => !selectedState[idGetter(item)]) ===
             -1
@@ -394,14 +419,22 @@ const CommonGrid: React.FC<CommonGridProps> = ({
             {...header}
             cell={cellProp}
             filterCell={
-              header.filterType === "select"
+              defaultFilter && header.filter && header.filterType === "select"
                 ? CategoryFilterCell
-                : header.defaultFilter
-                  ? undefined
-                  : nonFilter
+                : defaultFilter &&
+                    header.filter &&
+                    header.filterType === "checkbox"
+                  ? nonFilter
+                  : defaultFilter && !header.filter
+                    ? defaultFilter && header.filter == undefined
+                      ? undefined
+                      : nonFilter
+                    : undefined
             }
             columnMenu={
-              header.filterType === "checkBox" ? CheckBoxFilterCell : undefined
+              header.filter && header.filterType === "checkbox"
+                ? CheckBoxFilterCell
+                : undefined
             }
             key={`${header.field}_${index}`}
           />

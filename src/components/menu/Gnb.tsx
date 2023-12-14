@@ -22,6 +22,7 @@ import {
   setHistoryVisible,
 } from "@/store/accountSlice";
 import { setContent } from "@/store/contentWidthSlice.ts";
+import AlertComponent from "@/components/kendo/dialog/AlertComponent.tsx";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -178,6 +179,7 @@ export default function Gnb() {
           </div>
         </DrawerContent>
       </Drawer>
+      <AlertComponent />
     </>
   );
 }
