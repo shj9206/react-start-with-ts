@@ -44,19 +44,19 @@ export default function Gnb() {
 
   const showMenuCheck = useAppSelector((state) => state.auth.showMenuCheck);
   const accountVisible = useAppSelector(
-    (state) => state.account.accountVisible
+    (state) => state.account.accountVisible,
   );
   const passwordVisible = useAppSelector(
-    (state) => state.account.passwordVisible
+    (state) => state.account.passwordVisible,
   );
   const changeEmailVisible = useAppSelector(
-    (state) => state.account.changeEmailVisible
+    (state) => state.account.changeEmailVisible,
   );
   const historyVisible = useAppSelector(
-    (state) => state.account.historyVisible
+    (state) => state.account.historyVisible,
   );
   const dispatch = useAppDispatch();
-  const { modalProps, showModal, hideModal } = useModal();
+  const { modalProps, showModal } = useModal();
   if (accountVisible) {
     setSubMenuList([
       {
@@ -74,7 +74,7 @@ export default function Gnb() {
       "Confirm Current Password",
       "Current Password",
       modalProps.onCancel,
-      modalProps.onConfirm
+      modalProps.onConfirm,
     );
     dispatch(setPasswordVisible(false));
   }
@@ -84,7 +84,7 @@ export default function Gnb() {
       "Change Email",
       "An activation link will be sent to your new email address. Input your new email address on the box below.",
       modalProps.onCancel,
-      modalProps.onConfirm
+      modalProps.onConfirm,
     );
     dispatch(setChangeEmailVisible(false));
   }
@@ -94,7 +94,7 @@ export default function Gnb() {
       "Change Email",
       "An activation link will be sent to your new email address. Input your new email address on the box below.",
       modalProps.onCancel,
-      modalProps.onConfirm
+      modalProps.onConfirm,
     );
     // showModal(
     //   modalProps.type,
@@ -114,7 +114,7 @@ export default function Gnb() {
   }, [dispatch, expanded]);
 
   const [selectedId, setSelectedId] = useState<number>(
-    subMenuList.findIndex((x) => x.selected)
+    subMenuList.findIndex((x) => x.selected),
   );
   const moveToMenu = (path: string) => {
     mainMenu.forEach((el) => {
@@ -159,7 +159,7 @@ export default function Gnb() {
                 <StyledLi>
                   <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
                 </StyledLi>
-              ) : null
+              ) : null,
             )}
           </StyledUl>
         </AppBarSection>
