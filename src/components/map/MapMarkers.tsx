@@ -42,7 +42,7 @@ export function MapMarkers({ locations }: MapProp) {
     }
   }, [ref, locations]);
 
-  return <div ref={ref} style={{ width: "700px", height: "500px" }} />; // 스타일 설정
+  return <div ref={ref} style={{ width: "700px", height: "400px" }} />; // 스타일 설정
 }
 
 MapMarkers.defaultProps = {

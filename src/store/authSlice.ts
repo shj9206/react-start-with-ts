@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState } from "@/store/interface/storeInterfaces.ts";
 
 interface AuthState {
   accessToken: string | null;
   email: string | null;
   region: string | null;
+  showMenuCheck: number;
 }
 
 const initialState: AuthState = {
   accessToken: null,
   email: null,
   region: null,
+  showMenuCheck: 1,
 };
 
 const authSlice = createSlice({
@@ -26,9 +27,13 @@ const authSlice = createSlice({
     setRegion: (state, action: PayloadAction<string>) => {
       state.region = action.payload;
     },
+    setShowMenuCheck: (state, action) => {
+      state.showMenuCheck = action.payload;
+    },
   },
 });
 
-export const { setToken, setRegion, setUserInfomation } = authSlice.actions;
+export const { setToken, setRegion, setUserInfomation, setShowMenuCheck } =
+  authSlice.actions;
 
 export default authSlice.reducer;

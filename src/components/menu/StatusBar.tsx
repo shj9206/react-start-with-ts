@@ -18,7 +18,7 @@ import {
   DropDownButtonItemClickEvent,
 } from "@progress/kendo-react-buttons";
 import { Popup } from "@progress/kendo-react-popup";
-import { setRegion } from "@/store/authSlice.ts";
+import { setRegion, setShowMenuCheck } from "@/store/authSlice.ts";
 
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import {
@@ -53,6 +53,11 @@ export default function StatusBar() {
       ...prevState,
       region: event.target.value,
     }));
+    regions.forEach((el, index) => {
+      if (el === event.target.value) {
+        dispatch(setShowMenuCheck(index + 1));
+      }
+    });
     dispatch(setRegion(event.target.value));
   };
   const handleChangeLocale = (e: DropDownListChangeEvent) => {
