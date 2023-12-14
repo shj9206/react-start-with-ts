@@ -28,6 +28,7 @@ module.exports = {
     },
   },
   rules: {
+    "no-param-reassign": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "import/extensions": "off",

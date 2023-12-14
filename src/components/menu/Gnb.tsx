@@ -17,6 +17,7 @@ import { useModal } from "@/components/modal/useModal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setVisible } from "@/store/accountSlice";
 import { setContent } from "@/store/contentWidthSlice.ts";
+import AlertComponent from "@/components/kendo/dialog/AlertComponent.tsx";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -136,6 +137,7 @@ export default function Gnb() {
           </div>
         </DrawerContent>
       </Drawer>
+      <AlertComponent />
     </>
   );
 }
