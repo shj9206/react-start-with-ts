@@ -11,7 +11,7 @@ import LabelInput from "@/components/kendo/form/LabelInput.tsx";
 import RadioGroup from "@/components/kendo/form/RadioGroup";
 import TextBoxEmail from "@/components/myaccount/TextBoxEmail";
 
-export default function KendoForm() {
+export default function MyAccount() {
   // const [ddlState, setDdlState] = useState();
   // const ddlRef = useRef(null);
   const radioData = [
@@ -29,8 +29,9 @@ export default function KendoForm() {
     country: "South Korea",
     temperature: "f",
   };
-  const handleSubmit = (dataItem: { [name: string]: unknown }) =>
+  const handleSubmit = (dataItem: { [name: string]: unknown }) => {
     alert(JSON.stringify(dataItem, null, 2));
+  };
   return (
     <Form
       onSubmit={handleSubmit}
@@ -50,7 +51,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -61,7 +61,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -73,7 +72,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -85,7 +83,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -97,7 +94,7 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
+            여기에 이미지
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -108,7 +105,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -120,7 +116,6 @@ export default function KendoForm() {
                 />
               </div>
             </FieldWrapper>
-
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -141,7 +136,6 @@ export default function KendoForm() {
               layout="horizontal"
               // validator={radioGroupValidator}
             />
-
             <div className="k-form-buttons">
               <button
                 type="submit"
