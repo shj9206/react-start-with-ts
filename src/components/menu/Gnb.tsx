@@ -41,7 +41,7 @@ export default function Gnb() {
   const [subMenuList, setSubMenuList] = useState<SubMenuType[]>([]);
 
   const navigate = useNavigate();
-  const visible = useAppSelector((state) => state.account.visible);
+
   const showMenuCheck = useAppSelector((state) => state.auth.showMenuCheck);
   const accountVisible = useAppSelector(
     (state) => state.account.accountVisible
@@ -56,8 +56,6 @@ export default function Gnb() {
     (state) => state.account.historyVisible
   );
   const dispatch = useAppDispatch();
-  const { modalProps, showModal } = useModal();
-  if (visible) {
   const { modalProps, showModal, hideModal } = useModal();
   if (accountVisible) {
     setSubMenuList([
@@ -105,7 +103,6 @@ export default function Gnb() {
     //   modalProps.onCancel,
     //   modalProps.onConfirm
     // );
-    dispatch(setVisible(!visible));
     dispatch(setHistoryVisible(false));
   }
   const handleClick = () => {
@@ -162,7 +159,7 @@ export default function Gnb() {
                 <StyledLi>
                   <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
                 </StyledLi>
-              ) : null,
+              ) : null
             )}
           </StyledUl>
         </AppBarSection>
