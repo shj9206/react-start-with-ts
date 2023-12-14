@@ -1,26 +1,46 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from ".";
+// import type { RootState } from ".";
 
 interface AccountState {
-  visible: boolean | null;
+  accountVisible: boolean | null;
+  passwordVisible: boolean | null;
+  historyVisible: boolean | null;
+  changeEmailVisible: boolean | null;
 }
 
 const initialState: AccountState = {
-  visible: false,
+  accountVisible: false,
+  passwordVisible: false,
+  historyVisible: false,
+  changeEmailVisible: false,
 };
 
 const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
-    setVisible: (state, action: PayloadAction<boolean>) => {
-      state.visible = action.payload;
+    setAccountVisible: (state, action: PayloadAction<boolean>) => {
+      state.accountVisible = action.payload;
+    },
+    setPasswordVisible: (state, action: PayloadAction<boolean>) => {
+      state.passwordVisible = action.payload;
+    },
+    setHistoryVisible: (state, action: PayloadAction<boolean>) => {
+      state.historyVisible = action.payload;
+    },
+    setChangeEmailVisible: (state, action: PayloadAction<boolean>) => {
+      state.changeEmailVisible = action.payload;
     },
   },
 });
 
-export const { setVisible } = accountSlice.actions;
+export const {
+  setAccountVisible,
+  setPasswordVisible,
+  setHistoryVisible,
+  setChangeEmailVisible,
+} = accountSlice.actions;
 
-export const selectCount = (state: RootState) => state.account.visible;
+// export const selectCount = (state: RootState) => state.account.visible;
 
 export default accountSlice.reducer;
