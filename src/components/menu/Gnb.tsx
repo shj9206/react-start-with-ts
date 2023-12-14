@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppBar,
   AppBarSection,
@@ -14,13 +14,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
 import Modal from "@/components/myaccountModal/emailModal";
 import { useModal } from "@/components/myaccountModal/useModal";
-import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setAccountVisible,
   setChangeEmailVisible,
   setPasswordVisible,
   setHistoryVisible,
 } from "@/store/accountSlice";
+import { setContent } from "@/store/contentWidthSlice.ts";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -97,6 +98,11 @@ export default function Gnb() {
   const handleClick = () => {
     setExpanded((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    dispatch(setContent(expanded));
+  }, [expanded]);
+
   const [selectedId, setSelectedId] = useState<number>(
     subMenuList.findIndex((x) => x.selected)
   );
@@ -157,19 +163,21 @@ export default function Gnb() {
         onSelect={handleSelect}
       >
         <DrawerContent>
-          <Outlet />
-          {/* <Modal /> */}
+          <div style={{ overflow: "auto", height: "87vh" }}>
+            <Outlet />
+            {modalProps.isVisible && (
+              <Modal
+                type={modalProps.type}
+                title={modalProps.title}
+                message={modalProps.message}
+                onCancel={modalProps.onCancel}
+                onConfirm={modalProps.onConfirm}
+              />
+            )}
+            {/* <Modal /> */}
+          </div>
         </DrawerContent>
       </Drawer>
-      {modalProps.isVisible && (
-        <Modal
-          type={modalProps.type}
-          title={modalProps.title}
-          message={modalProps.message}
-          onCancel={modalProps.onCancel}
-          onConfirm={modalProps.onConfirm}
-        />
-      )}
     </>
   );
 }

@@ -1,18 +1,15 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-
-interface ContentState {
-    expanded: number | null;
-}
+import {ContentState} from "@/store/interface/storeInterfaces.ts";
 
 const initialState: ContentState = {
-    expanded: null,
+    expanded: true,
 };
 
 const contentSlice = createSlice({
     name: 'content',
     initialState,
     reducers: {
-        setContent: (state, action: PayloadAction<string>) => {
+        setContent: (state, action: PayloadAction<boolean>) => {
             state.expanded = action.payload;
         },
     }

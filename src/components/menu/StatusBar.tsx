@@ -4,6 +4,7 @@ import {
   AppBarSpacer,
 } from "@progress/kendo-react-layout";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   DropDownList,
   DropDownListChangeEvent,
@@ -17,7 +18,8 @@ import {
   DropDownButtonItemClickEvent,
 } from "@progress/kendo-react-buttons";
 import { Popup } from "@progress/kendo-react-popup";
-import { useNavigate } from "react-router-dom";
+import { setRegion } from "@/store/authSlice.ts";
+
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import {
   setAccountVisible,
@@ -49,8 +51,9 @@ export default function StatusBar() {
   const handleChangeRegion = (event: DropDownListChangeEvent) => {
     setState((prevState) => ({
       ...prevState,
-      regions: event.target.value,
+      region: event.target.value,
     }));
+    dispatch(setRegion(event.target.value));
   };
   const handleChangeLocale = (e: DropDownListChangeEvent) => {
     const lng = e.target.value;

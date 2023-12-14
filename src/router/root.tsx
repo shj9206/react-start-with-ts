@@ -18,7 +18,7 @@ import GridSample from "@/views/sample/gridSample/Index.tsx";
 import Login from "@/views/sample/login/login.tsx";
 import sampleRoute from "@/router/SampleRoute.tsx";
 
-const DashBoard = lazy(() => import("@/views/dashboard/DashBoard.tsx"));
+const DashBoard = lazy(() => import("@/views/dashboard/Index.tsx"));
 const FirmManage = lazy(() => import("@/views/fota/FirmManage.tsx"));
 const FirmRegist = lazy(() => import("@/views/fota/FirmRegist.tsx"));
 const FirmUpdate = lazy(() => import("@/views/fota/FirmUpdate.tsx"));

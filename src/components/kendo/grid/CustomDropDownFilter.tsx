@@ -1,12 +1,9 @@
 import {useRef, useState} from "react";
 import {DropDownList} from '@progress/kendo-react-dropdowns';
-import {filterBy} from "@progress/kendo-data-query";
+import {CompositeFilterDescriptor, filterBy, FilterDescriptor} from "@progress/kendo-data-query";
 
 
-export function CustomDropDownFilter(props) {
-    // 현재 필터링 상태를 관리하는 로컬 상태
-    const [filterValue, setFilterValue] = useState('');
-    const timeout = useRef(false);
+export function CustomDropDownFilter(props: { data: any[]; onChange: (arg0: { value: string; operator: string; syntheticEvent: any; }) => void; value: any; defaultItem: any; }) {
     const [state, setState] = useState({
         data: props.data.slice(),
         loading: false,
@@ -14,45 +11,50 @@ export function CustomDropDownFilter(props) {
     const delay = 300;
 
 
-    // 드롭다운 리스트 값 변경 핸들러
-    const onChange = event => {
+    const onChange = (event: { target: { value: string; }; syntheticEvent: any; }) => {
         const isAllSelected = event.target.value === 'ALL';
         props.onChange({
-            value: isAllSelected ? '' : event.target.value, // 'ALL'이면 빈 문자열을, 그렇지 않으면 선택된 값을 사용
-            operator: isAllSelected ? '' : 'contains', // 'ALL'이면 연산자를 빈 문자열로, 그렇지 않으면 'eq'를 사용
+            value: isAllSelected ? '' : event.target.value,
+            operator: isAllSelected ? '' : 'contains',
             syntheticEvent: event.syntheticEvent
         });
+    };
 
-        // 필터 입력을 관리하는 상태 업데이트
-        if (isAllSelected) {
-            setFilterValue(''); // 필터 입력 상태를 비움
+    const filterData = (filter: CompositeFilterDescriptor | FilterDescriptor) => {
+        if (Array.isArray(props.data)) {
+            const data = props.data?.slice();
+            return filterBy(data, filter);
+        } else {
+            console.error("props.data must be an array");
+            return [];
         }
     };
 
-    const filterData = (filter) => {
-        const data = props.data.slice();
-        return filterBy(data, filter);
-    };
+    const timeout = useRef<number | undefined>();
 
-    const filterChange = (event) => {
-        clearTimeout(timeout.current);
-        timeout.current = setTimeout(() => {
+    const filterChange = (event: { filter: CompositeFilterDescriptor | FilterDescriptor; }) => {
+        if (timeout.current !== undefined) {
+            window.clearTimeout(timeout.current);
+        }
+
+        setState(prevState => ({
+            ...prevState,
+            loading: true,
+        }));
+
+        timeout.current = window.setTimeout(() => {
             setState({
-                loading: true,
                 data: filterData(event.filter),
+                loading: false,
             });
         }, delay);
-        setState({
-            ...state,
-            loading: true,
-        });
     };
 
 
     return (
         <DropDownList
             filterable
-            data={state.data} // 필터링된 데이터를 전달
+            data={state.data}
             onChange={onChange}
             value={props.value || props.defaultItem}
             defaultItem={props.defaultItem}
