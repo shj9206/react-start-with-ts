@@ -6,6 +6,7 @@ export type SubMenuType = {
 };
 export type MainMenuType = {
   id: number;
+  showCheck: number[];
   name: string;
   value: string;
   subMenu: SubMenuType[];
@@ -14,6 +15,7 @@ export type MainMenuType = {
 export const mainMenu: MainMenuType[] = [
   {
     id: 1,
+    showCheck: [1, 2, 3, 4, 5, 6, 7],
     name: "Dash Board",
     value: "dashboard",
     subMenu: [
@@ -22,6 +24,18 @@ export const mainMenu: MainMenuType[] = [
   },
   {
     id: 2,
+    showCheck: [2, 3, 4, 5, 6, 7],
+    name: "System",
+    value: "system",
+    subMenu: [
+      { id: 21, text: "company", selected: true, value: "company" },
+      { id: 22, text: "branch", selected: false, value: "branch" },
+      { id: 23, text: "user", selected: false, value: "user" },
+    ],
+  },
+  {
+    id: 3,
+    showCheck: [1, 2, 3, 4],
     name: "User Management",
     value: "userManage",
     subMenu: [
@@ -31,7 +45,29 @@ export const mainMenu: MainMenuType[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
+    showCheck: [2, 3, 4, 5, 6, 7],
+    name: "Alert",
+    value: "alert",
+    subMenu: [{ id: 41, text: "Alert", selected: false, value: "alert" }],
+  },
+  {
+    id: 5,
+    showCheck: [2, 3, 4, 5, 6, 7],
+    name: "Support",
+    value: "support",
+    subMenu: [{ id: 41, text: "Support", selected: false, value: "support" }],
+  },
+  {
+    id: 6,
+    showCheck: [1],
+    name: "FirmWare",
+    value: "firmware",
+    subMenu: [{ id: 41, text: "Firmware", selected: false, value: "firmware" }],
+  },
+  {
+    id: 7,
+    showCheck: [2],
     name: "FOTA",
     value: "fota",
     subMenu: [
@@ -54,16 +90,26 @@ export const mainMenu: MainMenuType[] = [
       { id: 37, text: "Create Package", selected: false, value: "createPack" },
     ],
   },
+
   {
-    id: 4,
-    name: "Devise",
-    value: "devise",
-    subMenu: [{ id: 41, text: "Devise", selected: false, value: "devise" }],
-  },
-  {
-    id: 5,
+    id: 8,
+    showCheck: [1],
     name: "Setting",
     value: "setting",
     subMenu: [{ id: 51, text: "Setting", selected: false, value: "setting" }],
+  },
+  {
+    id: 9,
+    showCheck: [2],
+    name: "Transfer",
+    value: "transfer",
+    subMenu: [{ id: 51, text: "Transfer", selected: false, value: "transfer" }],
+  },
+  {
+    id: 10,
+    showCheck: [1],
+    name: "Guide",
+    value: "guide",
+    subMenu: [{ id: 51, text: "Guide", selected: false, value: "guide" }],
   },
 ];

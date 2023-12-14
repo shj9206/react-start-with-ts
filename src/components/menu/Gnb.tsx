@@ -33,8 +33,9 @@ const StyledLi = styled.li`
 export default function Gnb() {
   const navigate = useNavigate();
   const visible = useAppSelector((state) => state.account.visible);
+  const showMenuCheck = useAppSelector((state) => state.auth.showMenuCheck);
   const dispatch = useAppDispatch();
-  const { modalProps, showModal, hideModal } = useModal();
+  const { modalProps, showModal } = useModal();
   if (visible) {
     showModal(
       "inform",
@@ -50,7 +51,7 @@ export default function Gnb() {
     //   modalProps.onCancel,
     //   modalProps.onConfirm
     // );
-    dispatch(setVisible());
+    dispatch(setVisible(!visible));
   }
 
   const [expanded, setExpanded] = useState<boolean>(true);
@@ -63,7 +64,7 @@ export default function Gnb() {
 
   useEffect(() => {
     dispatch(setContent(expanded));
-  }, [expanded]);
+  }, [dispatch, expanded]);
 
   const [selectedId, setSelectedId] = useState<number>(
     subMenuList.findIndex((x) => x.selected),
@@ -87,6 +88,7 @@ export default function Gnb() {
     const target = subMenuList[ev.itemIndex].value;
     navigate(`/main/${menuValue}/${target}`);
   };
+
   return (
     <>
       <AppBar>
@@ -103,11 +105,13 @@ export default function Gnb() {
         <AppBarSpacer style={{ width: 4 }} />
         <AppBarSection>
           <StyledUl>
-            {mainMenu.map((el) => (
-              <StyledLi>
-                <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
-              </StyledLi>
-            ))}
+            {mainMenu.map((el) =>
+              el.showCheck.includes(showMenuCheck) ? (
+                <StyledLi>
+                  <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
+                </StyledLi>
+              ) : null,
+            )}
           </StyledUl>
         </AppBarSection>
       </AppBar>
