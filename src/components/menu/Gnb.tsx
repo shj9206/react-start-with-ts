@@ -166,19 +166,19 @@ export default function Gnb() {
         <DrawerContent>
           <div style={{ overflow: "auto", height: "87vh" }}>
             <Outlet />
-            {modalProps.isVisible && (
-              <Modal
-                type={modalProps.type}
-                title={modalProps.title}
-                message={modalProps.message}
-                onCancel={modalProps.onCancel}
-                onConfirm={modalProps.onConfirm}
-              />
-            )}
-            {/* <Modal /> */}
           </div>
         </DrawerContent>
       </Drawer>
+      {modalProps.isVisible && (
+        <Modal
+          type={modalProps.type}
+          title={modalProps.title}
+          message={modalProps.message}
+          onCancel={modalProps.onCancel}
+          onConfirm={modalProps.onConfirm}
+        />
+      )}
+      {/* <Modal /> */}
       <AlertComponent />
     </>
   );
