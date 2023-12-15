@@ -17,7 +17,7 @@ type GridHeader = {
   title: string;
   width: number;
   filterType?: string;
-  filter?: "boolean" | "numeric" | "text" | "date" | undefined;
+  filterable?: boolean;
   align?: string;
   cellType?: string;
 };

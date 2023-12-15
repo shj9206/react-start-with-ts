@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setContent } from "@/store/contentWidthSlice.ts";
 import AlertComponent from "@/components/kendo/dialog/AlertComponent.tsx";
 import AccuntModal from "@/components/myaccountModal/accountModal";
+import NotificationComponent from "@/components/kendo/notification/NotificationComponent.tsx";
 
 const StyledUl = styled.ul`
   font-size: 14px;
@@ -113,6 +114,7 @@ export default function Gnb() {
       </Drawer>
       <AccuntModal setSubMenuList={setSubMenuList} />
       <AlertComponent />
+      <NotificationComponent />
     </>
   );
 }

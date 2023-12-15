@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   getSelectedState,
   Grid,
@@ -43,7 +43,7 @@ const CommonGrid = <T extends unknown>({
       title: "titleName",
       width: 50,
       filterType: "filterTypeName",
-      filter: "boolean",
+      filterable: false,
       align: "alignName",
       cellType: "cellTypeName",
     },
@@ -106,6 +106,7 @@ const CommonGrid = <T extends unknown>({
   const DATA_ITEM_KEY: string = "name";
   const idGetter = getter(DATA_ITEM_KEY);
   const [selectedRow, setSelectedRow] = useState<T[]>([]);
+  const cellRef = useRef();
 
   /* 페이지 이동 */
   const pageChange = (event: GridPageChangeEvent) => {
@@ -179,6 +180,10 @@ const CommonGrid = <T extends unknown>({
         : dataValue;
     return (
       <td
+        ref={cellRef}
+        onClick={(event: React.MouseEvent) => {
+          cellClick?.(event);
+        }}
         style={{
           textAlign: (column?.align || "left") as
             | "left"
@@ -344,7 +349,7 @@ const CommonGrid = <T extends unknown>({
       }}
       reorderable={reorder}
       onRowClick={(event) => {
-        cellClick?.(event.dataItem);
+        if (check) cellClick?.(event.dataItem);
       }}
     >
       {girdToolBar && (
@@ -419,20 +424,22 @@ const CommonGrid = <T extends unknown>({
             {...header}
             cell={cellProp}
             filterCell={
-              defaultFilter && header.filter && header.filterType === "select"
+              defaultFilter &&
+              header.filterable &&
+              header.filterType === "select"
                 ? CategoryFilterCell
                 : defaultFilter &&
-                    header.filter &&
+                    header.filterable &&
                     header.filterType === "checkbox"
                   ? nonFilter
-                  : defaultFilter && !header.filter
-                    ? defaultFilter && header.filter == undefined
+                  : defaultFilter && !header.filterable
+                    ? defaultFilter && header.filterable == undefined
                       ? undefined
                       : nonFilter
                     : undefined
             }
             columnMenu={
-              header.filter && header.filterType === "checkbox"
+              header.filterable && header.filterType === "checkbox"
                 ? CheckBoxFilterCell
                 : undefined
             }

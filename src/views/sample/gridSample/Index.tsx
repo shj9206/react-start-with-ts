@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import CommonGrid from "@/components/kendo/grid/CommonGrid.tsx";
 import { CommonGridProps } from "@/components/kendo/grid/interface/gridInterfaces.ts";
@@ -7,8 +7,11 @@ import type {
   Company,
 } from "@/utils/apiService/accountService.ts";
 import { getCompaniesList } from "@/utils/apiService/accountService.ts";
-import { Button } from "@progress/kendo-react-buttons";
-import useAlert from "@/components/kendo/dialog/useAlert.tsx";
+import useAlert from "@/hooks/useAlert.tsx";
+import ModalComponent from "@/components/kendo/modal/ModalComponent.tsx";
+import { Popup } from "@progress/kendo-react-popup";
+import StyledButton from "@/components/common/StyledButton.tsx";
+import useNotification from "@/hooks/useNotification.tsx";
 
 export default function Index() {
   const column = [
@@ -17,6 +20,7 @@ export default function Index() {
       title: "name",
       width: 200,
       align: "center",
+      cellType: "link",
     },
     {
       field: "foundedYear",
@@ -28,7 +32,7 @@ export default function Index() {
       field: "city",
       title: "city",
       width: 200,
-      filter: true,
+      filterable: true,
       filterType: "select",
     },
     {
@@ -36,7 +40,7 @@ export default function Index() {
       title: "state",
       width: 200,
       align: "left",
-      filter: true,
+      filterable: true,
       filterType: "checkbox",
     },
     {
@@ -87,11 +91,32 @@ export default function Index() {
       width: 200,
     },
   ];
+  const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const cellClick = (e: Company) => {
-    console.log(e);
+  const cellClick = (event: React.MouseEvent) => {
+    setPopupPosition({ left: event.clientX, top: event.clientY });
+    setShowPopup((currentShowPopup) => !currentShowPopup);
   };
+
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      setShowPopup(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showPopup) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showPopup]);
 
   const addButton = (props: Company[]) => {
     alert("add Button Click Page Move");
@@ -154,6 +179,7 @@ export default function Index() {
     reorder: true,
     resizable: true,
     girdToolBar: true,
+    cellClick: cellClick,
   });
 
   const companyListQuery = () => ({
@@ -193,18 +219,85 @@ export default function Index() {
         ...prevState,
         gridData: company.data as Company[],
       }));
+      setCommonGridProps5((prevState) => ({
+        ...prevState,
+        gridData: company.data as Company[],
+      }));
     }
   }, [company]);
 
   const showAlert = useAlert();
+  const showNotification = useNotification();
 
   const handleClick = () => {
     showAlert({ message: "이것은 경고 메시지입니다!" });
   };
 
+  const handleNotificationClick = () => {
+    showNotification({ message: "이것은 Notification 입니다!" });
+  };
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+  };
+
+  const [popupPosition, setPopupPosition] = useState({ left: 50, top: 50 });
+  const buttonRef = useRef(null);
+  const [anchorAlign, setAnchorAlign] = useState({
+    horizontal: "right",
+    vertical: "bottom",
+  });
+  const [popupAlign, setPopupAlign] = useState({
+    horizontal: "left",
+    vertical: "top",
+  });
+
+  const handleButtonClick = () => {
+    if (buttonRef.current) {
+      const { left, top, height } = buttonRef.current.getBoundingClientRect();
+      setPopupPosition({ left, top: top + height });
+    }
+    setShowPopup(true);
+  };
+
   return (
     <div>
-      <Button onClick={handleClick}> alert Test Button 개발중...!</Button>
+      <StyledButton onClick={handleClick} cssType="main_01">
+        {" "}
+        alert Test Button
+      </StyledButton>
+      <StyledButton onClick={handleNotificationClick} cssType="main_01">
+        {" "}
+        Notification Test Button
+      </StyledButton>
+      <StyledButton
+        ref={buttonRef}
+        onClick={() => {
+          setOpenModal(!openModal);
+        }}
+      >
+        {" "}
+        모달
+      </StyledButton>
+      {openModal && (
+        <ModalComponent
+          onClose={handleModalClose}
+          title={"공지사항"}
+          buttons={["cancel", "confirm"]}
+          showCloseButton={false}
+        >
+          여기에 모달 컨텐츠만 넣으세요.
+        </ModalComponent>
+      )}
+      {showPopup && (
+        <div ref={popupRef}>
+          <Popup offset={popupPosition} show={showPopup}>
+            <p style={{ width: 200, height: 150 }}>지도!!!!!!!!!</p>
+          </Popup>
+        </div>
+      )}
       <div style={{ marginBottom: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <span>1. 기본 그리드</span>

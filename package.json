@@ -38,6 +38,7 @@
     "@progress/kendo-react-upload": "^6.1.1",
     "@progress/kendo-svg-icons": "^2.0.0",
     "@progress/kendo-theme-default": "^7.0.2",
+    "@progress/kendo-react-notification": "^6.1.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@rollup/plugin-babel": "^6.0.4",
     "@tanstack/react-query": "^5.8.4",

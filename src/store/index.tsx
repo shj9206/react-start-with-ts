@@ -4,6 +4,7 @@ import authReducer from "./authSlice";
 import ContentWidthReducer from "@/store/contentWidthSlice.ts";
 import accountReducer from "@/store/accountSlice.ts";
 import alertSlice from "@/store/alertSlice.ts";
+import notificationSlice from "@/store/notificationSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     account: accountReducer,
     alert: alertSlice,
+    notification: notificationSlice,
   },
 });
 
