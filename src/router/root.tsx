@@ -194,7 +194,7 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: "MyAccount",
+        path: "myAccount",
         element: (
           <Suspense>
             <MyAccount />

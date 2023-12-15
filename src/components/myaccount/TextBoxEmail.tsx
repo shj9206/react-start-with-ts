@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Button } from "@progress/kendo-react-buttons";
 import { TextBox, TextBoxProps } from "@progress/kendo-react-inputs";
 import { FieldRenderProps, FieldWrapper } from "@progress/kendo-react-form";
@@ -17,7 +16,6 @@ export default function TextBoxEmail(fieldRenderProps: FieldRenderProps) {
   const dispatch = useAppDispatch();
 
   const handleChange = () => {
-    console.log("test");
     dispatch(setChangeEmailVisible(true));
   };
 
