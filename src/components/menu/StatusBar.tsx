@@ -77,7 +77,7 @@ export default function StatusBar() {
 
   const handleChangeAccount = (e: DropDownButtonItemClickEvent) => {
     if (e.item === user[0]) {
-      navigate(`/main/MyAccount`);
+      navigate(`/main/myAccount`);
       dispatch(setAccountVisible(true));
     } else if (e.item === user[1]) {
       dispatch(setPasswordVisible(true));
