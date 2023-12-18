@@ -1,4 +1,3 @@
-// import { useState, useRef } from "react";
 import {
   Form,
   Field,
@@ -6,14 +5,21 @@ import {
   FormRenderProps,
   FieldWrapper,
 } from "@progress/kendo-react-form";
+import { Button } from "@progress/kendo-react-buttons";
+import { Label } from "@progress/kendo-react-labels";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setChangeEmailAddress } from "@/store/accountSlice";
 // import { RadioGroup } from "@progress/kendo-react-inputs";
 import LabelInput from "@/components/kendo/form/LabelInput.tsx";
 import RadioGroup from "@/components/kendo/form/RadioGroup";
 import TextBoxEmail from "@/components/myaccount/TextBoxEmail";
 
 export default function MyAccount() {
-  // const [ddlState, setDdlState] = useState();
-  // const ddlRef = useRef(null);
+  const changeEmailAddress = useAppSelector(
+    (state) => state.account.changeEmailAddress
+  );
+  const dispatch = useAppDispatch();
+
   const radioData = [
     { label: "F", value: "f" },
     { label: "C", value: "c" },
@@ -29,17 +35,22 @@ export default function MyAccount() {
     country: "South Korea",
     temperature: "f",
   };
-  const handleSubmit = (dataItem: { [name: string]: unknown }) => {
+  const handleSubmit = async (dataItem: { [name: string]: unknown }) => {
     alert(JSON.stringify(dataItem, null, 2));
+  };
+
+  const changeSetCancel = () => {
+    dispatch(setChangeEmailAddress(false));
   };
   return (
     <Form
       onSubmit={handleSubmit}
       initialValues={initialFormValues}
       render={(formRenderProps: FormRenderProps) => (
-        <FormElement horizontal style={{ maxWidth: 650 }}>
+        <FormElement horizontal>
           <fieldset className="k-form-fieldset">
             <legend className="k-form-legend">My Account</legend>
+            <div>Account Detail</div>
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
@@ -94,7 +105,27 @@ export default function MyAccount() {
                 />
               </div>
             </FieldWrapper>
-            여기에 이미지
+            {changeEmailAddress && (
+              <div>
+                <Label>{`We’ve sent a Confirmation email to ${initialFormValues.email} You must click the link that message before your email change will take effect.`}</Label>
+                <div className="k-form-field-wrap">
+                  <Button
+                    type="button"
+                    fillMode="outline"
+                    onClick={changeSetCancel}
+                  >
+                    Resend Confirmation Email
+                  </Button>
+                  <Button
+                    type="button"
+                    fillMode="outline"
+                    onClick={changeSetCancel}
+                  >
+                    CANCEL this Change
+                  </Button>
+                </div>
+              </div>
+            )}
             <FieldWrapper>
               <div className="k-form-field-wrap">
                 <Field
