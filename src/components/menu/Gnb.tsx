@@ -15,7 +15,7 @@ import { mainMenu, SubMenuType } from "@/utils/resources/menu.ts";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setContent } from "@/store/contentWidthSlice.ts";
 import AlertComponent from "@/components/kendo/dialog/AlertComponent.tsx";
-import AccuntModal from "@/components/myaccountModal/accountModal";
+import AccountModal from "@/components/myaccountModal/AccountModal";
 import NotificationComponent from "@/components/kendo/notification/NotificationComponent.tsx";
 
 const StyledUl = styled.ul`
@@ -47,7 +47,7 @@ export default function Gnb() {
   }, [dispatch, expanded]);
 
   const [selectedId, setSelectedId] = useState<number>(
-    subMenuList.findIndex((x) => x.selected)
+    subMenuList.findIndex((x) => x.selected),
   );
   const moveToMenu = (path: string) => {
     mainMenu.forEach((el) => {
@@ -88,10 +88,10 @@ export default function Gnb() {
           <StyledUl>
             {mainMenu.map((el) =>
               el.showCheck.includes(showMenuCheck) ? (
-                <StyledLi>
-                  <span onClick={() => moveToMenu(el.value)}>{el.name}</span>
+                <StyledLi onClick={() => moveToMenu(el.value)}>
+                  <span>{el.name}</span>
                 </StyledLi>
-              ) : null
+              ) : null,
             )}
           </StyledUl>
         </AppBarSection>
@@ -112,7 +112,7 @@ export default function Gnb() {
           </div>
         </DrawerContent>
       </Drawer>
-      <AccuntModal setSubMenuList={setSubMenuList} />
+      <AccountModal setSubMenuList={setSubMenuList} />
       <AlertComponent />
       <NotificationComponent />
     </>
