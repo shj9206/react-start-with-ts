@@ -1,4 +1,3 @@
-import { useState } from "react";
 import GridComponent from "@/components/kendo/grid/GridComponent.tsx";
 import products from "../kendoGrid/data/products.json";
 
