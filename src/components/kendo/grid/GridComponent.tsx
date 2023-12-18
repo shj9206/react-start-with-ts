@@ -4,6 +4,7 @@ import {
   Grid,
   GridCellProps,
   GridColumn as Column,
+  GridColumnReorderEvent,
   GridFilterCellProps,
   GridFilterChangeEvent,
   GridPageChangeEvent,
@@ -24,6 +25,7 @@ import {
 } from "@progress/kendo-data-query";
 import { TableSelectionChangeEvent } from "@progress/kendo-react-data-tools";
 import "@/components/kendo/grid/css/styles.css";
+import { useSelector } from "react-redux";
 import { CustomDropDownFilter } from "@/components/kendo/grid/CustomDropDownFilter.tsx";
 import {
   AppState,
@@ -32,11 +34,15 @@ import {
   ItemType,
 } from "./interface/gridInterfaces.ts";
 import { CustomArea, DefaultButton, GirdInfoArea } from "./GridToolbarArea.tsx";
-import { useSelector } from "react-redux";
 import { CustomCheckBoxFilter } from "@/components/kendo/grid/CustomCheckBoxFilter.tsx";
 import { RootState } from "@/store/interface/storeInterfaces.ts";
 
-const GridComponent = <T extends unknown>({
+/* 필터 사용을 안할때 쓰는 빈 태그 */
+function NonFilterCell() {
+  return <div />;
+}
+
+function GridComponent<T>({
   columnHeader = [
     {
       field: "fieldName",
@@ -60,13 +66,11 @@ const GridComponent = <T extends unknown>({
   gridWidth = 0,
   gridHeight = 0,
   check = false,
-  cellClick = (props: GridRowClickEvent) => {
-    return props;
-  },
+  cellClick = (props: GridRowClickEvent) => props,
   addButton = null,
   deleteButton = null,
   girdToolBar = false,
-}: CommonGridProps<T>) => {
+}: CommonGridProps<T>) {
   const [sort, setSort] = useState<Array<SortDescriptor>>([]);
   const [filter, setFilter] = useState<CompositeFilterDescriptor | undefined>(
     undefined,
@@ -129,24 +133,16 @@ const GridComponent = <T extends unknown>({
     setState(createState(0, displayCount[0]));
   }, [gridData]);
 
-  /* 필터 사용을 안할때 쓰는 빈 태그 */
-  function nonFilter() {
-    return <div></div>;
-  }
-
   const CategoryFilterCell: React.FC<GridFilterCellProps> = (props) => {
     type ActualType = number | string;
-    let state = {
-      items: [] as ItemType<ActualType>[],
-    };
 
-    const fieldValues: ItemType<ActualType>[] = state.items;
+    const fieldValues = state?.items;
 
     if (!props.field) {
-      return <></>; // Return empty when field is undefined
+      return <div />;
     }
 
-    const field = props.field; // Now we know field is a string
+    const { field } = props; // Now we know field is a string
     const uniqueValues = Array.from(
       new Set<string>(
         fieldValues?.map((item: ItemType<ActualType>) => String(item[field])) ??
@@ -208,7 +204,7 @@ const GridComponent = <T extends unknown>({
   };
 
   /* 컬럼 width, 컬럼 순서 변경 */
-  const onColumnReorderWithResize = (event: any) => {
+  const onColumnReorderWithResize = (event: GridColumnReorderEvent) => {
     const reorderedColumns = event.columns.sort(
       (a: { orderIndex: number }, b: { orderIndex: number }) =>
         a.orderIndex - b.orderIndex,
@@ -250,7 +246,6 @@ const GridComponent = <T extends unknown>({
 
       if (!checked) {
         filterData = selectedRow.filter(
-          // @ts-ignore
           (key: T) => key[DATA_ITEM_KEY] !== event.dataItem[DATA_ITEM_KEY],
         );
 
@@ -264,12 +259,12 @@ const GridComponent = <T extends unknown>({
 
       const newSelectedState = getSelectedState({
         event,
-        selectedState: selectedState,
+        selectedState,
         dataItemKey: DATA_ITEM_KEY,
       });
       setSelectedState(newSelectedState);
     },
-    [selectedState],
+    [selectedRow, selectedState],
   );
 
   const onHeaderSelectionChange = useCallback(
@@ -281,7 +276,7 @@ const GridComponent = <T extends unknown>({
         newSelectedState[idGetter(item)] = checked;
       });
 
-      let checkedAllData: any[] = [];
+      const checkedAllData: any[] = [];
 
       if (!checked) {
         setSelectedRow([]);
@@ -294,12 +289,34 @@ const GridComponent = <T extends unknown>({
 
       setSelectedState(checked ? newSelectedState : {});
     },
-    [],
+    [idGetter],
   );
+
+  const determineFilterCell = (header) => {
+    if (defaultFilter && header.filterable) {
+      if (header.filterType === "select") {
+        return CategoryFilterCell;
+      }
+      if (header.filterType === "checkbox") {
+        return NonFilterCell;
+      }
+    }
+    if (defaultFilter && !header.filterable) {
+      return header.filterable === undefined ? undefined : NonFilterCell;
+    }
+    return undefined;
+  };
+
+  const determineColumnMenu = (header) => {
+    if (header.filterable && header.filterType === "checkbox") {
+      return CheckBoxFilterCell;
+    }
+    return undefined;
+  };
 
   return (
     <Grid
-      style={{ width: width, height: height, ...gridStyles }}
+      style={{ width, height, ...gridStyles }}
       data={
         filter
           ? filterBy(
@@ -402,7 +419,7 @@ const GridComponent = <T extends unknown>({
       )}
       {check && (
         <Column
-          locked={true}
+          locked
           reorderable={false}
           resizable={false}
           field={SELECTED_FIELD}
@@ -411,7 +428,7 @@ const GridComponent = <T extends unknown>({
             state.items?.findIndex((item) => !selectedState[idGetter(item)]) ===
             -1
           }
-          filterCell={nonFilter}
+          filterCell={NonFilterCell}
         />
       )}
       {columns.map((header, index) => {
@@ -421,32 +438,14 @@ const GridComponent = <T extends unknown>({
           <Column
             {...header}
             cell={cellProp}
-            filterCell={
-              defaultFilter &&
-              header.filterable &&
-              header.filterType === "select"
-                ? CategoryFilterCell
-                : defaultFilter &&
-                    header.filterable &&
-                    header.filterType === "checkbox"
-                  ? nonFilter
-                  : defaultFilter && !header.filterable
-                    ? defaultFilter && header.filterable == undefined
-                      ? undefined
-                      : nonFilter
-                    : undefined
-            }
-            columnMenu={
-              header.filterable && header.filterType === "checkbox"
-                ? CheckBoxFilterCell
-                : undefined
-            }
+            filterCell={determineFilterCell(header)}
+            columnMenu={determineColumnMenu(header)}
             key={`${header.field}_${index}`}
           />
         );
       })}
     </Grid>
   );
-};
+}
 
 export default GridComponent;

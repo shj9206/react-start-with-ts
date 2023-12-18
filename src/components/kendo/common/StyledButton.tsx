@@ -13,15 +13,18 @@ const buttonStyles = {
     }
   `,
   main_02: css`
+    margin: 5px;
     background-color: #840e0e; // 메인 버튼의 배경색
     color: white; // 메인 버튼의 글자색
     // 여기에 메인 버튼에 대한 추가 스타일을 정의합니다.
   `,
   sub_01: css`
+    margin: 5px;
     background-color: #00bcd4; // 서브 버튼1의 배경색
     color: black; // 서브 버튼1의 글자색
   `,
   sub_02: css`
+    margin: 5px;
     background-color: #00bcd4; // 서브 버튼1의 배경색
     color: black; // 서브 버튼1의 글자색
   `,
