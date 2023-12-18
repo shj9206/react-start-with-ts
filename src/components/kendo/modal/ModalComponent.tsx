@@ -1,24 +1,29 @@
 import React from "react";
-import { Dialog, DialogActionsBar } from "@progress/kendo-react-dialogs";
+import {
+  Dialog,
+  DialogActionsBar,
+  DialogCloseEvent,
+} from "@progress/kendo-react-dialogs";
 import { Button } from "@progress/kendo-react-buttons";
+import PropTypes from "prop-types";
 
 interface ModalComponentProps {
   title?: string;
-  onClose: (action?: string) => void;
+  onClose: (event: DialogCloseEvent) => void;
   showCloseButton?: boolean;
   children: React.ReactNode;
   buttons?: Array<"confirm" | "cancel" | "close">;
   noHeader?: boolean;
 }
 
-const ModalComponent: React.FC<ModalComponentProps> = ({
+function ModalComponent({
   title,
   onClose,
   showCloseButton = true,
   children,
   buttons = [],
   noHeader = false,
-}) => {
+}: ModalComponentProps) {
   const hasHeader = title || showCloseButton;
   const hasFooter = buttons.length > 0;
 
@@ -44,6 +49,22 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       )}
     </Dialog>
   );
+}
+
+ModalComponent.defaultProps = {
+  title: "Title",
+  showCloseButton: true,
+  buttons: [],
+  noHeader: false,
+};
+
+ModalComponent.propTypes = {
+  title: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+  showCloseButton: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.string),
+  noHeader: PropTypes.bool,
 };
 
 export default ModalComponent;

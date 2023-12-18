@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   getSelectedState,
   Grid,
@@ -36,7 +36,7 @@ import { useSelector } from "react-redux";
 import { CustomCheckBoxFilter } from "@/components/kendo/grid/CustomCheckBoxFilter.tsx";
 import { RootState } from "@/store/interface/storeInterfaces.ts";
 
-const CommonGrid = <T extends unknown>({
+const GridComponent = <T extends unknown>({
   columnHeader = [
     {
       field: "fieldName",
@@ -56,7 +56,7 @@ const CommonGrid = <T extends unknown>({
   resizable = false,
   reorder = false,
   gridData = [],
-  displayCount = [0],
+  displayCount = [10],
   gridWidth = 0,
   gridHeight = 0,
   check = false,
@@ -106,7 +106,6 @@ const CommonGrid = <T extends unknown>({
   const DATA_ITEM_KEY: string = "name";
   const idGetter = getter(DATA_ITEM_KEY);
   const [selectedRow, setSelectedRow] = useState<T[]>([]);
-  const cellRef = useRef();
 
   /* 페이지 이동 */
   const pageChange = (event: GridPageChangeEvent) => {
@@ -180,9 +179,8 @@ const CommonGrid = <T extends unknown>({
         : dataValue;
     return (
       <td
-        ref={cellRef}
         onClick={(event: React.MouseEvent) => {
-          cellClick?.(event);
+          cellClick?.(event as unknown as GridRowClickEvent);
         }}
         style={{
           textAlign: (column?.align || "left") as
@@ -451,4 +449,4 @@ const CommonGrid = <T extends unknown>({
   );
 };
 
-export default CommonGrid;
+export default GridComponent;

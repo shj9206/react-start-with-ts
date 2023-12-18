@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import CommonGrid from "@/components/kendo/grid/CommonGrid.tsx";
+import GridComponent from "@/components/kendo/grid/GridComponent.tsx";
 import { CommonGridProps } from "@/components/kendo/grid/interface/gridInterfaces.ts";
 import type {
   AccountResult,
@@ -12,6 +12,8 @@ import ModalComponent from "@/components/kendo/modal/ModalComponent.tsx";
 import { Popup } from "@progress/kendo-react-popup";
 import StyledButton from "@/components/common/StyledButton.tsx";
 import useNotification from "@/hooks/useNotification.tsx";
+import TabComponent from "@/components/kendo/tap/TabComponent.tsx";
+import Login from "@/views/sample/login/login.tsx";
 
 export default function Index() {
   const column = [
@@ -262,8 +264,14 @@ export default function Index() {
     setShowPopup(true);
   };
 
+  const testTabList = [
+    { title: "test1", children: <Login /> },
+    { title: "test2", children: <p>2벜</p> },
+  ];
+
   return (
     <div>
+      <TabComponent tabList={testTabList} />
       <StyledButton onClick={handleClick} cssType="main_01">
         {" "}
         alert Test Button
@@ -302,19 +310,19 @@ export default function Index() {
         <div style={{ marginBottom: 10 }}>
           <span>1. 기본 그리드</span>
         </div>
-        <CommonGrid {...commonGridProps} />
+        <GridComponent {...commonGridProps} />
       </div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <span>2. checkbox 그리드 + add 버튼, delete 버튼</span>
         </div>
-        <CommonGrid {...commonGridProps2} />
+        <GridComponent {...commonGridProps2} />
       </div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <span>3. 기본 필터 그리드</span>
         </div>
-        <CommonGrid {...commonGridProps3} />
+        <GridComponent {...commonGridProps3} />
       </div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ marginBottom: 10 }}>
@@ -323,13 +331,13 @@ export default function Index() {
             순서 초기화
           </span>
         </div>
-        <CommonGrid {...commonGridProps4} />
+        <GridComponent {...commonGridProps4} />
       </div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <span>5. 필터 종류 ( 기본, 드랍다운, 체크박스)</span>
         </div>
-        <CommonGrid {...commonGridProps5} />
+        <GridComponent {...commonGridProps5} />
       </div>
     </div>
   );

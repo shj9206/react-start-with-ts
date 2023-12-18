@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CommonGrid from "@/components/kendo/grid/CommonGrid.tsx";
+import GridComponent from "@/components/kendo/grid/GridComponent.tsx";
 import products from "../kendoGrid/data/products.json";
 
 export default function Index() {
@@ -44,7 +44,7 @@ export default function Index() {
       <br />
       Check out{" "}
       <a href="https://reactrouter.com">the docs at reactrouter.com</a>.
-      <CommonGrid {...commonGridProps} />
+      <GridComponent {...commonGridProps} />
       <br />
     </div>
   );
