@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { Input, InputProps } from "@progress/kendo-react-inputs";
 
-const StyledSwitch = styled(Input)<InputProps>`
+const StyledInput = styled(Input)<InputProps>`
   // 추가 스타일
 `;
 
-export default StyledSwitch;
+export default StyledInput;

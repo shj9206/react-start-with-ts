@@ -2,6 +2,9 @@ import StyledButton from "@/components/kendo/common/StyledButton.tsx";
 import StyledCheckbox from "@/components/kendo/common/StyledCheckbox.tsx";
 import StyledDropDownList from "@/components/kendo/common/StyledDropDownList.tsx";
 import StyledInput from "@/components/kendo/common/StyledInput.tsx";
+import { SvgIcon } from "@progress/kendo-react-common";
+import { youtubeIcon, eyeIcon, eyeSlashIcon } from "@progress/kendo-svg-icons";
+import StyledPasswordInput from "@/components/kendo/common/StyledPasswordInput.tsx";
 
 function CommonSample() {
   const categories = ["Pizza", "Burger", "Pasta", "Burrito"];
@@ -57,11 +60,9 @@ function CommonSample() {
           placeholder="disabled"
           disabled
         />
-        <StyledInput
-          style={{ margin: 10, width: 100 }}
+        <StyledPasswordInput
+          style={{ margin: 10, width: 500 }}
           placeholder="password"
-          type="password"
-          value="123123"
         />
         <StyledInput
           name="email"
