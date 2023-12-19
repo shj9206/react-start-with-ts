@@ -112,4 +112,31 @@ export const mainMenu: MainMenuType[] = [
     value: "guide",
     subMenu: [{ id: 51, text: "Guide", selected: false, value: "guide" }],
   },
+  {
+    id: 11,
+    showCheck: [1],
+    name: "Sample",
+    value: "sample",
+    subMenu: [
+      {
+        id: 52,
+        text: "Common-Component",
+        selected: false,
+        value: "commonComponent",
+      },
+      {
+        id: 53,
+        text: "Grid-Component",
+        selected: false,
+        value: "gridComponent",
+      },
+      { id: 54, text: "Tab-Component", selected: false, value: "tapComponent" },
+      {
+        id: 55,
+        text: "Accordion-Component",
+        selected: false,
+        value: "accordionComponent",
+      },
+    ],
+  },
 ];

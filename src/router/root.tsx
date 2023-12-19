@@ -17,6 +17,7 @@ import ErrorPage from "@/views/sample/routerSample/error-page.tsx";
 import GridSample from "@/views/sample/gridSample/Index.tsx";
 import Login from "@/views/sample/login/login.tsx";
 import sampleRoute from "@/router/SampleRoute.tsx";
+import CommonSample from "@/views/sample/common/CommonSample.tsx";
 
 const DashBoard = lazy(() => import("@/views/dashboard/Index.tsx"));
 const FirmManage = lazy(() => import("@/views/fota/FirmManage.tsx"));
@@ -200,6 +201,55 @@ const root = createBrowserRouter([
             <MyAccount />
           </Suspense>
         ),
+      },
+      {
+        path: "sample",
+        children: [
+          {
+            path: "",
+            element: <Navigate to="gridComponent" replace />,
+          },
+          {
+            path: "commonComponent",
+            element: (
+              <Suspense>
+                <CommonSample />
+              </Suspense>
+            ),
+          },
+          {
+            path: "gridComponent",
+            element: (
+              <Suspense>
+                <GridSample />
+              </Suspense>
+            ),
+          },
+          {
+            path: "tapComponent",
+            element: (
+              <Suspense>
+                <GridSample />
+              </Suspense>
+            ),
+          },
+          {
+            path: "accordionComponent",
+            element: (
+              <Suspense>
+                <GridSample />
+              </Suspense>
+            ),
+          },
+          {
+            path: "tapComponent",
+            element: (
+              <Suspense>
+                <GridSample />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },

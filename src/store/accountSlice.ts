@@ -6,6 +6,7 @@ interface AccountState {
   passwordVisible: boolean | null;
   historyVisible: boolean | null;
   changeEmailVisible: boolean | null;
+  changeEmailAddress: boolean | null;
 }
 
 const initialState: AccountState = {
@@ -13,6 +14,7 @@ const initialState: AccountState = {
   passwordVisible: false,
   historyVisible: false,
   changeEmailVisible: false,
+  changeEmailAddress: false,
 };
 
 const accountSlice = createSlice({
@@ -31,6 +33,9 @@ const accountSlice = createSlice({
     setChangeEmailVisible: (state, action: PayloadAction<boolean>) => {
       state.changeEmailVisible = action.payload;
     },
+    setChangeEmailAddress: (state, action: PayloadAction<boolean>) => {
+      state.changeEmailAddress = action.payload;
+    },
   },
 });
 
@@ -39,6 +44,7 @@ export const {
   setPasswordVisible,
   setHistoryVisible,
   setChangeEmailVisible,
+  setChangeEmailAddress,
 } = accountSlice.actions;
 
 // export const selectCount = (state: RootState) => state.account.visible;
