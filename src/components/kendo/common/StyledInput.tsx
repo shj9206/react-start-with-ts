@@ -7,7 +7,7 @@ import { eyeIcon, eyeSlashIcon } from "@progress/kendo-svg-icons";
 interface CustomInputProps extends InputProps {
   left?: number;
   width?: number;
-  inputType?: "password";
+  inputType?: "password" | "text";
 }
 
 const CustomInput = styled(Input)<CustomInputProps>`
