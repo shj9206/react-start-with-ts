@@ -23,7 +23,7 @@ const PasswordInput = styled.div`
 `;
 
 function StyledInput(props: InputProps) {
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { style } = props;
   const width = style?.width ?? 0;
