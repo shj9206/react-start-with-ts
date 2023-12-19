@@ -15,7 +15,7 @@ import {
   getCompaniesList,
 } from "@/utils/apiService/accountService.ts";
 import GlobalNumberCompany from "@/views/dashboard/tiles/GlobalNumberCompany.tsx";
-import GlobalNumberSystem from "@/views/dashboard/tiles/GlobalNumberSystem.tsx";
+import GlobalNumberInprogress from "@/views/dashboard/tiles/GlobalNumberInprogress.tsx";
 import GlobalMonthlySystem from "@/views/dashboard/tiles/GlobalMonthlySystem.tsx";
 import GlobalNumberModel from "@/views/dashboard/tiles/GlobalNumberModel.tsx";
 
@@ -83,7 +83,7 @@ export default function DashBoard() {
     },
     {
       header: "Global Number of System Registration Status",
-      body: <GlobalNumberSystem />,
+      body: <GlobalNumberInprogress />,
     },
     {
       header: "Global Number of Monthly System Installation",

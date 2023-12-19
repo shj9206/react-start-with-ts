@@ -28,6 +28,12 @@ export type InProgressSystem = {
   region: string;
 };
 
+export type CompanyBranchNum = {
+  company: number;
+  branch: number;
+  region: string;
+};
+
 const mock = new AxiosMockAdapter(axios);
 function randomRegion(): string {
   const regions: Array<"eu" | "us" | "au"> = ["eu", "us", "au"];
@@ -76,12 +82,52 @@ const createInProgress = (): InProgressSystem[] => [
     region: "au",
   },
 ];
+const createCompanyBranch = (): CompanyBranchNum[] => [
+  {
+    company: faker.number.int(100),
+    branch: faker.number.int(100),
+    region: "eu",
+  },
+  {
+    company: faker.number.int(100),
+    branch: faker.number.int(100),
+    region: "us",
+  },
+  {
+    company: faker.number.int(100),
+    branch: faker.number.int(100),
+    region: "au",
+  },
+];
 
 const randomInstallModelList = (): InstalledModel[] =>
   Array.from({ length: 23 }, () => createModel());
 const randomInstallMonthList = (): InstalledMonth[] =>
   Array.from({ length: 23 }, () => createMonth());
 const randomInProgressList = (): InProgressSystem[] => createInProgress();
+const randomCompanyBranchList = (): CompanyBranchNum[] => createCompanyBranch();
+
+// IF-DASH-002 회사 & 지점 요약 정보 조회
+export const getNumCompanyBranch = async () => {
+  const api = APIBuilder.get(`/api/v1.0/dashboard/company`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<DashboardResult>>();
+  return data;
+};
+mock.onGet(`/api/v1.0/dashboard/company`).reply(() => {
+  try {
+    const data = randomCompanyBranchList();
+    const results = {
+      code: 200, // 결과코드
+      message: "success", // 결과 메시지
+      data, // 결과 데이터
+    };
+    return [200, results];
+  } catch (error) {
+    return [500, { code: 500, message: "Internal server error" }];
+  }
+});
 
 // IF-DASH-004 설치 중 시스템 요약 정보 조회
 export const getInProgressDashboard = async () => {
