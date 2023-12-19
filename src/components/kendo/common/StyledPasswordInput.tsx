@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Input, InputProps } from "@progress/kendo-react-inputs";
 import { SvgIcon } from "@progress/kendo-react-common";
@@ -13,7 +13,7 @@ const CustomInput = styled(Input)<InputProps>`
 `;
 const PasswordEyeIcon = styled.div<PasswordEyeIconProps>`
   position: absolute;
-  top: 11px;
+  top: 2px;
   cursor: pointer;
   left: ${(props) => props.left}px;
 `;
@@ -24,16 +24,22 @@ const PasswordInput = styled.div`
 
 function StyledInput(props: InputProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [eyeWidth, setEyeWidth] = useState(0);
+  const inputRef = useRef();
 
-  const { style } = props;
-  const width = style?.width ?? 0;
-
+  useEffect(() => {
+    setEyeWidth(inputRef.current?.element.offsetWidth);
+  }, []);
   return (
     <PasswordInput>
-      <CustomInput type={showPassword ? "text" : "password"} {...props} />
+      <CustomInput
+        type={showPassword ? "text" : "password"}
+        {...props}
+        ref={inputRef}
+      />
       <PasswordEyeIcon
         onClick={() => setShowPassword(!showPassword)}
-        left={typeof width === "number" ? width - 10 : 0}
+        left={eyeWidth - 20}
       >
         {showPassword ? (
           <SvgIcon icon={eyeIcon} />
