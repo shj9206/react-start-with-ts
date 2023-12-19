@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Input, InputProps } from "@progress/kendo-react-inputs";
+import {
+  Input,
+  InputProps,
+  InputWithoutContext,
+} from "@progress/kendo-react-inputs";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { eyeIcon, eyeSlashIcon } from "@progress/kendo-svg-icons";
 
@@ -24,12 +28,17 @@ const PasswordInput = styled.div`
 
 function StyledInput(props: InputProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [eyeWidth, setEyeWidth] = useState(0);
-  const inputRef = useRef();
+  const [eyeWidth, setEyeWidth] = useState<number>(0);
+  const inputRef = useRef<InputWithoutContext>(null);
 
   useEffect(() => {
-    setEyeWidth(inputRef.current?.element.offsetWidth);
+    const width = inputRef.current?.element?.offsetWidth;
+
+    if (width !== undefined) {
+      setEyeWidth(width);
+    }
   }, []);
+
   return (
     <PasswordInput>
       <CustomInput
