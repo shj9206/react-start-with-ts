@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { Button, ButtonProps } from "@progress/kendo-react-buttons";
+import { useEffect, useState } from "react";
 
 // 버튼 유형에 따른 스타일을 정의합니다.
 const buttonStyles = {
@@ -36,11 +37,29 @@ const getTypeStyle = (cssType?: string) =>
 
 interface StyledButtonProps extends ButtonProps {
   cssType?: "main_01" | "main_02" | "sub_01" | "sub_02" | "sub_03";
+  width?: number;
 }
 
 // StyledButton 정의
-const StyledButton = styled(Button)<StyledButtonProps>`
+const CustomButton = styled(Button)<StyledButtonProps>`
   ${(props) => getTypeStyle(props.cssType)} : null
 `;
+
+function StyledButton({ width, ...props }: StyledButtonProps) {
+  const [buttonWidth, setButtonWidth] = useState<number>(0);
+
+  useEffect(() => {
+    if (typeof width === "number") {
+      setButtonWidth(width);
+    }
+  }, [width]);
+
+  return <CustomButton {...props} style={{ width: buttonWidth }} />;
+}
+
+StyledButton.defaultProps = {
+  cssType: "main_01",
+  width: 100,
+};
 
 export default StyledButton;
