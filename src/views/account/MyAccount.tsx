@@ -16,7 +16,7 @@ import TextBoxEmail from "@/components/myaccount/TextBoxEmail";
 
 export default function MyAccount() {
   const changeEmailAddress = useAppSelector(
-    (state) => state.account.changeEmailAddress
+    (state) => state.account.changeEmailAddress,
   );
   const dispatch = useAppDispatch();
 
@@ -35,6 +35,7 @@ export default function MyAccount() {
     country: "South Korea",
     temperature: "f",
   };
+
   const handleSubmit = async (dataItem: { [name: string]: unknown }) => {
     alert(JSON.stringify(dataItem, null, 2));
   };

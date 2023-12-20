@@ -34,6 +34,32 @@ export type CompanyBranchNum = {
   region: string;
 };
 
+export type SystemType = {
+  total: number;
+  normal: number;
+  disconnect: number;
+  alert: number;
+};
+
+export type AlarmType = {
+  warning: number;
+  error: number;
+  fault: number;
+  open: number;
+  closed: number;
+};
+export type GroupInfoType = {
+  groupname: string;
+  groupid: string;
+  systems: {
+    name: string;
+    code: string;
+    model: string;
+    status: string;
+    connection: string;
+  }[];
+};
+
 const mock = new AxiosMockAdapter(axios);
 function randomRegion(): string {
   const regions: Array<"eu" | "us" | "au"> = ["eu", "us", "au"];
@@ -107,6 +133,33 @@ const randomInstallMonthList = (): InstalledMonth[] =>
 const randomInProgressList = (): InProgressSystem[] => createInProgress();
 const randomCompanyBranchList = (): CompanyBranchNum[] => createCompanyBranch();
 
+// IF-DASH-001 시스템 요약 정보 조회
+export const getSystemInfo = async () => {
+  const api = APIBuilder.get(`/api/v1.0/dashboard/system`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<DashboardResult>>();
+  return data;
+};
+mock.onGet(`/api/v1.0/dashboard/system`).reply(() => {
+  try {
+    const data: SystemType = {
+      total: faker.number.int(100),
+      normal: faker.number.int(100),
+      disconnect: faker.number.int(100),
+      alert: faker.number.int(100),
+    };
+    const results = {
+      code: 200, // 결과코드
+      message: "success", // 결과 메시지
+      data, // 결과 데이터
+    };
+    return [200, results];
+  } catch (error) {
+    return [500, { code: 500, message: "Internal server error" }];
+  }
+});
+
 // IF-DASH-002 회사 & 지점 요약 정보 조회
 export const getNumCompanyBranch = async () => {
   const api = APIBuilder.get(`/api/v1.0/dashboard/company`)
@@ -118,6 +171,34 @@ export const getNumCompanyBranch = async () => {
 mock.onGet(`/api/v1.0/dashboard/company`).reply(() => {
   try {
     const data = randomCompanyBranchList();
+    const results = {
+      code: 200, // 결과코드
+      message: "success", // 결과 메시지
+      data, // 결과 데이터
+    };
+    return [200, results];
+  } catch (error) {
+    return [500, { code: 500, message: "Internal server error" }];
+  }
+});
+
+// IF-DASH-003 알람 요약 정보 조회
+export const getAlarmInfo = async () => {
+  const api = APIBuilder.get(`/api/v1.0/dashboard/alarm`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<DashboardResult>>();
+  return data;
+};
+mock.onGet(`/api/v1.0/dashboard/alarm`).reply(() => {
+  try {
+    const data: AlarmType = {
+      warning: faker.number.int(100),
+      error: faker.number.int(100),
+      fault: faker.number.int(100),
+      open: faker.number.int(100),
+      closed: faker.number.int(100),
+    };
     const results = {
       code: 200, // 결과코드
       message: "success", // 결과 메시지
@@ -184,6 +265,38 @@ export const getInstallNumByModel = async () => {
 mock.onGet(`/api/v1.0/dashboard/install/bymodel`).reply(() => {
   try {
     const data = randomInstallModelList();
+    const results = {
+      code: 200, // 결과코드
+      message: "success", // 결과 메시지
+      data, // 결과 데이터
+    };
+    return [200, results];
+  } catch (error) {
+    return [500, { code: 500, message: "Internal server error" }];
+  }
+});
+
+// IF-DASH-007 그룹별 알람 요약 정보 조회
+export const getInfoByGroup = async () => {
+  const api = APIBuilder.get(`/api/v1.0/dashboard/event/bygroup`)
+    .withCredentials(false)
+    .build();
+  const { data } = await api.call<Response<DashboardResult>>();
+  return data;
+};
+mock.onGet(`/api/v1.0/dashboard/event/bygroup`).reply(() => {
+  try {
+    const data: GroupInfoType = {
+      groupname: faker.company.name(),
+      groupid: faker.number.int(20).toString(),
+      systems: Array.from({ length: 5 }, () => ({
+        name: faker.system.commonFileName(),
+        code: faker.system.fileName(),
+        model: faker.system.commonFileName(),
+        status: "good",
+        connection: "good",
+      })),
+    };
     const results = {
       code: 200, // 결과코드
       message: "success", // 결과 메시지
