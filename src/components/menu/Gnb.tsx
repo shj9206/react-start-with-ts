@@ -57,7 +57,7 @@ export default function Gnb() {
 
   useEffect(() => {
     if (menuListResponse !== undefined && menuListResponse !== null)
-      setMenu(menuListResponse.data);
+      setMenu(menuListResponse);
   }, [menuListResponse]);
 
   const handleClick = () => {
