@@ -1,23 +1,22 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  setAccountVisible,
   setChangeEmailVisible,
-  setPasswordVisible,
   setHistoryVisible,
+  setPasswordVisible,
 } from "@/store/accountSlice";
-import { SubMenuType } from "@/utils/resources/menu.ts";
 import ModalComponent from "@/components/kendo/modal/ModalComponent.tsx";
 import EmailModalForm from "@/components/myaccountModal/emailModalForm";
 import PasswordFirstModalForm from "@/components/myaccountModal/PasswordFirstModalForm";
 import PasswordSecondModalForm from "@/components/myaccountModal/PasswordSecondModalForm";
 import HistoryModal from "@/components/myaccountModal/HistoryModal";
 
-interface PropsType {
-  setSubMenuList: React.Dispatch<React.SetStateAction<SubMenuType[]>>;
-}
+// interface PropsType {
+//   setSubMenuList: React.Dispatch<React.SetStateAction<SubMenuType[]>>;
+// }
 
-export default function AccuntModal({ setSubMenuList }: PropsType) {
+// export default function AccuntModal({ setSubMenuList }: PropsType) {
+export default function AccuntModal() {
   const [openModal, setOpenModal] = useState({
     emailModal: false,
     passwordModalFirst: false,
@@ -26,31 +25,31 @@ export default function AccuntModal({ setSubMenuList }: PropsType) {
   });
 
   const accountVisible = useAppSelector(
-    (state) => state.account.accountVisible
+    (state) => state.account.accountVisible,
   );
   const passwordVisible = useAppSelector(
-    (state) => state.account.passwordVisible
+    (state) => state.account.passwordVisible,
   );
   const changeEmailVisible = useAppSelector(
-    (state) => state.account.changeEmailVisible
+    (state) => state.account.changeEmailVisible,
   );
   const historyVisible = useAppSelector(
-    (state) => state.account.historyVisible
+    (state) => state.account.historyVisible,
   );
 
   const dispatch = useAppDispatch();
 
-  if (accountVisible) {
-    setSubMenuList([
-      {
-        id: 61,
-        selected: false,
-        text: "My Account",
-        value: "myAccount",
-      },
-    ]);
-    dispatch(setAccountVisible(false));
-  }
+  // if (accountVisible) {
+  //   setSubMenuList([
+  //     {
+  //       id: 61,
+  //       selected: false,
+  //       text: "My Account",
+  //       value: "myAccount",
+  //     },
+  //   ]);
+  //   dispatch(setAccountVisible(false));
+  // }
   if (passwordVisible) {
     setOpenModal({ ...openModal, passwordModalFirst: true });
     dispatch(setPasswordVisible(false));

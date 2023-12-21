@@ -8,7 +8,7 @@ function InputSample() {
       <FlexBox gap={10}>
         <StyledInput width={100} placeholder="입력하세요" />
         <StyledInput width={200} placeholder="disabled" disabled />
-        <StyledInput width={300} placeholder="password" inputType="password" />
+        <StyledInput width={300} placeholder="password" styledType="password" />
       </FlexBox>
     </>
   );

@@ -1,0 +1,499 @@
+[
+    {
+      "type": "MENU",
+      "code": "M010000000",
+      "name": "Dash Board",
+      "path": "/api/v1.0/dashboard",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M010100000",
+          "name": "시스템 Map",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M010200000",
+          "name": "시스템 찾기",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M010300000",
+          "name": "Alert 정보 요약",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M010400000",
+          "name": "진행 시스템 ",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M010500000",
+          "name": "전체 설치 요약",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M020000000",
+      "name": "System",
+      "path": "/api/v1.0/system/systems",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M020100000",
+          "name": "Activated Systems",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M020200000",
+          "name": "In Progress Systems",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M020300000",
+          "name": "Alerts",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M020400000",
+          "name": "System Group",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M020500000",
+          "name": "Devices",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M030000000",
+      "name": "User Management",
+      "path": "/api/v1.0/account/companies",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M030100000",
+          "name": "회사 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M030200000",
+          "name": "분점 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M030300000",
+          "name": "사용자 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M040000000",
+      "name": "Events",
+      "path": "/api/v1.0/settings/codes",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M040100000",
+          "name": "Ess event",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M040200000",
+          "name": "BackUp History",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M050000000",
+      "name": "Support",
+      "path": "/api/v1.0/system/systems",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M050100000",
+          "name": "공지사항",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M060000000",
+      "name": "FOTA",
+      "path": "/api/v1.0/fota/firmwares",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": null
+    },
+    {
+      "type": "MENU",
+      "code": "M070000000",
+      "name": "Settings",
+      "path": "/api/v1.0/settings/codes",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M070100000",
+          "name": "공통설정",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070200000",
+          "name": "공통 코드 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070300000",
+          "name": "메뉴 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070400000",
+          "name": "권한 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070500000",
+          "name": "App 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070600000",
+          "name": "공시사항 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M070700000",
+          "name": "약관/정책 관리",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    },
+    {
+      "type": "MENU",
+      "code": "M080000000",
+      "name": "Sample",
+      "path": "/api/v1.0/sample/",
+      "useYn": "Y",
+      "crud": {
+        "createYn": "Y",
+        "readYn": "Y",
+        "updateYn": "Y",
+        "deleteYn": "Y"
+      },
+      "menuList": [
+        {
+          "type": "MENU",
+          "code": "M080100000",
+          "name": "Common-Component",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M080200000",
+          "name": "Grid-Component",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M080300000",
+          "name": "Tab-Component",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M080400000",
+          "name": "Accordion-Component",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
+        }
+      ]
+    }
+  ]

@@ -13,7 +13,7 @@ import { Popup } from "@progress/kendo-react-popup";
 import StyledButton from "@/components/kendo/common/StyledButton.tsx";
 import useNotification from "@/hooks/useNotification.tsx";
 import TabComponent from "@/components/kendo/tap/TabComponent.tsx";
-import Login from "@/views/sample/login/login.tsx";
+import Login from "@/views/sample/login/Login.tsx";
 import AccordionComponent from "@/components/kendo/accordion/AccordionComponent.tsx";
 
 export default function Index() {

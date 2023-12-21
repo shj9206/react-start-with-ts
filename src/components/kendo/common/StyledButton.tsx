@@ -32,20 +32,19 @@ const buttonStyles = {
 };
 
 // 버튼 유형을 입력받아 해당하는 스타일을 반환하는 함수
-const getTypeStyle = (cssType?: string) =>
-  buttonStyles[cssType as keyof typeof buttonStyles] || null;
+const getTypeStyle = (csstype?: string) =>
+  buttonStyles[csstype as keyof typeof buttonStyles] || null;
 
 interface StyledButtonProps extends ButtonProps {
-  cssType?: "main_01" | "main_02" | "sub_01" | "sub_02" | "sub_03";
+  csstype?: "main_01" | "main_02" | "sub_01" | "sub_02" | "sub_03";
   width?: number;
 }
 
-// StyledButton 정의
 const CustomButton = styled(Button)<StyledButtonProps>`
-  ${(props) => getTypeStyle(props.cssType)} : null
+  ${(props) => getTypeStyle(props.csstype)} : null
 `;
 
-function StyledButton({ width, ...props }: StyledButtonProps) {
+function StyledButton({ width, csstype, ...props }: StyledButtonProps) {
   const [buttonWidth, setButtonWidth] = useState<number>(0);
 
   useEffect(() => {
@@ -54,11 +53,13 @@ function StyledButton({ width, ...props }: StyledButtonProps) {
     }
   }, [width]);
 
-  return <CustomButton {...props} style={{ width: buttonWidth }} />;
+  return (
+    <CustomButton {...props} csstype={csstype} style={{ width: buttonWidth }} />
+  );
 }
 
 StyledButton.defaultProps = {
-  cssType: "main_01",
+  csstype: "main_01",
   width: 100,
 };
 

@@ -6,15 +6,15 @@ function ButtonSample() {
     <>
       <p> 1. Button</p>
       <FlexBox gap={10}>
-        <StyledButton cssType="main_01" width={150}>
+        <StyledButton csstype="main_01" width={150}>
           Main 1번 버튼
         </StyledButton>
-        <StyledButton cssType="main_02" width={250}>
+        <StyledButton csstype="main_02" width={250}>
           Main 2번 버튼
         </StyledButton>
-        <StyledButton cssType="sub_01"> Sub 1번 버튼 </StyledButton>
-        <StyledButton cssType="sub_02"> Sub 2번 버튼 </StyledButton>
-        <StyledButton cssType="sub_03"> Sub 3번 버튼 </StyledButton>
+        <StyledButton csstype="sub_01"> Sub 1번 버튼 </StyledButton>
+        <StyledButton csstype="sub_02"> Sub 2번 버튼 </StyledButton>
+        <StyledButton csstype="sub_03"> Sub 3번 버튼 </StyledButton>
       </FlexBox>
     </>
   );

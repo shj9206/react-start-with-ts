@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "@/store/authSlice.ts";
-import { useQuery } from "@tanstack/react-query";
 import {
   AccountResult,
   getUserDetail,

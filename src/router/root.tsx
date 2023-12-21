@@ -15,7 +15,7 @@ import Root, {
 } from "@/views/sample/routerSample/root.tsx";
 import ErrorPage from "@/views/sample/routerSample/error-page.tsx";
 import GridSample from "@/views/sample/gridSample/Index.tsx";
-import Login from "@/views/sample/login/login.tsx";
+import Login from "@/views/sample/login/Login.tsx";
 import sampleRoute from "@/router/SampleRoute.tsx";
 import CommonSample from "@/views/sample/common/CommonSample.tsx";
 
@@ -207,10 +207,10 @@ const root = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Navigate to="gridComponent" replace />,
+            element: <Navigate to="Common-Component" replace />,
           },
           {
-            path: "commonComponent",
+            path: "Common-Component",
             element: (
               <Suspense>
                 <CommonSample />
@@ -218,7 +218,7 @@ const root = createBrowserRouter([
             ),
           },
           {
-            path: "gridComponent",
+            path: "Grid-Component",
             element: (
               <Suspense>
                 <GridSample />
@@ -226,7 +226,7 @@ const root = createBrowserRouter([
             ),
           },
           {
-            path: "tapComponent",
+            path: "Tap-Component",
             element: (
               <Suspense>
                 <GridSample />
@@ -234,7 +234,7 @@ const root = createBrowserRouter([
             ),
           },
           {
-            path: "accordionComponent",
+            path: "Accordion-Component",
             element: (
               <Suspense>
                 <GridSample />
@@ -242,7 +242,7 @@ const root = createBrowserRouter([
             ),
           },
           {
-            path: "tapComponent",
+            path: "tapcomponent",
             element: (
               <Suspense>
                 <GridSample />

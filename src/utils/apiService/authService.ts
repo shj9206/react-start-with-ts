@@ -1,8 +1,8 @@
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import APIBuilder from "@/utils/apiService/APIBuilder";
-import { API_PREFIX } from './config/apiConfig.ts'
-import crypto from "crypto";
+import { API_PREFIX } from "./config/apiConfig.ts";
+import MOCK_MENU_LIST from "./tempData/userMenuList.json";
 // import { faker } from "@faker-js/faker";
 
 type Response<T> = { data: T };
@@ -35,7 +35,7 @@ type LatestTermsResponse = {
       lang: string; //  약관 언어
       title: string; //  약관 제목
       contents: string; //  약관 내용
-    }
+    },
   ];
 } & AuthResult;
 
@@ -151,7 +151,9 @@ function generateRandomToken(length) {
   const array = new Uint8Array(length);
   window.crypto.getRandomValues(array);
 
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
+    "",
+  );
 }
 
 type SigninResponse = {
@@ -169,7 +171,7 @@ function resultSignin(): SigninResponse {
   return {
     code: "200",
     message: "success",
-    data: {accessToken: accessTokenData, refrashToken: refrashTokenData},
+    data: { accessToken: accessTokenData, refrashToken: refrashTokenData },
   };
 }
 
@@ -215,11 +217,41 @@ type RefreshResponse = {
   };
 } & AuthResult;
 
+type CRUD = {
+  createYn: "Y" | "N" | string;
+  readYn: "Y" | "N" | string;
+  updateYn: "Y" | "N" | string;
+  deleteYn: "Y" | "N" | string;
+};
+
+export interface MenuList {
+  type: "MENU" | string;
+  code: string;
+  name: string;
+  path: string;
+  useYn: "Y" | "N" | string;
+  crud: CRUD;
+  selected: boolean;
+  menuList: MenuList[] | null;
+}
+
+export interface MenuListResponse extends AuthResult {
+  data?: MenuList[];
+}
+
 function resultRefresh(): RefreshResponse {
   return {
     code: "200",
     message: "success",
     data: { accessToken: "" },
+  };
+}
+
+function resultUserMenuList(): MenuListResponse {
+  return {
+    code: "200",
+    message: "success",
+    data: MOCK_MENU_LIST,
   };
 }
 
@@ -232,19 +264,16 @@ const mock = new AxiosMockAdapter(axios);
 const baseUri = `${API_PREFIX}/auth`;
 mock.onGet(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
   try {
-    // console.log("get");
-    // console.log(config.url);
     let results;
     if (config.url !== undefined) {
       if (config.url.includes("duplicate")) {
-        // console.log("duplicate");
         results = resultEmailDuplicate();
       } else if (config.url.includes(`${baseUri}/terms/latest`)) {
-        // console.log("${baseUri}/terms/latest");
         results = resultLatestTerms();
       } else if (config.url.includes(`${baseUri}/refresh`)) {
-        // console.log("${baseUri}/refresh");
         results = resultRefresh();
+      } else if (config.url.includes(`${baseUri}/menu/list`)) {
+        results = resultUserMenuList();
       }
     }
     return [200, results];
@@ -265,7 +294,7 @@ mock.onPost(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
         // console.log("${baseUri}/signupfordiy");
         results = resultSignupfordiy();
       } else if (config.url.includes(`${baseUri}/signin`)) {
-        console.log('mock data 생성');
+        console.log("mock data 생성");
         // console.log("${baseUri}/signin");
         results = resultSignin();
       } else if (config.url.includes(`${baseUri}/password/reset`)) {
@@ -471,4 +500,12 @@ export const otpResend = async (param: OtpResendRequest) => {
   return data;
 };
 
+//  기타 사용자 메뉴리스트
+export const getMenuList = async (email: string): Promise<MenuListResponse> => {
+  const api = APIBuilder.get(`${baseUri}/menu/list/${email}`)
+    .withCredentials(true)
+    .build();
+  const { data } = await api.call<Response<MenuListResponse>>();
+  return data.data;
+};
 //  ------------------------------------------------------
