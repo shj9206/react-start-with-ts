@@ -108,7 +108,7 @@ const root = createBrowserRouter([
             element: (
               <Suspense>
                 {/* <GridSample /> */}
-                <HqUserManage />;
+                <HqUserManage />
               </Suspense>
             ),
           },
