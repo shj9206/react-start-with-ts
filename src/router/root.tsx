@@ -28,6 +28,7 @@ const FotaStat = lazy(() => import("@/views/fota/FotaStat.tsx"));
 const CreatePack = lazy(() => import("@/views/fota/CreatePack.tsx"));
 const FirmList = lazy(() => import("@/views/fota/FirmList.tsx"));
 const MyAccount = lazy(() => import("@/views/account/MyAccount"));
+const HqUserManage = lazy(() => import("@/views/userManage/Index"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -106,7 +107,8 @@ const root = createBrowserRouter([
             path: "user",
             element: (
               <Suspense>
-                <GridSample />
+                {/* <GridSample /> */}
+                <HqUserManage />;
               </Suspense>
             ),
           },
