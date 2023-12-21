@@ -7,24 +7,52 @@ import {
 } from "@progress/kendo-react-form";
 import { Button } from "@progress/kendo-react-buttons";
 import { Label } from "@progress/kendo-react-labels";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setChangeEmailAddress } from "@/store/accountSlice";
 // import { RadioGroup } from "@progress/kendo-react-inputs";
 import LabelInput from "@/components/kendo/form/LabelInput.tsx";
 import RadioGroup from "@/components/kendo/form/RadioGroup";
 import TextBoxEmail from "@/components/myaccount/TextBoxEmail";
+import {
+  AccountResult,
+  getUserDetail,
+} from "@/utils/apiService/accountService.ts";
 
 export default function MyAccount() {
   const changeEmailAddress = useAppSelector(
-    (state) => state.account.changeEmailAddress,
+    (state) => state.account.changeEmailAddress
   );
   const dispatch = useAppDispatch();
 
+  const [userId, setUserId] = useState("");
+  const myAccountQuery = () => ({
+    queryKey: ["userDetail"],
+    queryFn: async () => {
+      const result = await getUserDetail(userId);
+      return result as AccountResult;
+    },
+  });
+  const { data: userDetail } = useQuery<AccountResult, Error>(myAccountQuery());
+
+  const loader = (queryClient: QueryClient) => async () => {
+    // Companies 쿼리 가져오기
+    const companiesQuery = myAccountQuery();
+    const companiesData =
+      queryClient.getQueryData(companiesQuery.queryKey) ??
+      (await queryClient.fetchQuery(companiesQuery));
+
+    // 두 쿼리의 데이터 반환
+    return { companiesData };
+  };
   const radioData = [
     { label: "F", value: "f" },
     { label: "C", value: "c" },
   ];
-  const initialFormValues = {
+  const userDetailData = userDetail ? (userDetail.data as AccountResult) : null;
+
+  const initialFormValues = userDetailData || {
     role: "Employee",
     firstName: "Kyung Dong",
     company: "LG Inotec",
@@ -108,7 +136,10 @@ export default function MyAccount() {
             </FieldWrapper>
             {changeEmailAddress && (
               <div>
-                <Label>{`We’ve sent a Confirmation email to ${initialFormValues.email} You must click the link that message before your email change will take effect.`}</Label>
+                <Label>{`We’ve sent a Confirmation email to ${
+                  initialFormValues.email ? initialFormValues.email : null
+                } You must
+                 click the link that message before your email change will take effect.`}</Label>
                 <div className="k-form-field-wrap">
                   <Button
                     type="button"
