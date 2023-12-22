@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { setRegion, setToken, setUserInfomation } from "@/store/authSlice.ts";
-import {
-  AccountResult,
-  getUserDetail,
-} from "@/utils/apiService/accountService.ts";
+import { getUserDetail } from "@/utils/apiService/accountService.ts";
 import mainImg from "@/assets/login.png";
 import StyledInput from "@/components/kendo/common/StyledInput.tsx";
 import StyledLabel from "@/components/kendo/common/StyledLabel.tsx";
 import StyledButton from "@/components/kendo/common/StyledButton.tsx";
 import FlexBox from "@/components/kendo/common/FlexBox.tsx";
 import { signin } from "@/utils/apiService/authService.ts";
-import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled(FlexBox)`
   align-items: center; // Center children vertically

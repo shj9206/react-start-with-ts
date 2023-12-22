@@ -5,9 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function MainLayout() {
   const navigate = useNavigate();
-  useEffect(() => {
-    navigate(`/main/DashBoard/dashboard`);
-  }, []);
+
   return (
     <>
       <StatusBar />
