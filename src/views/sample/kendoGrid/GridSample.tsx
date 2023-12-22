@@ -12,11 +12,9 @@ import ModalComponent from "@/components/kendo/modal/ModalComponent.tsx";
 import { Popup } from "@progress/kendo-react-popup";
 import StyledButton from "@/components/kendo/common/StyledButton.tsx";
 import useNotification from "@/hooks/useNotification.tsx";
-import TabComponent from "@/components/kendo/tap/TabComponent.tsx";
-import Login from "@/views/sample/login/Login.tsx";
 import AccordionComponent from "@/components/kendo/accordion/AccordionComponent.tsx";
 
-export default function Index() {
+export default function GridSample() {
   const column = [
     {
       field: "name",
@@ -265,11 +263,6 @@ export default function Index() {
     setShowPopup(true);
   };
 
-  const testTabList = [
-    { title: "test1", children: <Login /> },
-    { title: "test2", children: <p>2벜</p> },
-  ];
-
   const items = [
     {
       id: "1",
@@ -335,13 +328,10 @@ export default function Index() {
   return (
     <div>
       <AccordionComponent items={items} />
-      <TabComponent tabList={testTabList} />
-      <StyledButton onClick={handleClick} cssType="main_01">
-        {" "}
+      <StyledButton onClick={handleClick} csstype="main_01">
         alert Test Button
       </StyledButton>
-      <StyledButton onClick={handleNotificationClick} cssType="main_01">
-        {" "}
+      <StyledButton onClick={handleNotificationClick} csstype="main_01">
         Notification Test Button
       </StyledButton>
       <StyledButton
@@ -350,7 +340,6 @@ export default function Index() {
           setOpenModal(!openModal);
         }}
       >
-        {" "}
         모달
       </StyledButton>
       {openModal && (

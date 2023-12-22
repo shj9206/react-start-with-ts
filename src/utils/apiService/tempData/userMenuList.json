@@ -469,7 +469,7 @@
         {
           "type": "MENU",
           "code": "M080300000",
-          "name": "Tab-Component",
+          "name": "Tap-Component",
           "path": "",
           "useYn": "Y",
           "crud": {

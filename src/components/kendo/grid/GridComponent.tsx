@@ -230,6 +230,13 @@ function GridComponent<T>({
     setHeight(gridHeight ? gridHeight : 500);
   }, [expanded, gridWidth, gridHeight]);
 
+  useEffect(() => {
+    const currentWidth = expanded
+      ? window.innerWidth - 290
+      : window.innerWidth - 50;
+    setWidth(currentWidth);
+  }, [window.innerWidth]);
+
   const gridStyles = {
     transition: "all 200ms ease 0s",
   };

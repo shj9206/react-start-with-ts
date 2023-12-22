@@ -12,21 +12,13 @@ type AuthResult = {
   message: string;
 };
 
-type EmailDuplicateResponse = {
+export type EmailDuplicateResponse = {
   data?: {
     region?: string; //  중복리전 위치
   };
 } & AuthResult;
 
-function resultEmailDuplicate(): EmailDuplicateResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: { region: "US" },
-  };
-}
-
-type LatestTermsResponse = {
+export type LatestTermsResponse = {
   data: [
     {
       type: string; //  약관 구분
@@ -39,36 +31,11 @@ type LatestTermsResponse = {
   ];
 } & AuthResult;
 
-function resultLatestTerms(): LatestTermsResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: [
-      {
-        type: "약관 구분",
-        version: "약관 버전",
-        requiredYn: "필수 동의 여부",
-        lang: "약관 언어",
-        title: "약관 제목",
-        contents: "약관 내용",
-      },
-    ],
-  };
-}
-
-type SignupResponse = {
+export type SignupResponse = {
   data: {
     ticket: string; // 인증티켓
   };
 } & AuthResult;
-
-function resultSignup(): SignupResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: { ticket: "인증티켓" },
-  };
-}
 
 type SignupRequest = {
   name: string; //  회사 명
@@ -102,19 +69,11 @@ type Terms = {
   agreeYn?: string; // 약관 동의 여부
 };
 
-type SignupfordiyResponse = {
+export type SignupfordiyResponse = {
   data?: {
     ticket?: string; // 인증티켓
   };
 } & AuthResult;
-
-function resultSignupfordiy(): SignupfordiyResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: { ticket: "인증티켓" },
-  };
-}
 
 type SignupfordiyRequest = {
   firstName?: string; // 이름
@@ -125,17 +84,9 @@ type SignupfordiyRequest = {
   terms?: Terms[]; // 약관동의정보
 };
 
-type DataObjectResponse = {
+export type DataObjectResponse = {
   data?: object;
 } & AuthResult;
-
-function resultDataObject(): DataObjectResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: {},
-  };
-}
 
 type OtpValidateRequest = {
   authCode: string; // 일회용코드
@@ -147,16 +98,7 @@ type InvateValidateRequest = {
   terms: Terms[]; // 약관동의정보
 };
 
-function generateRandomToken(length) {
-  const array = new Uint8Array(length);
-  window.crypto.getRandomValues(array);
-
-  return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
-    "",
-  );
-}
-
-type SigninResponse = {
+export type SigninResponse = {
   data?: Token;
 } & AuthResult;
 
@@ -164,16 +106,6 @@ type Token = {
   accessToken?: string;
   refrashToken?: string;
 };
-
-function resultSignin(): SigninResponse {
-  const accessTokenData = generateRandomToken(16);
-  const refrashTokenData = generateRandomToken(16);
-  return {
-    code: "200",
-    message: "success",
-    data: { accessToken: accessTokenData, refrashToken: refrashTokenData },
-  };
-}
 
 type SigninRequest = {
   email: string; // 이메일
@@ -189,19 +121,11 @@ type PasswordValidateRequest = {
   pwd: string; // 비밀번호
 };
 
-type EmailChangeResponse = {
+export type EmailChangeResponse = {
   data: {
     ticket: string; //  인증티켓
   };
 } & AuthResult;
-
-function resultEmailChange(): EmailChangeResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: { ticket: "" },
-  };
-}
 
 type EmailChangeRequest = {
   email: string; // 이메일
@@ -211,7 +135,7 @@ type EmailValidateRequest = {
   pwd: string; // 비밀번호
 };
 
-type RefreshResponse = {
+export type RefreshResponse = {
   data?: {
     accessToken?: string;
   };
@@ -239,22 +163,6 @@ export interface MenuListResponse extends AuthResult {
   data?: MenuList[];
 }
 
-function resultRefresh(): RefreshResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: { accessToken: "" },
-  };
-}
-
-function resultUserMenuList(): MenuListResponse {
-  return {
-    code: "200",
-    message: "success",
-    data: MOCK_MENU_LIST,
-  };
-}
-
 type OtpResendRequest = {
   ticket: string; // 인증티켓
 };
@@ -262,107 +170,6 @@ type OtpResendRequest = {
 const mock = new AxiosMockAdapter(axios);
 //  베이스 url
 const baseUri = `${API_PREFIX}/auth`;
-mock.onGet(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
-  try {
-    let results;
-    if (config.url !== undefined) {
-      if (config.url.includes("duplicate")) {
-        results = resultEmailDuplicate();
-      } else if (config.url.includes(`${baseUri}/terms/latest`)) {
-        results = resultLatestTerms();
-      } else if (config.url.includes(`${baseUri}/refresh`)) {
-        results = resultRefresh();
-      } else if (config.url.includes(`${baseUri}/menu/list`)) {
-        results = resultUserMenuList();
-      }
-    }
-    return [200, results];
-  } catch (error) {
-    // console.error(error);
-    return [500, { message: "Internal server error" }];
-  }
-});
-
-mock.onPost(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
-  try {
-    let results;
-    if (config.url !== undefined) {
-      if (config.url.includes(`${baseUri}/signup`)) {
-        results = resultSignup();
-        // console.log("${baseUri}/signup");
-      } else if (config.url.includes(`${baseUri}/signupfordiy`)) {
-        // console.log("${baseUri}/signupfordiy");
-        results = resultSignupfordiy();
-      } else if (config.url.includes(`${baseUri}/signin`)) {
-        console.log("mock data 생성");
-        // console.log("${baseUri}/signin");
-        results = resultSignin();
-      } else if (config.url.includes(`${baseUri}/password/reset`)) {
-        // console.log("${baseUri}/password/reset");
-        results = resultDataObject();
-      } else if (config.url.includes(`${baseUri}/email/change`)) {
-        // console.log("${baseUri}/email/change");
-        results = resultEmailChange();
-      } else if (config.url.includes(`${baseUri}/otp/resend`)) {
-        // console.log("${baseUri}/otp/resend");
-        results = resultDataObject();
-      }
-    }
-    return [200, results];
-  } catch (error) {
-    // console.error(error);
-    return [500, { message: "Internal server error" }];
-  }
-});
-
-mock.onPut(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
-  try {
-    // console.log("put");
-    // console.log(config.url);
-    let results;
-    if (config.url !== undefined) {
-      if (config.url.includes(`${baseUri}/otp/validate`)) {
-        // console.log("${baseUri}/otp/validate");
-        results = resultDataObject();
-      } else if (config.url.includes(`${baseUri}/invate/validate`)) {
-        // console.log("${baseUri}/invate/validate");
-        results = resultDataObject();
-      } else if (config.url.includes(`${baseUri}/password/validate`)) {
-        // console.log("${baseUri}/password/validate");
-        results = resultDataObject();
-      } else if (config.url.includes(`${baseUri}/terms/latest`)) {
-        // console.log("${baseUri}/terms/latest");
-        results = resultDataObject();
-      } else if (config.url.includes(`${baseUri}/email/validate`)) {
-        // console.log("${baseUri}/email/validate");
-        results = resultDataObject();
-      }
-    }
-    return [200, results];
-  } catch (error) {
-    // console.error(error);
-    return [500, { message: "Internal server error" }];
-  }
-});
-
-mock.onDelete(/^\/api\/v1\.0\/auth\/.*/).reply((config) => {
-  try {
-    // console.log("delete");
-    // console.log(config.url);
-    let results;
-    if (config.url !== undefined) {
-      if (config.url.includes(`${baseUri}/signout`)) {
-        // console.log("${baseUri}/signout");
-        results = resultDataObject();
-      }
-    }
-    return [200, results];
-  } catch (error) {
-    // console.error(error);
-    return [500, { message: "Internal server error" }];
-  }
-});
-mock.onAny().passThrough();
 
 //  IF-AUTH-001 이메일 중복체크
 export const emailDuplicateCheck = async (email: string) => {
@@ -501,7 +308,7 @@ export const otpResend = async (param: OtpResendRequest) => {
 };
 
 //  기타 사용자 메뉴리스트
-export const getMenuList = async (email: string): Promise<MenuListResponse> => {
+export const getMenuList = async (email: string) => {
   const api = APIBuilder.get(`${baseUri}/menu/list/${email}`)
     .withCredentials(true)
     .build();

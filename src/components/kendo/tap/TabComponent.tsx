@@ -16,6 +16,7 @@ function TabComponent({ tabList }: TabComponentProps) {
   return (
     <TabStrip
       selected={tabSelected}
+      animation={false}
       onSelect={(e) => setTabSelected(e.selected)}
       keepTabsMounted
     >

@@ -26,37 +26,39 @@ class API {
 
   call<T>(): AxiosPromise<T> {
     const http = axios.create();
-    // 만약 `withCredential`이 설정된 API라면 아래 같이 인터셉터를 추가하고, 아니라면 인터셉터 를 사용하지 않음
     if (this.withCredentials) {
       http.interceptors.response.use(
-          response => response,
-          async (error) => {
-            const originalRequest = error.config;
+        (response) => response,
+        async (error) => {
+          const originalRequest = error.config;
 
-            if (error.response.status === 401 && !originalRequest._retry) {
-              originalRequest._retry = true;
+          if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
 
-              try {
-                // 사용자 식별 정보와 함께 리프레시 토큰 요청
-                const userId = 'user-id'; // 실제 사용자 ID로 대체
-                const sessionId = 'session-id'; // 실제 세션 ID로 대체
-                const response = await http.post('/refresh-token', { userId, sessionId });
+            try {
+              // 사용자 식별 정보와 함께 리프레시 토큰 요청
+              const userId = "user-id"; // 실제 사용자 ID로 대체
+              const sessionId = "session-id"; // 실제 세션 ID로 대체
+              const response = await http.post("/refresh-token", {
+                userId,
+                sessionId,
+              });
 
-                const { accessToken } = response.data;
+              const { accessToken } = response.data;
 
-                // 새 액세스 토큰을 설정
-                document.cookie = `accessToken=${accessToken};path=/`;
+              // 새 액세스 토큰을 설정
+              document.cookie = `accessToken=${accessToken};path=/`;
 
-                // 원래 요청을 새 토큰으로 재시도
-                return http(originalRequest);
-              } catch (refreshError) {
-                // 리프레시 토큰 요청 실패 처리
-                return Promise.reject(refreshError);
-              }
+              // 원래 요청을 새 토큰으로 재시도
+              return http(originalRequest);
+            } catch (refreshError) {
+              // 리프레시 토큰 요청 실패 처리
+              return Promise.reject(refreshError);
             }
-
-            return Promise.reject(error);
           }
+
+          return Promise.reject(error);
+        },
       );
     }
     return http.request({ ...this });

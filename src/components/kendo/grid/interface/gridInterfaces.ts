@@ -15,7 +15,7 @@ interface AppState {
 type GridHeader = {
   field: string;
   title: string;
-  width: number;
+  width: number | string;
   filterType?: string;
   filterable?: boolean;
   align?: string;

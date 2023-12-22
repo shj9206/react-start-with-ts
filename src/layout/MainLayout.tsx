@@ -1,7 +1,13 @@
 import StatusBar from "@/components/menu/StatusBar.tsx";
 import Gnb from "@/components/menu/Gnb.tsx";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function MainLayout() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(`/main/DashBoard/dashboard`);
+  }, []);
   return (
     <>
       <StatusBar />

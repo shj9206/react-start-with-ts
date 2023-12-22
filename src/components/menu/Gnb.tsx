@@ -56,8 +56,15 @@ export default function Gnb() {
   );
 
   useEffect(() => {
-    if (menuListResponse !== undefined && menuListResponse !== null)
+    if (menuListResponse !== undefined && menuListResponse !== null) {
       setMenu(menuListResponse);
+      menuListResponse?.forEach((el) => {
+        if (el.code === "M010000000") {
+          setSubMenuList(el.menuList as MenuList[]);
+        }
+      });
+      setSelectedId(0);
+    }
   }, [menuListResponse]);
 
   const handleClick = () => {

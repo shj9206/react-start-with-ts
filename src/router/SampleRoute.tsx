@@ -11,7 +11,7 @@ import { action as destroyAction } from "@/views/sample/routerSample/destroy.tsx
 import StoreSampe from "@/views/sample/storeSample/storeSample.tsx";
 import LocaleSample from "@/views/sample/localeSample/LocaleSample.tsx";
 import ApiTest from "@/views/sample/apiTest/ApiTest.tsx";
-import GridSample from "@/views/sample/gridSample/Index.tsx";
+import GridSample from "@/views/sample/kendoGrid/GridSample.tsx";
 import MapComponent from "@/views/sample/mapSample/MapComponent.tsx";
 import KendoForm from "@/views/sample/kendoForm/KendoFormTest.tsx";
 import Profile, {
@@ -51,8 +51,7 @@ export default function SampleRoute() {
     { path: "/views/sample/store", element: <StoreSampe /> },
     { path: "/views/sample/locale", element: <LocaleSample /> },
     { path: "/views/sample/api", element: <ApiTest /> },
-    // { path: "/views/sample/gridSample", element:(<PrivateRoute> <GridSample /> </PrivateRoute>)},
-    { path: "/views/sample/gridSample", element: <GridSample /> },
+    { path: "/views/sample/kendoGrid", element: <GridSample /> },
     {
       path: "/views/sample/map",
       // element: <MapSample latitude={37.56} longitude={127.0016} />,

@@ -14,10 +14,11 @@ import Root, {
   loader as rootLoader,
 } from "@/views/sample/routerSample/root.tsx";
 import ErrorPage from "@/views/sample/routerSample/error-page.tsx";
-import GridSample from "@/views/sample/gridSample/Index.tsx";
+import GridSample from "@/views/sample/kendoGrid/GridSample.tsx";
 import Login from "@/views/sample/login/Login.tsx";
 import sampleRoute from "@/router/SampleRoute.tsx";
 import CommonSample from "@/views/sample/common/CommonSample.tsx";
+import TabSample from "@/views/sample/kendoTab/TabSample.tsx";
 
 const DashBoard = lazy(() => import("@/views/dashboard/Index.tsx"));
 const FirmManage = lazy(() => import("@/views/fota/FirmManage.tsx"));
@@ -231,7 +232,7 @@ const root = createBrowserRouter([
             path: "Tap-Component",
             element: (
               <Suspense>
-                <GridSample />
+                <TabSample />
               </Suspense>
             ),
           },
