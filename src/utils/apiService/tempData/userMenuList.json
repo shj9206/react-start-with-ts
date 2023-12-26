@@ -493,6 +493,20 @@
             "deleteYn": "Y"
           },
           "menuList": null
+        },
+        {
+          "type": "MENU",
+          "code": "M080400000",
+          "name": "Modal-Component",
+          "path": "",
+          "useYn": "Y",
+          "crud": {
+            "createYn": "Y",
+            "readYn": "Y",
+            "updateYn": "Y",
+            "deleteYn": "Y"
+          },
+          "menuList": null
         }
       ]
     }

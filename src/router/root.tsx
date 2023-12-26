@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { QueryClient } from "@tanstack/react-query";
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import MainLayout from "@/layout/MainLayout.tsx";
 import KendoChart, {
   loader as kendoChartLoader,
@@ -19,6 +19,8 @@ import Login from "@/views/sample/login/Login.tsx";
 import sampleRoute from "@/router/SampleRoute.tsx";
 import CommonSample from "@/views/sample/common/CommonSample.tsx";
 import TabSample from "@/views/sample/kendoTab/TabSample.tsx";
+import AccordionSample from "@/views/sample/kendoAccordion/AccordionSample.tsx";
+import ModalSample from "@/views/sample/common/ModalSample.tsx";
 
 const DashBoard = lazy(() => import("@/views/dashboard/Index.tsx"));
 const FirmManage = lazy(() => import("@/views/fota/FirmManage.tsx"));
@@ -240,7 +242,7 @@ const root = createBrowserRouter([
             path: "Accordion-Component",
             element: (
               <Suspense>
-                <GridSample />
+                <AccordionSample />
               </Suspense>
             ),
           },
@@ -249,6 +251,14 @@ const root = createBrowserRouter([
             element: (
               <Suspense>
                 <GridSample />
+              </Suspense>
+            ),
+          },
+          {
+            path: "Modal-Component",
+            element: (
+              <Suspense>
+                <ModalSample />
               </Suspense>
             ),
           },

@@ -227,22 +227,22 @@ export default function GridSample() {
     }
   }, [company]);
 
-  const showAlert = useAlert();
-  const showNotification = useNotification();
+  // const showAlert = useAlert();
+  // const showNotification = useNotification();
 
-  const handleClick = () => {
-    showAlert({ message: "이것은 경고 메시지입니다!" });
-  };
-
-  const handleNotificationClick = () => {
-    showNotification({ message: "이것은 Notification 입니다!" });
-  };
-
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
+  // const handleClick = () => {
+  //   showAlert({ message: "이것은 경고 메시지입니다!" });
+  // };
+  //
+  // const handleNotificationClick = () => {
+  //   showNotification({ message: "이것은 Notification 입니다!" });
+  // };
+  //
+  // const [openModal, setOpenModal] = useState(false);
+  //
+  // const handleModalClose = () => {
+  //   setOpenModal(false);
+  // };
 
   const [popupPosition, setPopupPosition] = useState({ left: 50, top: 50 });
   const buttonRef = useRef(null);
@@ -327,31 +327,31 @@ export default function GridSample() {
 
   return (
     <div>
-      <AccordionComponent items={items} />
-      <StyledButton onClick={handleClick} csstype="main_01">
-        alert Test Button
-      </StyledButton>
-      <StyledButton onClick={handleNotificationClick} csstype="main_01">
-        Notification Test Button
-      </StyledButton>
-      <StyledButton
-        ref={buttonRef}
-        onClick={() => {
-          setOpenModal(!openModal);
-        }}
-      >
-        모달
-      </StyledButton>
-      {openModal && (
-        <ModalComponent
-          onClose={handleModalClose}
-          title={"공지사항"}
-          buttons={["cancel", "confirm"]}
-          showCloseButton={false}
-        >
-          여기에 모달 컨텐츠만 넣으세요.
-        </ModalComponent>
-      )}
+      {/* <AccordionComponent items={items} /> */}
+      {/* <StyledButton onClick={handleClick} csstype="main_01"> */}
+      {/*   alert Test Button */}
+      {/* </StyledButton> */}
+      {/* <StyledButton onClick={handleNotificationClick} csstype="main_01"> */}
+      {/*   Notification Test Button */}
+      {/* </StyledButton> */}
+      {/* <StyledButton */}
+      {/*   ref={buttonRef} */}
+      {/*   onClick={() => { */}
+      {/*     setOpenModal(!openModal); */}
+      {/*   }} */}
+      {/* > */}
+      {/*   모달 */}
+      {/* </StyledButton> */}
+      {/* {openModal && ( */}
+      {/*   <ModalComponent */}
+      {/*     onClose={handleModalClose} */}
+      {/*     title={"공지사항"} */}
+      {/*     buttons={["cancel", "confirm"]} */}
+      {/*     showCloseButton={false} */}
+      {/*   > */}
+      {/*     여기에 모달 컨텐츠만 넣으세요. */}
+      {/*   </ModalComponent> */}
+      {/* )} */}
       {showPopup && (
         <div ref={popupRef}>
           <Popup offset={popupPosition} show={showPopup}>
